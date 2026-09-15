@@ -1,0 +1,6140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduGuide AI</title>
+<!-- Google Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   RESET
+========================================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html {
+    scroll-behavior: smooth;
+}
+body {
+    font-family: "Inter", sans-serif;
+    background: #f7f8fc;
+    color: #172033;
+}
+/* =========================================================
+   VARIABLES
+========================================================= */
+:root {
+    --primary: #4f46e5;
+    --primary-dark: #3730a3;
+    --primary-light: #eef2ff;
+    --secondary: #6366f1;
+    --text-dark: #172033;
+    --text-medium: #5d6678;
+    --text-light: #8a93a5;
+    --background: #f7f8fc;
+    --white: #ffffff;
+    --border: #e3e6ee;
+    --green: #16a34a;
+    --green-light: #ecfdf3;
+    --orange: #ea580c;
+    --orange-light: #fff7ed;
+    --red: #dc2626;
+    --red-light: #fef2f2;
+    --shadow: 0 20px 60px rgba(30, 41, 59, 0.08);
+}
+/* =========================================================
+   GENERAL
+========================================================= */
+.container {
+    width: min(1180px, 92%);
+    margin: auto;
+}
+section {
+    scroll-margin-top: 90px;
+}
+/* =========================================================
+   NAVBAR
+========================================================= */
+.navbar {
+    height: 76px;
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(15px);
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(227,230,238,0.8);
+}
+.nav-container {
+    width: min(1180px, 92%);
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+/* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    text-decoration: none;
+    color: var(--text-dark);
+}
+.logo-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid #eef0f6;
+    color: white;
+    font-size: 21px;
+    font-weight: 800;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.10);
+}
+.logo-text {
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+.logo-text span {
+    color: var(--primary);
+}
+.logo-subtitle {
+    display: block;
+    font-size: 9px;
+    color: var(--text-light);
+    margin-top: 1px;
+    letter-spacing: 0.3px;
+}
+/* Navigation */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-medium);
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+.nav-links a:hover {
+    color: var(--primary);
+}
+/* Login / Signup buttons in nav */
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.nav-login {
+    border: none;
+    padding: 11px 22px;
+    border-radius: 9px;
+    background: var(--primary);
+    color: white;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.nav-login:hover {
+    background: var(--primary-dark);
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 8px 20px rgba(79,70,229,0.2);
+}
+.nav-signup {
+    border: 1px solid var(--border);
+    padding: 11px 22px;
+    border-radius: 9px;
+    background: white;
+    color: var(--text-dark);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.nav-signup:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+/* =========================================================
+   MOBILE NAV
+========================================================= */
+.menu-button {
+    display: none;
+    border: none;
+    background: transparent;
+    font-size: 24px;
+    cursor: pointer;
+}
+/* =========================================================
+   LANDING PAGE
+========================================================= */
+#landingPage {
+    display: block;
+}
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    min-height: 760px;
+
+    padding-top: 76px;
+
+    display: flex;
+    align-items: center;
+
+    position: relative;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(99,102,241,0.13),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(129,140,248,0.12),
+            transparent 28%
+        ),
+        linear-gradient(
+            180deg,
+            #f8f9ff,
+            #ffffff
+        );
+}
+
+/* Decorative circles */
+
+.hero::before {
+    content: "";
+
+    position: absolute;
+
+    width: 420px;
+    height: 420px;
+
+    border: 1px solid rgba(79,70,229,0.08);
+
+    border-radius: 50%;
+
+    right: -180px;
+    top: 90px;
+}
+
+.hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 260px;
+    height: 260px;
+
+    border: 1px solid rgba(79,70,229,0.07);
+
+    border-radius: 50%;
+
+    left: -120px;
+    bottom: -80px;
+}
+
+.hero-container {
+    width: min(1180px,92%);
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns: 1.05fr 0.95fr;
+
+    gap: 70px;
+
+    align-items: center;
+
+    position: relative;
+    z-index: 2;
+}
+
+/* Hero text */
+
+.hero-badge {
+    display: inline-flex;
+
+    padding: 8px 14px;
+
+    border-radius: 100px;
+
+    background: var(--primary-light);
+    color: var(--primary);
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+.hero h1 {
+    margin-top: 22px;
+
+    font-size: clamp(42px,5vw,66px);
+
+    line-height: 1.04;
+
+    letter-spacing: -3px;
+
+    font-weight: 800;
+}
+
+.hero h1 span {
+    color: var(--primary);
+}
+
+.hero-description {
+    margin-top: 24px;
+
+    max-width: 610px;
+
+    color: var(--text-medium);
+
+    font-size: 15px;
+
+    line-height: 1.8;
+}
+
+.hero-buttons {
+    display: flex;
+
+    gap: 12px;
+
+    margin-top: 32px;
+}
+
+.primary-button {
+    border: none;
+
+    padding: 14px 23px;
+
+    border-radius: 10px;
+
+    background: var(--primary);
+    color: white;
+
+    font-family: inherit;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.primary-button:hover {
+    background: var(--primary-dark);
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 10px 25px rgba(79,70,229,0.2);
+}
+
+.secondary-button {
+    padding: 13px 23px;
+
+    border-radius: 10px;
+
+    border: 1px solid var(--border);
+
+    background: white;
+
+    color: var(--text-dark);
+
+    font-family: inherit;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.secondary-button:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* =========================================================
+   HERO DASHBOARD MOCKUP
+========================================================= */
+
+.hero-dashboard {
+    position: relative;
+}
+
+.dashboard-card {
+    background: white;
+
+    border: 1px solid #e7e9f0;
+
+    border-radius: 20px;
+
+    padding: 24px;
+
+    box-shadow:
+        0 30px 80px rgba(30,41,59,0.12);
+
+    position: relative;
+}
+
+.dashboard-top {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 22px;
+}
+
+.dashboard-title {
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.dashboard-small {
+    font-size: 10px;
+    color: var(--text-light);
+}
+
+.risk-summary {
+    display: grid;
+
+    grid-template-columns: repeat(3,1fr);
+
+    gap: 10px;
+}
+
+.risk-box {
+    padding: 14px;
+
+    border-radius: 12px;
+
+    background: #f8f9fc;
+
+    border: 1px solid #edf0f5;
+}
+
+.risk-box strong {
+    display: block;
+
+    font-size: 20px;
+
+    margin-bottom: 4px;
+}
+
+.risk-box span {
+    font-size: 9px;
+
+    color: var(--text-light);
+}
+
+.low {
+    color: var(--green);
+}
+
+.medium {
+    color: var(--orange);
+}
+
+.high {
+    color: var(--red);
+}
+
+/* Chart */
+
+.fake-chart {
+    margin-top: 18px;
+
+    height: 150px;
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    background: #fafbff;
+
+    border: 1px solid #edf0f5;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    gap: 12px;
+}
+
+.bar {
+    flex: 1;
+
+    background: var(--primary);
+
+    opacity: 0.8;
+
+    border-radius: 5px 5px 0 0;
+}
+
+.bar:nth-child(1) { height: 45%; }
+.bar:nth-child(2) { height: 65%; }
+.bar:nth-child(3) { height: 50%; }
+.bar:nth-child(4) { height: 78%; }
+.bar:nth-child(5) { height: 60%; }
+.bar:nth-child(6) { height: 88%; }
+.bar:nth-child(7) { height: 72%; }
+
+/* AI insight */
+
+.ai-insight {
+    margin-top: 15px;
+
+    padding: 14px;
+
+    border-radius: 12px;
+
+    background: var(--primary-light);
+
+    display: flex;
+
+    gap: 12px;
+}
+
+.ai-icon {
+    width: 30px;
+    height: 30px;
+
+    border-radius: 8px;
+
+    background: var(--primary);
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 13px;
+}
+
+.ai-insight strong {
+    font-size: 10px;
+}
+
+.ai-insight p {
+    margin-top: 3px;
+
+    font-size: 9px;
+
+    color: var(--text-medium);
+
+    line-height: 1.5;
+}
+
+/* =========================================================
+   TRUST / STATS
+========================================================= */
+
+.stats {
+    padding: 28px 0;
+
+    background: white;
+
+    border-top: 1px solid #eef0f5;
+    border-bottom: 1px solid #eef0f5;
+}
+
+.stats-container {
+    width: min(1000px,92%);
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns: repeat(4,1fr);
+}
+
+.stat {
+    text-align: center;
+
+    border-right: 1px solid #edf0f5;
+}
+
+.stat:last-child {
+    border-right: none;
+}
+
+.stat strong {
+    display: block;
+
+    font-size: 23px;
+
+    font-weight: 800;
+
+    color: var(--primary);
+}
+
+.stat span {
+    font-size: 10px;
+
+    color: var(--text-light);
+}
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.section-header {
+    text-align: center;
+
+    max-width: 650px;
+
+    margin: auto auto 55px;
+}
+
+.section-label {
+    color: var(--primary);
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+}
+
+.section-header h2 {
+    margin-top: 12px;
+
+    font-size: 34px;
+
+    letter-spacing: -1.5px;
+
+    font-weight: 800;
+}
+
+.section-header p {
+    margin-top: 13px;
+
+    color: var(--text-medium);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+/* =========================================================
+   ABOUT
+========================================================= */
+
+.about {
+    padding: 100px 0;
+
+    background: white;
+}
+
+.about-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 70px;
+
+    align-items: center;
+}
+
+.about-text h3 {
+    font-size: 28px;
+
+    line-height: 1.2;
+
+    letter-spacing: -1px;
+}
+
+.about-text p {
+    margin-top: 18px;
+
+    color: var(--text-medium);
+
+    font-size: 13px;
+
+    line-height: 1.8;
+}
+
+.about-points {
+    margin-top: 25px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 13px;
+}
+
+.about-point {
+    display: flex;
+
+    gap: 12px;
+
+    align-items: flex-start;
+}
+
+.point-check {
+    width: 25px;
+    height: 25px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+    font-size: 11px;
+}
+
+.about-point strong {
+    font-size: 12px;
+}
+
+.about-point p {
+    margin-top: 2px;
+
+    font-size: 10px;
+
+    color: var(--text-light);
+}
+
+/* About visual */
+
+.about-visual {
+    position: relative;
+
+    min-height: 370px;
+}
+
+.visual-card {
+    position: absolute;
+
+    background: white;
+
+    border: 1px solid #e7e9f0;
+
+    border-radius: 16px;
+
+    padding: 20px;
+
+    box-shadow: var(--shadow);
+}
+
+.visual-main {
+    width: 80%;
+
+    left: 5%;
+    top: 30px;
+}
+
+.visual-small {
+    width: 48%;
+
+    right: 0;
+    bottom: 25px;
+}
+
+.visual-label {
+    font-size: 9px;
+
+    color: var(--text-light);
+
+    margin-bottom: 8px;
+}
+
+.visual-number {
+    font-size: 28px;
+
+    font-weight: 800;
+
+    color: var(--primary);
+}
+
+.progress {
+    height: 8px;
+
+    margin-top: 12px;
+
+    background: #eef0f5;
+
+    border-radius: 100px;
+
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+
+    width: 72%;
+
+    background: var(--primary);
+
+    border-radius: 100px;
+}
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.features-section {
+    padding: 100px 0;
+
+    background: #f7f8fc;
+}
+
+.features-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3,1fr);
+
+    gap: 20px;
+}
+
+.feature-card {
+    padding: 28px;
+
+    background: white;
+
+    border: 1px solid #e9ebf1;
+
+    border-radius: 15px;
+
+    transition: 0.25s;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+
+    box-shadow: var(--shadow);
+
+    border-color: rgba(79,70,229,0.2);
+}
+
+.feature-card-icon {
+    width: 45px;
+    height: 45px;
+
+    border-radius: 12px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+    font-size: 18px;
+
+    margin-bottom: 18px;
+}
+
+.feature-card h3 {
+    font-size: 14px;
+
+    margin-bottom: 8px;
+}
+
+.feature-card p {
+    color: var(--text-light);
+
+    font-size: 11px;
+
+    line-height: 1.7;
+}
+
+/* =========================================================
+   RISK SECTION
+========================================================= */
+
+.risk-section {
+    padding: 100px 0;
+
+    background: white;
+}
+
+.risk-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3,1fr);
+
+    gap: 20px;
+}
+
+.risk-card {
+    padding: 28px;
+
+    border-radius: 16px;
+
+    border: 1px solid;
+
+    position: relative;
+}
+
+.risk-card.low-card {
+    background: var(--green-light);
+
+    border-color: #bbf7d0;
+}
+
+.risk-card.medium-card {
+    background: var(--orange-light);
+
+    border-color: #fed7aa;
+}
+
+.risk-card.high-card {
+    background: var(--red-light);
+
+    border-color: #fecaca;
+}
+
+.risk-indicator {
+    width: 11px;
+    height: 11px;
+
+    border-radius: 50%;
+
+    margin-bottom: 18px;
+}
+
+.low-indicator {
+    background: var(--green);
+}
+
+.medium-indicator {
+    background: var(--orange);
+}
+
+.high-indicator {
+    background: var(--red);
+}
+
+.risk-card h3 {
+    font-size: 18px;
+}
+
+.risk-card p {
+    margin-top: 10px;
+
+    color: var(--text-medium);
+
+    font-size: 11px;
+
+    line-height: 1.7;
+}
+
+.risk-card ul {
+    margin-top: 15px;
+
+    padding-left: 17px;
+
+    color: var(--text-medium);
+
+    font-size: 10px;
+
+    line-height: 2;
+}
+
+/* =========================================================
+   INPUT FACTORS
+========================================================= */
+
+.factors {
+    padding: 100px 0;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f8f9ff,
+            #eef2ff
+        );
+}
+
+.factor-grid {
+    display: grid;
+
+    grid-template-columns: repeat(5,1fr);
+
+    gap: 15px;
+}
+
+.factor {
+    padding: 22px 15px;
+
+    text-align: center;
+
+    background: white;
+
+    border-radius: 14px;
+
+    border: 1px solid #e5e8f1;
+
+    transition: 0.2s;
+}
+
+.factor:hover {
+    transform: translateY(-4px);
+
+    box-shadow: var(--shadow);
+}
+
+.factor-icon {
+    font-size: 23px;
+
+    color: var(--primary);
+
+    margin-bottom: 12px;
+}
+
+.factor h3 {
+    font-size: 11px;
+}
+
+.factor p {
+    margin-top: 6px;
+
+    color: var(--text-light);
+
+    font-size: 9px;
+
+    line-height: 1.5;
+}
+
+/* =========================================================
+   HOW IT WORKS
+========================================================= */
+
+.how-it-works {
+    padding: 100px 0;
+
+    background: white;
+}
+
+.steps {
+    display: grid;
+
+    grid-template-columns: repeat(4,1fr);
+
+    gap: 25px;
+
+    position: relative;
+}
+
+.step {
+    text-align: center;
+
+    position: relative;
+}
+
+.step-number {
+    width: 48px;
+    height: 48px;
+
+    margin: auto;
+
+    border-radius: 50%;
+
+    background: var(--primary);
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    box-shadow: 0 8px 20px rgba(79,70,229,0.18);
+}
+
+.step h3 {
+    margin-top: 18px;
+
+    font-size: 13px;
+}
+
+.step p {
+    margin-top: 8px;
+
+    color: var(--text-light);
+
+    font-size: 10px;
+
+    line-height: 1.6;
+}
+
+/* =========================================================
+   EXPLAINABLE AI
+========================================================= */
+
+.xai {
+    padding: 100px 0;
+
+    background: #f7f8fc;
+}
+
+.xai-container {
+    display: grid;
+
+    grid-template-columns: 0.9fr 1.1fr;
+
+    gap: 70px;
+
+    align-items: center;
+}
+
+.xai-visual {
+    background: white;
+
+    padding: 25px;
+
+    border-radius: 18px;
+
+    border: 1px solid #e6e9f0;
+
+    box-shadow: var(--shadow);
+}
+
+.xai-title {
+    font-size: 13px;
+
+    font-weight: 800;
+
+    margin-bottom: 22px;
+}
+
+.factor-row {
+    margin-bottom: 17px;
+}
+
+.factor-row-top {
+    display: flex;
+
+    justify-content: space-between;
+
+    font-size: 10px;
+
+    margin-bottom: 6px;
+}
+
+.factor-bar {
+    height: 8px;
+
+    background: #eef0f5;
+
+    border-radius: 100px;
+
+    overflow: hidden;
+}
+
+.factor-bar span {
+    display: block;
+
+    height: 100%;
+
+    background: var(--primary);
+
+    border-radius: 100px;
+}
+
+.factor-row:nth-child(2) span {
+    width: 84%;
+}
+
+.factor-row:nth-child(3) span {
+    width: 68%;
+}
+
+.factor-row:nth-child(4) span {
+    width: 51%;
+}
+
+.factor-row:nth-child(5) span {
+    width: 38%;
+}
+
+.xai-text h2 {
+    font-size: 32px;
+
+    line-height: 1.2;
+
+    letter-spacing: -1px;
+}
+
+.xai-text p {
+    margin-top: 18px;
+
+    color: var(--text-medium);
+
+    font-size: 13px;
+
+    line-height: 1.8;
+}
+
+.xai-list {
+    margin-top: 22px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+.xai-list-item {
+    display: flex;
+
+    gap: 10px;
+
+    font-size: 11px;
+
+    color: var(--text-medium);
+}
+
+.xai-list-item span {
+    color: var(--primary);
+
+    font-weight: 800;
+}
+
+/* =========================================================
+   PERSONALIZED GUIDANCE
+========================================================= */
+
+.guidance {
+    padding: 100px 0;
+
+    background: white;
+}
+
+.guidance-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3,1fr);
+
+    gap: 20px;
+}
+
+.guidance-card {
+    padding: 25px;
+
+    border: 1px solid #e6e9f0;
+
+    border-radius: 15px;
+}
+
+.guidance-card h3 {
+    font-size: 13px;
+
+    margin-bottom: 9px;
+}
+
+.guidance-card p {
+    font-size: 10px;
+
+    line-height: 1.7;
+
+    color: var(--text-light);
+}
+
+/* =========================================================
+   CTA
+========================================================= */
+
+.cta {
+    padding: 80px 0;
+}
+
+.cta-box {
+    padding: 60px 40px;
+
+    border-radius: 22px;
+
+    text-align: center;
+
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(255,255,255,0.15),
+            transparent 25%
+        ),
+        linear-gradient(
+            135deg,
+            #4f46e5,
+            #3730a3
+        );
+
+    color: white;
+
+    box-shadow: 0 25px 60px rgba(79,70,229,0.2);
+}
+
+.cta-box h2 {
+    font-size: 32px;
+
+    letter-spacing: -1px;
+}
+
+.cta-box p {
+    max-width: 600px;
+
+    margin: 14px auto 25px;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+
+    color: rgba(255,255,255,0.8);
+}
+
+.cta-button {
+    border: none;
+
+    background: white;
+
+    color: var(--primary);
+
+    padding: 13px 25px;
+
+    border-radius: 9px;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+    padding: 45px 0 25px;
+
+    background: #111827;
+
+    color: white;
+}
+
+.footer-grid {
+    display: grid;
+
+    grid-template-columns: 1.5fr 1fr 1fr;
+
+    gap: 50px;
+
+    padding-bottom: 35px;
+
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.footer-brand p {
+    margin-top: 12px;
+
+    max-width: 350px;
+
+    color: #9ca3af;
+
+    font-size: 10px;
+
+    line-height: 1.7;
+}
+
+.footer-column h3 {
+    font-size: 11px;
+
+    margin-bottom: 14px;
+}
+
+.footer-column a {
+    display: block;
+
+    color: #9ca3af;
+
+    text-decoration: none;
+
+    font-size: 10px;
+
+    margin-bottom: 9px;
+}
+
+.footer-column a:hover {
+    color: white;
+}
+
+.footer-bottom {
+    padding-top: 20px;
+
+    text-align: center;
+
+    color: #6b7280;
+
+    font-size: 9px;
+}
+
+/* =========================================================
+   LOGIN PAGE
+========================================================= */
+
+#loginPage {
+    display: none;
+
+    min-height: 100vh;
+
+    background: var(--background);
+}
+
+/* =========================================================
+   SIGNUP PAGE
+========================================================= */
+
+#signupPage {
+    display: none;
+
+    min-height: 100vh;
+
+    background: var(--background);
+}
+
+/* Login layout */
+
+.login-page-container {
+    min-height: 100vh;
+
+    display: grid;
+
+    grid-template-columns: 1.05fr 0.95fr;
+
+    background: #ffffff;
+}
+
+/* =========================================================
+   LOGIN LEFT
+========================================================= */
+
+.login-info {
+    position: relative;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: flex-start;
+
+    gap: 32px;
+
+    padding: 40px 8%;
+
+    min-height: calc(100vh - 76px);
+
+    overflow: hidden;
+
+    background: #ffffff;
+}
+
+.login-info::before {
+    content: "";
+
+    position: absolute;
+
+    width: 280px;
+    height: 280px;
+
+    border: 1px solid rgba(79,70,229,0.08);
+
+    border-radius: 50%;
+
+    top: -100px;
+    right: -100px;
+}
+
+.login-info::after {
+    content: "";
+
+    position: absolute;
+
+    width: 200px;
+    height: 200px;
+
+    border: 1px solid rgba(79,70,229,0.07);
+
+    border-radius: 50%;
+
+    bottom: -80px;
+    left: -80px;
+}
+
+/* Login brand */
+
+.login-brand {
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    position: relative;
+
+    z-index: 2;
+}
+
+.login-brand-icon {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: var(--primary);
+
+    color: white;
+
+    border-radius: 13px;
+
+    font-size: 24px;
+
+    font-weight: 700;
+
+    box-shadow:
+        0 8px 20px
+        rgba(79,70,229,0.22);
+}
+
+
+.login-brand h1 {
+    font-size: 20px;
+
+    font-weight: 800;
+
+    letter-spacing: -0.5px;
+}
+
+.login-brand h1 span {
+    color: var(--primary);
+}
+
+.login-brand p {
+    margin-top: 2px;
+
+    font-size: 11px;
+
+    color: var(--text-light);
+
+    letter-spacing: 0.3px;
+}
+
+/* Login hero */
+
+.login-hero {
+    max-width: 600px;
+
+    position: relative;
+
+    z-index: 2;
+}
+
+.login-badge {
+    display: inline-flex;
+
+    padding: 7px 12px;
+
+    border-radius: 100px;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+.login-hero h2 {
+    margin-top: 22px;
+
+    font-size: clamp(38px,4vw,58px);
+
+    line-height: 1.08;
+
+    letter-spacing: -2.5px;
+
+    font-weight: 800;
+}
+
+.login-hero h2 span {
+    display: block;
+
+    color: var(--primary);
+}
+
+.login-description {
+    max-width: 530px;
+
+    margin-top: 22px;
+
+    color: var(--text-medium);
+
+    font-size: 15px;
+
+    line-height: 1.8;
+}
+
+.login-features {
+    margin-top: 38px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 22px;
+}
+
+.login-feature {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 15px;
+}
+
+.login-feature-icon {
+    flex-shrink: 0;
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: white;
+
+    color: var(--primary);
+
+    font-size: 17px;
+
+    box-shadow:
+        0 5px 18px
+        rgba(30,41,59,0.07);
+}
+
+.login-feature h3 {
+    font-size: 13px;
+
+    font-weight: 700;
+
+    margin-bottom: 4px;
+}
+
+.login-feature p {
+    font-size: 12px;
+
+    color: var(--text-light);
+
+    line-height: 1.5;
+}
+
+.login-copyright {
+    position: relative;
+
+    z-index: 2;
+
+    font-size: 11px;
+
+    color: var(--text-light);
+}
+
+/* =========================================================
+   LOGIN RIGHT
+========================================================= */
+
+.login-section {
+    min-height: calc(100vh - 76px);
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: center;
+
+    padding: 40px;
+
+    background: white;
+}
+
+.login-card {
+    width: 100%;
+
+    max-width: 430px;
+}
+
+/* Back button */
+
+.back-home {
+    border: none;
+
+    background: transparent;
+
+    color: var(--text-medium);
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    margin-bottom: 28px;
+
+    padding: 0;
+}
+
+.back-home:hover {
+    color: var(--primary);
+}
+
+/* Login header */
+
+.login-header {
+    margin-bottom: 30px;
+}
+
+.login-header h2 {
+    font-size: 30px;
+
+    font-weight: 800;
+
+    letter-spacing: -1px;
+}
+
+.login-header p {
+    margin-top: 8px;
+
+    color: var(--text-medium);
+
+    font-size: 13px;
+}
+
+/* Form */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: var(--text-dark);
+}
+
+.label-row {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+/* Select */
+
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper select {
+    width: 100%;
+
+    height: 48px;
+
+    padding: 0 40px 0 15px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: white;
+
+    color: var(--text-dark);
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    outline: none;
+
+    appearance: none;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.select-wrapper::after {
+    content: "⌄";
+
+    position: absolute;
+
+    right: 15px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    pointer-events: none;
+
+    color: var(--text-medium);
+
+    font-size: 16px;
+}
+
+.select-wrapper select:focus {
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(79,70,229,0.09);
+}
+
+/* Inputs */
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper input {
+    width: 100%;
+
+    height: 48px;
+
+    padding: 0 50px 0 44px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: white;
+
+    color: var(--text-dark);
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    outline: none;
+
+    transition: 0.2s;
+}
+
+.input-wrapper input:focus {
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(79,70,229,0.09);
+}
+
+.input-wrapper input::placeholder {
+    color: #a5adbb;
+}
+
+.input-icon {
+    position: absolute;
+
+    left: 16px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: var(--text-light);
+
+    font-size: 13px;
+
+    pointer-events: none;
+}
+
+/* Password */
+
+.password-toggle {
+    position: absolute;
+
+    right: 12px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    border: none;
+
+    background: transparent;
+
+    color: var(--primary);
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.password-toggle:hover {
+    color: var(--primary-dark);
+}
+
+.forgot-password {
+    color: var(--primary);
+
+    text-decoration: none;
+
+    font-size: 11px;
+
+    font-weight: 600;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+/* Errors */
+
+.error-message {
+    display: block;
+
+    min-height: 15px;
+
+    margin-top: 5px;
+
+    color: var(--red);
+
+    font-size: 10px;
+}
+
+.input-error {
+    border-color: var(--red) !important;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(220,38,38,0.07) !important;
+}
+
+/* Remember */
+
+.form-options {
+    margin-top: -3px;
+
+    margin-bottom: 22px;
+}
+
+.remember {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: var(--text-medium);
+
+    font-size: 11px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+}
+
+.remember input {
+    display: none;
+}
+
+.custom-checkbox {
+    width: 15px;
+    height: 15px;
+
+    border: 1px solid #ccd1dc;
+
+    border-radius: 4px;
+
+    position: relative;
+
+    transition: 0.2s;
+
+    flex-shrink: 0;
+}
+
+.remember input:checked + .custom-checkbox {
+    background: var(--primary);
+
+    border-color: var(--primary);
+}
+
+.remember input:checked + .custom-checkbox::after {
+    content: "✓";
+
+    position: absolute;
+
+    color: white;
+
+    font-size: 10px;
+
+    left: 3px;
+
+    top: 0;
+}
+
+/* Login button */
+
+.login-button {
+    width: 100%;
+
+    height: 49px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: var(--primary);
+
+    color: white;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+.login-button:hover {
+    background: var(--primary-dark);
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(79,70,229,0.20);
+}
+
+.login-button:active {
+    transform: translateY(0);
+}
+
+.login-button:disabled {
+    opacity: 0.7;
+
+    cursor: not-allowed;
+}
+
+/* Loader */
+
+.loader {
+    display: none;
+
+    width: 17px;
+    height: 17px;
+
+    border:
+        2px solid
+        rgba(255,255,255,0.35);
+
+    border-top-color: white;
+
+    border-radius: 50%;
+
+    animation: spin 0.7s linear infinite;
+}
+
+.login-button.loading .loader {
+    display: block;
+}
+
+.login-button.loading #buttonText,
+.login-button.loading #signupButtonText {
+    display: none;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Login error */
+
+.login-error {
+    display: none;
+
+    margin-top: 15px;
+
+    padding: 11px 13px;
+
+    border-radius: 8px;
+
+    background: #fef2f2;
+
+    color: var(--red);
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+.login-success {
+    display: none;
+
+    margin-top: 15px;
+
+    padding: 11px 13px;
+
+    border-radius: 8px;
+
+    background: var(--green-light);
+
+    color: var(--green);
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+/* Demo */
+
+.demo-note {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    margin-top: 25px;
+
+    padding: 13px;
+
+    border-radius: 9px;
+
+    background: #f8f9fc;
+
+    border: 1px solid #edf0f5;
+}
+
+.demo-icon {
+    width: 18px;
+    height: 18px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+.demo-note strong {
+    display: block;
+
+    margin-bottom: 3px;
+
+    font-size: 10px;
+}
+
+.demo-note p {
+    color: var(--text-light);
+
+    font-size: 10px;
+
+    line-height: 1.5;
+}
+
+.login-footer {
+    margin-top: 24px;
+
+    text-align: center;
+}
+
+.login-footer p {
+    color: #a0a7b5;
+
+    font-size: 9px;
+
+    line-height: 1.6;
+}
+
+.switch-auth {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-medium);
+}
+
+.switch-auth a {
+    color: var(--primary);
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.switch-auth a:hover {
+    text-decoration: underline;
+}
+
+.terms-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: -3px;
+    margin-bottom: 22px;
+}
+
+.terms-row label {
+    font-size: 11px;
+    color: var(--text-medium);
+    line-height: 1.5;
+    cursor: pointer;
+}
+
+.terms-row a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.terms-row a:hover {
+    text-decoration: underline;
+}
+
+.password-hint {
+    margin-top: 6px;
+    font-size: 10px;
+    color: var(--text-light);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 950px) {
+
+    .nav-links {
+        display: none;
+    }
+
+    .menu-button {
+        display: block;
+    }
+
+    .hero-container {
+        grid-template-columns: 1fr;
+
+        gap: 45px;
+
+        padding: 70px 0;
+    }
+
+    .hero {
+        min-height: auto;
+    }
+
+    .hero-dashboard {
+        max-width: 600px;
+
+        width: 100%;
+
+        margin: auto;
+    }
+
+    .about-grid,
+    .xai-container {
+        grid-template-columns: 1fr;
+
+        gap: 45px;
+    }
+
+    .features-grid,
+    .risk-grid,
+    .guidance-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .factor-grid {
+        grid-template-columns: repeat(3,1fr);
+    }
+
+    .steps {
+        grid-template-columns: 1fr 1fr;
+
+        row-gap: 40px;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .login-page-container {
+        grid-template-columns: 1fr;
+    }
+
+    .login-info {
+        display: none;
+    }
+
+    .login-section {
+        min-height: calc(100vh - 76px);
+
+        padding: 30px 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .navbar {
+        height: 68px;
+    }
+
+    .logo-icon {
+        width: 37px;
+        height: 37px;
+    }
+
+    .logo-text {
+        font-size: 17px;
+    }
+
+    .hero {
+        padding-top: 68px;
+    }
+
+    .hero h1 {
+        font-size: 43px;
+
+        letter-spacing: -2px;
+    }
+
+    .hero-description {
+        font-size: 13px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+    }
+
+    .primary-button,
+    .secondary-button {
+        width: 100%;
+    }
+
+    .stats-container {
+        grid-template-columns: 1fr 1fr;
+
+        row-gap: 20px;
+    }
+
+    .stat:nth-child(2) {
+        border-right: none;
+    }
+
+    .features-grid,
+    .risk-grid,
+    .guidance-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .factor-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .steps {
+        grid-template-columns: 1fr;
+    }
+
+    .section-header h2 {
+        font-size: 28px;
+    }
+
+    .about-visual {
+        min-height: 300px;
+    }
+
+    .visual-main {
+        width: 88%;
+    }
+
+    .visual-small {
+        width: 55%;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-box {
+        padding: 45px 20px;
+    }
+
+    .cta-box h2 {
+        font-size: 26px;
+    }
+
+    .login-section {
+        padding: 25px 18px;
+    }
+
+    .login-header h2 {
+        font-size: 26px;
+    }
+
+    .input-wrapper input,
+    .select-wrapper select {
+        height: 46px;
+    }
+
+    .login-button {
+        height: 47px;
+    }
+}
+
+
+/* =========================================================
+   LOGIN / SIGNUP PAGE: WHITE BACKGROUND + GENTLE VERTICAL SPACING
+   ========================================================= */
+.login-page-container {
+    background: #ffffff;
+}
+
+.login-info,
+.login-section {
+    background: #ffffff;
+}
+
+#loginPage,
+#signupPage {
+    padding-top: 76px;
+}
+
+.login-brand-icon {
+    width: 58px;
+    height: 58px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.14),
+                0 2px 8px rgba(79, 70, 229, 0.08);
+    border: 1px solid #eef0f6;
+}
+
+.login-brand-icon .eduguide-logo-svg {
+    width: 48px;
+    height: 48px;
+    display: block;
+}
+
+@media (max-width: 900px) {
+    .login-info,
+    .login-section {
+        min-height: auto;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<nav class="navbar">
+
+    <div class="nav-container">
+
+        <a href="#" class="logo" onclick="showLanding(); return false;">
+
+            <div class="logo-icon">
+                <svg class="eduguide-logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="EduGuide AI logo">
+    <path d="M16 61 C28 55 38 57 50 66 C62 57 72 55 84 61 L84 76 C71 69 61 70 50 79 C39 70 29 69 16 76 Z" fill="#18296b"/>
+    <path d="M18 61 C29 56 39 59 50 67 L50 77 C39 69 29 67 18 72 Z" fill="#3346a3"/>
+    <path d="M50 67 C61 59 71 56 82 61 L82 72 C71 67 61 69 50 77 Z" fill="#4f46e5"/>
+    <rect x="42" y="39" width="7" height="18" rx="2" fill="#38bdf8"/>
+    <rect x="51" y="31" width="7" height="26" rx="2" fill="#4f46e5"/>
+    <rect x="60" y="23" width="7" height="34" rx="2" fill="#6366f1"/>
+    <path d="M27 25 L57 13 L84 25 L57 38 Z" fill="#111b48"/>
+    <path d="M38 30 L38 39 C43 44 52 45 59 40 L59 33 L57 34 Z" fill="#263b91"/>
+    <path d="M83 25 L83 39" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+</svg>
+            </div>
+
+            <div>
+                <div class="logo-text">
+                    EduGuide <span>AI</span>
+                </div>
+
+                <span class="logo-subtitle">
+                    Smart Academic Guidance
+                </span>
+            </div>
+
+        </a>
+
+
+        <div class="nav-links">
+
+            <a href="#home">
+                Home
+            </a>
+
+            <a href="#about">
+                About
+            </a>
+
+            <a href="#features">
+                Features
+            </a>
+
+            <a href="#how-it-works">
+                How It Works
+            </a>
+
+            <div class="nav-actions">
+
+                <button
+                    class="nav-signup"
+                    onclick="showSignup()"
+                >
+                    Sign Up
+                </button>
+
+                <button
+                    class="nav-login"
+                    onclick="showLogin()"
+                >
+                    Login
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="menu-button"
+            onclick="toggleMobileMenu()"
+        >
+            ☰
+        </button>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================================================
+     LANDING PAGE
+========================================================= -->
+
+<main id="landingPage">
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero" id="home">
+
+    <div class="hero-container">
+
+
+        <div class="hero-content">
+
+            <span class="hero-badge">
+                AI-POWERED EDUCATION ANALYTICS
+            </span>
+
+
+            <h1>
+
+                Understand risk.
+
+                <span>
+                    Guide success.
+                </span>
+
+            </h1>
+
+
+            <p class="hero-description">
+
+                EduGuide AI helps educators identify students
+                who may be academically at risk, understand
+                the factors influencing their performance,
+                and provide personalized learning guidance
+                before challenges become bigger problems.
+
+            </p>
+
+
+            <div class="hero-buttons">
+
+                <button
+                    class="primary-button"
+                    onclick="showSignup()"
+                >
+                    Get Started →
+                </button>
+
+
+                <button
+                    class="secondary-button"
+                    onclick="document.getElementById('how-it-works').scrollIntoView()"
+                >
+                    Explore How It Works
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Dashboard preview -->
+
+        <div class="hero-dashboard">
+
+            <div class="dashboard-card">
+
+                <div class="dashboard-top">
+
+                    <div>
+
+                        <div class="dashboard-title">
+                            Academic Risk Overview
+                        </div>
+
+                        <div class="dashboard-small">
+                            Student performance analytics
+                        </div>
+
+                    </div>
+
+                    <div class="dashboard-small">
+                        2026
+                    </div>
+
+                </div>
+
+
+                <div class="risk-summary">
+
+                    <div class="risk-box">
+
+                        <strong class="low">
+                            68
+                        </strong>
+
+                        <span>
+                            Low Risk
+                        </span>
+
+                    </div>
+
+
+                    <div class="risk-box">
+
+                        <strong class="medium">
+                            21
+                        </strong>
+
+                        <span>
+                            Medium Risk
+                        </span>
+
+                    </div>
+
+
+                    <div class="risk-box">
+
+                        <strong class="high">
+                            11
+                        </strong>
+
+                        <span>
+                            High Risk
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="fake-chart">
+
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+
+                </div>
+
+
+                <div class="ai-insight">
+
+                    <div class="ai-icon">
+                        ✦
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            AI Insight
+                        </strong>
+
+                        <p>
+                            Assignment completion is currently
+                            the strongest contributing factor
+                            for this student's risk prediction.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     STATS
+========================================================= -->
+
+<section class="stats">
+
+    <div class="stats-container">
+
+        <div class="stat">
+
+            <strong>
+                5+
+            </strong>
+
+            <span>
+                Student Factors
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <strong>
+                3
+            </strong>
+
+            <span>
+                Risk Levels
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <strong>
+                AI
+            </strong>
+
+            <span>
+                Explainable Predictions
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <strong>
+                24/7
+            </strong>
+
+            <span>
+                Academic Insights
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     ABOUT
+========================================================= -->
+
+<section class="about" id="about">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <span class="section-label">
+                ABOUT EDUGUIDE AI
+            </span>
+
+            <h2>
+                Turning student data into meaningful guidance
+            </h2>
+
+            <p>
+                EduGuide AI combines machine learning and
+                Explainable AI to help teachers understand
+                student academic performance.
+            </p>
+
+        </div>
+
+
+        <div class="about-grid">
+
+
+            <div class="about-text">
+
+                <h3>
+                    Early identification can make a difference.
+                </h3>
+
+
+                <p>
+                    Traditional academic monitoring often focuses
+                    on final marks after a student has already
+                    experienced difficulties. EduGuide AI takes
+                    a proactive approach by analyzing multiple
+                    academic and behavioral indicators.
+                </p>
+
+
+                <div class="about-points">
+
+                    <div class="about-point">
+
+                        <div class="point-check">
+                            ✓
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Identify academic risk
+                            </strong>
+
+                            <p>
+                                Detect students who may need
+                                additional academic support.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="about-point">
+
+                        <div class="point-check">
+                            ✓
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Understand the prediction
+                            </strong>
+
+                            <p>
+                                Show the factors contributing
+                                to a student's risk level.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="about-point">
+
+                        <div class="point-check">
+                            ✓
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Provide personalized guidance
+                            </strong>
+
+                            <p>
+                                Suggest meaningful actions based
+                                on individual student needs.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="about-visual">
+
+                <div class="visual-card visual-main">
+
+                    <div class="visual-label">
+                        STUDENT PERFORMANCE
+                    </div>
+
+                    <div class="visual-number">
+                        72%
+                    </div>
+
+                    <div class="progress">
+
+                        <div class="progress-fill"></div>
+
+                    </div>
+
+                    <div class="visual-label" style="margin-top:15px;">
+                        Overall academic performance
+                    </div>
+
+                </div>
+
+
+                <div class="visual-card visual-small">
+
+                    <div class="visual-label">
+                        CURRENT RISK
+                    </div>
+
+                    <div class="visual-number" style="color:#ea580c;">
+                        MEDIUM
+                    </div>
+
+                    <div class="visual-label">
+                        Requires monitoring
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FEATURES
+========================================================= -->
+
+<section class="features-section" id="features">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <span class="section-label">
+                CORE FEATURES
+            </span>
+
+            <h2>
+                Everything teachers need to understand students
+            </h2>
+
+            <p>
+                EduGuide AI brings academic prediction,
+                explainability and personalized guidance
+                into one platform.
+            </p>
+
+        </div>
+
+
+        <div class="features-grid">
+
+
+            <div class="feature-card">
+
+                <div class="feature-card-icon">
+                    ◈
+                </div>
+
+                <h3>
+                    Academic Risk Prediction
+                </h3>
+
+                <p>
+                    Predict whether a student is at Low,
+                    Medium or High academic risk using
+                    supervised machine learning.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-card-icon">
+                    ◎
+                </div>
+
+                <h3>
+                    Explainable AI
+                </h3>
+
+                <p>
+                    Teachers can see the important factors
+                    influencing each prediction instead of
+                    receiving only a risk label.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-card-icon">
+                    ✦
+                </div>
+
+                <h3>
+                    Personalized Suggestions
+                </h3>
+
+                <p>
+                    Generate learning recommendations based
+                    on the student's individual academic
+                    challenges.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-card-icon">
+                    ◉
+                </div>
+
+                <h3>
+                    Student Monitoring
+                </h3>
+
+                <p>
+                    Monitor important performance indicators
+                    and identify changes in student behavior
+                    over time.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-card-icon">
+                    ▣
+                </div>
+
+                <h3>
+                    Performance Analytics
+                </h3>
+
+                <p>
+                    View academic patterns through simple
+                    dashboards and visual analytics.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-card-icon">
+                    ✓
+                </div>
+
+                <h3>
+                    Early Intervention
+                </h3>
+
+                <p>
+                    Help educators take action earlier instead
+                    of waiting until final examination results.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     RISK LEVELS
+========================================================= -->
+
+<section class="risk-section">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <span class="section-label">
+                RISK CLASSIFICATION
+            </span>
+
+            <h2>
+                Simple risk levels. Meaningful action.
+            </h2>
+
+            <p>
+                The prediction system categorizes students
+                into three understandable academic risk levels.
+            </p>
+
+        </div>
+
+
+        <div class="risk-grid">
+
+
+            <div class="risk-card low-card">
+
+                <div class="risk-indicator low-indicator"></div>
+
+                <h3>
+                    Low Risk
+                </h3>
+
+                <p>
+                    The student is generally performing well
+                    and shows healthy academic indicators.
+                </p>
+
+                <ul>
+
+                    <li>
+                        Consistent attendance
+                    </li>
+
+                    <li>
+                        Good assignment completion
+                    </li>
+
+                    <li>
+                        Stable academic performance
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="risk-card medium-card">
+
+                <div class="risk-indicator medium-indicator"></div>
+
+                <h3>
+                    Medium Risk
+                </h3>
+
+                <p>
+                    Some academic indicators suggest that
+                    the student may require additional monitoring.
+                </p>
+
+                <ul>
+
+                    <li>
+                        Irregular study patterns
+                    </li>
+
+                    <li>
+                        Moderate assignment completion
+                    </li>
+
+                    <li>
+                        Declining performance
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="risk-card high-card">
+
+                <div class="risk-indicator high-indicator"></div>
+
+                <h3>
+                    High Risk
+                </h3>
+
+                <p>
+                    Multiple indicators suggest that the
+                    student may need immediate academic support.
+                </p>
+
+                <ul>
+
+                    <li>
+                        Low attendance
+                    </li>
+
+                    <li>
+                        Poor assignment completion
+                    </li>
+
+                    <li>
+                        Low academic performance
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     INPUT FACTORS
+========================================================= -->
+
+<section class="factors">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <span class="section-label">
+                STUDENT DATA
+            </span>
+
+            <h2>
+                What does EduGuide AI analyze?
+            </h2>
+
+            <p>
+                Multiple indicators are considered together
+                to produce a more informative academic risk
+                prediction.
+            </p>
+
+        </div>
+
+
+        <div class="factor-grid">
+
+
+            <div class="factor">
+
+                <div class="factor-icon">
+                    ◷
+                </div>
+
+                <h3>
+                    Attendance
+                </h3>
+
+                <p>
+                    Attendance patterns and consistency.
+                </p>
+
+            </div>
+
+
+            <div class="factor">
+
+                <div class="factor-icon">
+                    ★
+                </div>
+
+                <h3>
+                    Grades
+                </h3>
+
+                <p>
+                    Academic marks and performance.
+                </p>
+
+            </div>
+
+
+            <div class="factor">
+
+                <div class="factor-icon">
+                    ✓
+                </div>
+
+                <h3>
+                    Assignments
+                </h3>
+
+                <p>
+                    Completion and submission patterns.
+                </p>
+
+            </div>
+
+
+            <div class="factor">
+
+                <div class="factor-icon">
+                    ◴
+                </div>
+
+                <h3>
+                    Study Time
+                </h3>
+
+                <p>
+                    Estimated time spent studying.
+                </p>
+
+            </div>
+
+
+            <div class="factor">
+
+                <div class="factor-icon">
+                    ◎
+                </div>
+
+                <h3>
+                    Participation
+                </h3>
+
+                <p>
+                    Classroom engagement indicators.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     HOW IT WORKS
+========================================================= -->
+
+<section class="how-it-works" id="how-it-works">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <span class="section-label">
+                WORKFLOW
+            </span>
+
+            <h2>
+                How EduGuide AI works
+            </h2>
+
+            <p>
+                From student data to actionable academic guidance
+                in four simple stages.
+            </p>
+
+        </div>
+
+
+        <div class="steps">
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    01
+                </div>
+
+                <h3>
+                    Collect Data
+                </h3>
+
+                <p>
+                    Academic and engagement information
+                    is provided for each student.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    02
+                </div>
+
+                <h3>
+                    Predict Risk
+                </h3>
+
+                <p>
+                    The supervised machine learning model
+                    evaluates the student's indicators.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    03
+                </div>
+
+                <h3>
+                    Explain
+                </h3>
+
+                <p>
+                    Explainable AI identifies the factors
+                    contributing to the prediction.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    04
+                </div>
+
+                <h3>
+                    Guide
+                </h3>
+
+                <p>
+                    Personalized learning suggestions
+                    help educators support students.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     EXPLAINABLE AI
+========================================================= -->
+
+<section class="xai">
+
+    <div class="container">
+
+        <div class="xai-container">
+
+
+            <div class="xai-visual">
+
+                <div class="xai-title">
+                    Why is this student at risk?
+                </div>
+
+
+                <div class="factor-row">
+
+                    <div class="factor-row-top">
+
+                        <span>
+                            Attendance
+                        </span>
+
+                        <strong>
+                            84%
+                        </strong>
+
+                    </div>
+
+                    <div class="factor-bar">
+                        <span></span>
+                    </div>
+
+                </div>
+
+
+                <div class="factor-row">
+
+                    <div class="factor-row-top">
+
+                        <span>
+                            Assignment Completion
+                        </span>
+
+                        <strong>
+                            68%
+                        </strong>
+
+                    </div>
+
+                    <div class="factor-bar">
+                        <span></span>
+                    </div>
+
+                </div>
+
+
+                <div class="factor-row">
+
+                    <div class="factor-row-top">
+
+                        <span>
+                            Grades
+                        </span>
+
+                        <strong>
+                            51%
+                        </strong>
+
+                    </div>
+
+                    <div class="factor-bar">
+                        <span></span>
+                    </div>
+
+                </div>
+
+
+                <div class="factor-row">
+
+                    <div class="factor-row-top">
+
+                        <span>
+                            Study Time
+                        </span>
+
+                        <strong>
+                            38%
+                        </strong>
+
+                    </div>
+
+                    <div class="factor-bar">
+                        <span></span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="xai-text">
+
+                <span class="section-label">
+                    EXPLAINABLE AI
+                </span>
+
+                <h2>
+                    Don't just predict the risk. Explain it.
+                </h2>
+
+                <p>
+                    EduGuide AI is designed to make machine
+                    learning predictions understandable to
+                    educators. Instead of showing only
+                    "High Risk", the system explains which
+                    student factors contributed to the result.
+                </p>
+
+
+                <div class="xai-list">
+
+                    <div class="xai-list-item">
+
+                        <span>✓</span>
+
+                        Understand contributing factors
+
+                    </div>
+
+
+                    <div class="xai-list-item">
+
+                        <span>✓</span>
+
+                        Improve teacher decision-making
+
+                    </div>
+
+
+                    <div class="xai-list-item">
+
+                        <span>✓</span>
+
+                        Build trust in AI predictions
+
+                    </div>
+
+
+                    <div class="xai-list-item">
+
+                        <span>✓</span>
+
+                        Support targeted intervention
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     PERSONALIZED GUIDANCE
+========================================================= -->
+
+<section class="guidance">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <span class="section-label">
+                PERSONALIZED LEARNING
+            </span>
+
+            <h2>
+                From prediction to action
+            </h2>
+
+            <p>
+                EduGuide AI can transform identified challenges
+                into practical learning suggestions.
+            </p>
+
+        </div>
+
+
+        <div class="guidance-grid">
+
+
+            <div class="guidance-card">
+
+                <h3>
+                    📚 Study Planning
+                </h3>
+
+                <p>
+                    Suggest structured study schedules when
+                    insufficient study time is identified.
+                </p>
+
+            </div>
+
+
+            <div class="guidance-card">
+
+                <h3>
+                    📝 Assignment Support
+                </h3>
+
+                <p>
+                    Encourage assignment completion and help
+                    educators identify students requiring support.
+                </p>
+
+            </div>
+
+
+            <div class="guidance-card">
+
+                <h3>
+                    🎯 Targeted Improvement
+                </h3>
+
+                <p>
+                    Recommend focused interventions based on
+                    the factors influencing the prediction.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     CTA
+========================================================= -->
+
+<section class="cta">
+
+    <div class="container">
+
+        <div class="cta-box">
+
+            <h2>
+                Make academic support more proactive.
+            </h2>
+
+            <p>
+                Start exploring EduGuide AI and discover how
+                machine learning, Explainable AI and personalized
+                guidance can work together for better student support.
+            </p>
+
+            <button
+                class="cta-button"
+                onclick="showSignup()"
+            >
+                Enter EduGuide AI →
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="footer">
+
+    <div class="container">
+
+        <div class="footer-grid">
+
+
+            <div class="footer-brand">
+
+                <div class="logo">
+
+                    <div class="logo-icon">
+                        <svg class="eduguide-logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="EduGuide AI logo">
+    <path d="M16 61 C28 55 38 57 50 66 C62 57 72 55 84 61 L84 76 C71 69 61 70 50 79 C39 70 29 69 16 76 Z" fill="#18296b"/>
+    <path d="M18 61 C29 56 39 59 50 67 L50 77 C39 69 29 67 18 72 Z" fill="#3346a3"/>
+    <path d="M50 67 C61 59 71 56 82 61 L82 72 C71 67 61 69 50 77 Z" fill="#4f46e5"/>
+    <rect x="42" y="39" width="7" height="18" rx="2" fill="#38bdf8"/>
+    <rect x="51" y="31" width="7" height="26" rx="2" fill="#4f46e5"/>
+    <rect x="60" y="23" width="7" height="34" rx="2" fill="#6366f1"/>
+    <path d="M27 25 L57 13 L84 25 L57 38 Z" fill="#111b48"/>
+    <path d="M38 30 L38 39 C43 44 52 45 59 40 L59 33 L57 34 Z" fill="#263b91"/>
+    <path d="M83 25 L83 39" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+</svg>
+                    </div>
+
+                    <div>
+
+                        <div class="logo-text" style="color:white;">
+                            EduGuide <span>AI</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <p>
+                    An AI-powered academic analytics platform
+                    designed to help educators identify risk,
+                    understand student challenges and provide
+                    personalized learning guidance.
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Platform
+                </h3>
+
+                <a href="#features">
+                    Features
+                </a>
+
+                <a href="#how-it-works">
+                    How It Works
+                </a>
+
+                <a href="#about">
+                    About
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Access
+                </h3>
+
+                <a href="#" onclick="showLogin(); return false;">
+                    Teacher Login
+                </a>
+
+                <a href="#" onclick="showLogin(); return false;">
+                    Student Login
+                </a>
+
+                <a href="#" onclick="showSignup(); return false;">
+                    Create Account
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 EduGuide AI · Academic Analytics Platform
+
+        </div>
+
+    </div>
+
+</footer>
+
+</main>
+
+
+<!-- =========================================================
+     LOGIN PAGE
+========================================================= -->
+
+<section id="loginPage">
+
+
+    <div class="login-page-container">
+
+
+        <!-- =================================================
+             LOGIN LEFT
+        ================================================= -->
+
+        <section class="login-info">
+
+
+            <div class="login-brand">
+
+                <div class="login-brand-icon">
+                    <svg class="eduguide-logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="EduGuide AI logo">
+                        <path d="M16 61 C28 55 38 57 50 66 C62 57 72 55 84 61 L84 76 C71 69 61 70 50 79 C39 70 29 69 16 76 Z" fill="#18296b"/>
+                        <path d="M18 61 C29 56 39 59 50 67 L50 77 C39 69 29 67 18 72 Z" fill="#3346a3"/>
+                        <path d="M50 67 C61 59 71 56 82 61 L82 72 C71 67 61 69 50 77 Z" fill="#4f46e5"/>
+                        <rect x="42" y="39" width="7" height="18" rx="2" fill="#38bdf8"/>
+                        <rect x="51" y="31" width="7" height="26" rx="2" fill="#4f46e5"/>
+                        <rect x="60" y="23" width="7" height="34" rx="2" fill="#6366f1"/>
+                        <path d="M27 25 L57 13 L84 25 L57 38 Z" fill="#111b48"/>
+                        <path d="M38 30 L38 39 C43 44 52 45 59 40 L59 33 L57 34 Z" fill="#263b91"/>
+                        <path d="M83 25 L83 39" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                </div>
+
+                <div>
+
+                    <h1>
+                        EduGuide <span>AI</span>
+                    </h1>
+
+                    <p>
+                        Smart Academic Guidance
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="login-hero">
+
+                <span class="login-badge">
+                    AI-POWERED EDUCATION
+                </span>
+
+
+                <h2>
+
+                    Empowering students
+
+                    <span>
+                        to learn better.
+                    </span>
+
+                </h2>
+
+
+                <p class="login-description">
+
+                    EduGuide AI helps educators identify
+                    students at academic risk, understand
+                    the factors behind their performance,
+                    and provide personalized learning
+                    guidance.
+
+                </p>
+
+
+                <div class="login-features">
+
+
+                    <div class="login-feature">
+
+                        <div class="login-feature-icon">
+                            ◈
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Predict Academic Risk
+                            </h3>
+
+                            <p>
+                                Identify Low, Medium and High
+                                risk students.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="login-feature">
+
+                        <div class="login-feature-icon">
+                            ◎
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Explainable AI
+                            </h3>
+
+                            <p>
+                                Understand what factors
+                                influence predictions.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="login-feature">
+
+                        <div class="login-feature-icon">
+                            ✦
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Personalized Guidance
+                            </h3>
+
+                            <p>
+                                Provide meaningful suggestions
+                                for improvement.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <div class="login-copyright">
+
+                © 2026 EduGuide AI.
+                Academic Analytics Platform.
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             LOGIN RIGHT
+        ================================================= -->
+
+        <section class="login-section">
+
+
+            <div class="login-card">
+
+
+                <button
+                    class="back-home"
+                    onclick="showLanding()"
+                >
+                    ← Back to EduGuide AI
+                </button>
+
+
+                <div class="login-header">
+
+                    <h2>
+                        Welcome back
+                    </h2>
+
+                    <p>
+                        Sign in to continue to your dashboard.
+                    </p>
+
+                </div>
+
+
+                <!-- =================================================
+                     LOGIN FORM
+                ================================================= -->
+
+                <form
+                    id="loginForm"
+                    novalidate
+                >
+
+
+                    <!-- ROLE -->
+
+                    <div class="form-group">
+
+                        <label for="role">
+                            Login as
+                        </label>
+
+
+                        <div class="select-wrapper">
+
+                            <select
+                                id="role"
+                                name="role"
+                                required
+                            >
+
+                                <option
+                                    value=""
+                                    disabled
+                                    selected
+                                >
+                                    Select your role
+                                </option>
+
+                                <option value="teacher">
+                                    Teacher
+                                </option>
+
+                                <option value="student">
+                                    Student
+                                </option>
+
+                                <option value="admin">
+                                    Admin
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <small
+                            class="error-message"
+                            id="roleError"
+                        ></small>
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            Email Address
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                @
+                            </span>
+
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="Enter your email"
+                                autocomplete="email"
+                                required
+                            >
+
+                        </div>
+
+
+                        <small
+                            class="error-message"
+                            id="emailError"
+                        ></small>
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="form-group">
+
+
+                        <div class="label-row">
+
+                            <label for="password">
+                                Password
+                            </label>
+
+
+                            <a
+                                href="#"
+                                class="forgot-password"
+                                id="forgotPassword"
+                            >
+                                Forgot password?
+                            </a>
+
+                        </div>
+
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                •••
+                            </span>
+
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            >
+
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="togglePassword"
+                            >
+                                Show
+                            </button>
+
+                        </div>
+
+
+                        <small
+                            class="error-message"
+                            id="passwordError"
+                        ></small>
+
+                    </div>
+
+
+                    <!-- REMEMBER -->
+
+                    <div class="form-options">
+
+                        <label class="remember">
+
+                            <input
+                                type="checkbox"
+                                id="remember"
+                                name="remember"
+                            >
+
+                            <span class="custom-checkbox"></span>
+
+                            <span>
+                                Remember me
+                            </span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- LOGIN -->
+
+                    <button
+                        type="submit"
+                        class="login-button"
+                        id="loginButton"
+                    >
+
+                        <span id="buttonText">
+                            Sign In
+                        </span>
+
+                        <span
+                            class="loader"
+                            id="loader"
+                        ></span>
+
+                    </button>
+
+
+                    <!-- ERROR -->
+
+                    <div
+                        class="login-error"
+                        id="loginError"
+                    ></div>
+
+
+                </form>
+
+
+                <div class="switch-auth">
+                    Don't have an account?
+                    <a onclick="showSignup()">Sign up</a>
+                </div>
+
+
+                <!-- INFORMATION -->
+
+                <div class="demo-note">
+
+                    <div class="demo-icon">
+                        i
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            EduGuide AI
+                        </strong>
+
+                        <p>
+                            Secure access for teachers
+                            and students.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="login-footer">
+
+                    <p>
+                        Academic Risk Prediction
+                        &nbsp;•&nbsp;
+                        Explainable AI
+                        &nbsp;•&nbsp;
+                        Personalized Learning
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     SIGNUP PAGE (NEW USERS)
+========================================================= -->
+
+<section id="signupPage">
+
+
+    <div class="login-page-container">
+
+
+        <!-- =================================================
+             SIGNUP LEFT
+        ================================================= -->
+
+        <section class="login-info">
+
+
+            <div class="login-brand">
+
+                <div class="login-brand-icon">
+                    <svg class="eduguide-logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="EduGuide AI logo">
+                        <path d="M16 61 C28 55 38 57 50 66 C62 57 72 55 84 61 L84 76 C71 69 61 70 50 79 C39 70 29 69 16 76 Z" fill="#18296b"/>
+                        <path d="M18 61 C29 56 39 59 50 67 L50 77 C39 69 29 67 18 72 Z" fill="#3346a3"/>
+                        <path d="M50 67 C61 59 71 56 82 61 L82 72 C71 67 61 69 50 77 Z" fill="#4f46e5"/>
+                        <rect x="42" y="39" width="7" height="18" rx="2" fill="#38bdf8"/>
+                        <rect x="51" y="31" width="7" height="26" rx="2" fill="#4f46e5"/>
+                        <rect x="60" y="23" width="7" height="34" rx="2" fill="#6366f1"/>
+                        <path d="M27 25 L57 13 L84 25 L57 38 Z" fill="#111b48"/>
+                        <path d="M38 30 L38 39 C43 44 52 45 59 40 L59 33 L57 34 Z" fill="#263b91"/>
+                        <path d="M83 25 L83 39" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                </div>
+
+                <div>
+
+                    <h1>
+                        EduGuide <span>AI</span>
+                    </h1>
+
+                    <p>
+                        Smart Academic Guidance
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="login-hero">
+
+                <span class="login-badge">
+                    JOIN EDUGUIDE AI
+                </span>
+
+
+                <h2>
+
+                    Start guiding
+
+                    <span>
+                        student success today.
+                    </span>
+
+                </h2>
+
+
+                <p class="login-description">
+
+                    Create your free account to start
+                    predicting academic risk, understanding
+                    the factors behind it, and delivering
+                    personalized learning guidance.
+
+                </p>
+
+
+                <div class="login-features">
+
+
+                    <div class="login-feature">
+
+                        <div class="login-feature-icon">
+                            ◈
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Quick Setup
+                            </h3>
+
+                            <p>
+                                Create an account in less
+                                than a minute.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="login-feature">
+
+                        <div class="login-feature-icon">
+                            ◎
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                For Teachers & Students
+                            </h3>
+
+                            <p>
+                                Choose the role that fits
+                                you best.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="login-feature">
+
+                        <div class="login-feature-icon">
+                            ✦
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Free to Get Started
+                            </h3>
+
+                            <p>
+                                No credit card required
+                                to sign up.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <div class="login-copyright">
+
+                © 2026 EduGuide AI.
+                Academic Analytics Platform.
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SIGNUP RIGHT
+        ================================================= -->
+
+        <section class="login-section">
+
+
+            <div class="login-card">
+
+
+                <button
+                    class="back-home"
+                    onclick="showLanding()"
+                >
+                    ← Back to EduGuide AI
+                </button>
+
+
+                <div class="login-header">
+
+                    <h2>
+                        Create your account
+                    </h2>
+
+                    <p>
+                        Sign up to start using EduGuide AI.
+                    </p>
+
+                </div>
+
+
+                <!-- =================================================
+                     SIGNUP FORM
+                ================================================= -->
+
+                <form
+                    id="signupForm"
+                    novalidate
+                >
+
+
+                    <!-- NAME -->
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="firstName">
+                                First Name
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    👤
+                                </span>
+
+                                <input
+                                    type="text"
+                                    id="firstName"
+                                    name="firstName"
+                                    placeholder="First name"
+                                    autocomplete="given-name"
+                                    required
+                                >
+
+                            </div>
+
+                            <small
+                                class="error-message"
+                                id="firstNameError"
+                            ></small>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="lastName">
+                                Last Name
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    👤
+                                </span>
+
+                                <input
+                                    type="text"
+                                    id="lastName"
+                                    name="lastName"
+                                    placeholder="Last name"
+                                    autocomplete="family-name"
+                                    required
+                                >
+
+                            </div>
+
+                            <small
+                                class="error-message"
+                                id="lastNameError"
+                            ></small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ROLE -->
+
+                    <div class="form-group">
+
+                        <label for="signupRole">
+                            I am a
+                        </label>
+
+
+                        <div class="select-wrapper">
+
+                            <select
+                                id="signupRole"
+                                name="signupRole"
+                                required
+                            >
+
+                                <option
+                                    value=""
+                                    disabled
+                                    selected
+                                >
+                                    Select your role
+                                </option>
+
+                                <option value="teacher">
+                                    Teacher
+                                </option>
+
+                                <option value="student">
+                                    Student
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <small
+                            class="error-message"
+                            id="signupRoleError"
+                        ></small>
+
+                    </div>
+
+
+                    <!-- STUDENT-ONLY FIELDS (shown only when role = student) -->
+
+                    <div class="form-row" id="studentOnlyFields" style="display:none;">
+
+                        <div class="form-group">
+
+                            <label for="studentIdField">
+                                Student ID
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    #
+                                </span>
+
+                                <input
+                                    type="text"
+                                    id="studentIdField"
+                                    name="studentIdField"
+                                    placeholder="e.g. 21CSE045"
+                                >
+
+                            </div>
+
+                            <small
+                                class="error-message"
+                                id="studentIdFieldError"
+                            ></small>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="courseField">
+                                Course
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    🎓
+                                </span>
+
+                                <input
+                                    type="text"
+                                    id="courseField"
+                                    name="courseField"
+                                    placeholder="e.g. B.Tech CSE"
+                                >
+
+                            </div>
+
+                            <small
+                                class="error-message"
+                                id="courseFieldError"
+                            ></small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label for="signupEmail">
+                            Email Address
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                @
+                            </span>
+
+
+                            <input
+                                type="email"
+                                id="signupEmail"
+                                name="signupEmail"
+                                placeholder="Enter your email"
+                                autocomplete="email"
+                                required
+                            >
+
+                        </div>
+
+
+                        <small
+                            class="error-message"
+                            id="signupEmailError"
+                        ></small>
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="signupPassword">
+                            Password
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                •••
+                            </span>
+
+
+                            <input
+                                type="password"
+                                id="signupPassword"
+                                name="signupPassword"
+                                placeholder="Create a password"
+                                autocomplete="new-password"
+                                required
+                            >
+
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="toggleSignupPassword"
+                            >
+                                Show
+                            </button>
+
+                        </div>
+
+                        <div class="password-hint">
+                            Use at least 6 characters.
+                        </div>
+
+
+                        <small
+                            class="error-message"
+                            id="signupPasswordError"
+                        ></small>
+
+                    </div>
+
+
+                    <!-- CONFIRM PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="confirmPassword">
+                            Confirm Password
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                •••
+                            </span>
+
+
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                placeholder="Re-enter your password"
+                                autocomplete="new-password"
+                                required
+                            >
+
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="toggleConfirmPassword"
+                            >
+                                Show
+                            </button>
+
+                        </div>
+
+
+                        <small
+                            class="error-message"
+                            id="confirmPasswordError"
+                        ></small>
+
+                    </div>
+
+
+                    <!-- TERMS -->
+
+                    <div class="terms-row">
+
+                        <input
+                            type="checkbox"
+                            id="agreeTerms"
+                            name="agreeTerms"
+                            style="margin-top:3px;"
+                        >
+
+                        <label for="agreeTerms">
+                            I agree to the
+                            <a href="#" onclick="return false;">Terms of Service</a>
+                            and
+                            <a href="#" onclick="return false;">Privacy Policy</a>.
+                        </label>
+
+                    </div>
+
+                    <small
+                        class="error-message"
+                        id="agreeTermsError"
+                        style="margin-top:-15px; margin-bottom:10px; display:block;"
+                    ></small>
+
+
+                    <!-- SIGN UP -->
+
+                    <button
+                        type="submit"
+                        class="login-button"
+                        id="signupButton"
+                    >
+
+                        <span id="signupButtonText">
+                            Create Account
+                        </span>
+
+                        <span
+                            class="loader"
+                            id="signupLoader"
+                        ></span>
+
+                    </button>
+
+
+                    <!-- ERROR -->
+
+                    <div
+                        class="login-error"
+                        id="signupError"
+                    ></div>
+
+                    <!-- SUCCESS -->
+
+                    <div
+                        class="login-success"
+                        id="signupSuccess"
+                    ></div>
+
+
+                </form>
+
+
+                <div class="switch-auth">
+                    Already have an account?
+                    <a onclick="showLogin()">Sign in</a>
+                </div>
+
+
+                <!-- INFORMATION -->
+
+                <div class="demo-note">
+
+                    <div class="demo-icon">
+                        i
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            EduGuide AI
+                        </strong>
+
+                        <p>
+                            Your account is created on your
+                            local EduGuide AI server.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="login-footer">
+
+                    <p>
+                        Academic Risk Prediction
+                        &nbsp;•&nbsp;
+                        Explainable AI
+                        &nbsp;•&nbsp;
+                        Personalized Learning
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+/* =========================================================
+   BACKEND CONNECTION
+   This is the only line you'd change if your Flask
+   server ever runs somewhere other than your own computer.
+========================================================= */
+
+const API_BASE_URL = "http://127.0.0.1:5000";
+
+
+/* =========================================================
+   SESSION HELPERS
+   After a successful login/signup we remember who is using
+   the site (in the browser's localStorage) so the dashboard
+   pages know who to show data for.
+========================================================= */
+
+function saveSession(user) {
+
+    localStorage.setItem(
+        "eduguide_user",
+        JSON.stringify(user)
+    );
+
+}
+
+function goToDashboard(role) {
+
+    if (role === "teacher") {
+
+        window.location.href = "teacher-dashboard.html";
+
+    } else if (role === "admin") {
+
+        window.location.href = "admin-dashboard.html";
+
+    } else {
+
+        window.location.href = "student-dashboard.html";
+
+    }
+
+}
+
+
+/* =========================================================
+   PAGE NAVIGATION
+========================================================= */
+
+const landingPage =
+    document.getElementById("landingPage");
+
+const loginPage =
+    document.getElementById("loginPage");
+
+const signupPage =
+    document.getElementById("signupPage");
+
+
+function hideAllPages() {
+
+    landingPage.style.display = "none";
+    loginPage.style.display = "none";
+    signupPage.style.display = "none";
+
+}
+
+
+function showLogin() {
+
+    hideAllPages();
+
+    loginPage.style.display = "block";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "instant"
+    });
+
+}
+
+
+function showSignup() {
+
+    hideAllPages();
+
+    signupPage.style.display = "block";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "instant"
+    });
+
+}
+
+
+function showLanding() {
+
+    hideAllPages();
+
+    landingPage.style.display = "block";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "instant"
+    });
+
+}
+
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+function toggleMobileMenu() {
+
+    const links =
+        document.querySelector(".nav-links");
+
+    if (links.style.display === "flex") {
+
+        links.style.display = "none";
+
+    } else {
+
+        links.style.display = "flex";
+
+        links.style.position = "absolute";
+
+        links.style.top = "68px";
+
+        links.style.left = "0";
+
+        links.style.right = "0";
+
+        links.style.padding = "20px";
+
+        links.style.background = "white";
+
+        links.style.flexDirection = "column";
+
+        links.style.alignItems = "center";
+
+        links.style.borderBottom = "1px solid #e3e6ee";
+
+    }
+
+}
+
+
+/* =========================================================
+   LOGIN ELEMENTS
+========================================================= */
+
+const loginForm =
+    document.getElementById("loginForm");
+
+const role =
+    document.getElementById("role");
+
+const email =
+    document.getElementById("email");
+
+const password =
+    document.getElementById("password");
+
+const roleError =
+    document.getElementById("roleError");
+
+const emailError =
+    document.getElementById("emailError");
+
+const passwordError =
+    document.getElementById("passwordError");
+
+const togglePassword =
+    document.getElementById("togglePassword");
+
+const loginButton =
+    document.getElementById("loginButton");
+
+const loginError =
+    document.getElementById("loginError");
+
+const forgotPassword =
+    document.getElementById("forgotPassword");
+
+
+/* =========================================================
+   SHOW / HIDE PASSWORD (LOGIN)
+========================================================= */
+
+togglePassword.addEventListener(
+    "click",
+    function () {
+
+        if (password.type === "password") {
+
+            password.type = "text";
+
+            togglePassword.textContent =
+                "Hide";
+
+        } else {
+
+            password.type = "password";
+
+            togglePassword.textContent =
+                "Show";
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   EMAIL VALIDATION
+========================================================= */
+
+function validateEmail(value) {
+
+    const pattern =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    return pattern.test(value);
+
+}
+
+
+/* =========================================================
+   CLEAR ERRORS (LOGIN)
+========================================================= */
+
+function clearErrors() {
+
+    roleError.textContent = "";
+
+    emailError.textContent = "";
+
+    passwordError.textContent = "";
+
+    loginError.style.display = "none";
+
+    role.classList.remove("input-error");
+
+    email.classList.remove("input-error");
+
+    password.classList.remove("input-error");
+
+}
+
+
+/* =========================================================
+   FORM VALIDATION (LOGIN)
+========================================================= */
+
+function validateForm() {
+
+    clearErrors();
+
+    let valid = true;
+
+
+    /* ROLE */
+
+    if (!role.value) {
+
+        roleError.textContent =
+            "Please select your role.";
+
+        role.classList.add("input-error");
+
+        valid = false;
+
+    }
+
+
+    /* EMAIL */
+
+    const emailValue =
+        email.value.trim();
+
+
+    if (!emailValue) {
+
+        emailError.textContent =
+            "Email address is required.";
+
+        email.classList.add("input-error");
+
+        valid = false;
+
+    }
+
+    else if (!validateEmail(emailValue)) {
+
+        emailError.textContent =
+            "Please enter a valid email address.";
+
+        email.classList.add("input-error");
+
+        valid = false;
+
+    }
+
+
+    /* PASSWORD */
+
+    if (!password.value) {
+
+        passwordError.textContent =
+            "Password is required.";
+
+        password.classList.add("input-error");
+
+        valid = false;
+
+    }
+
+    else if (password.value.length < 6) {
+
+        passwordError.textContent =
+            "Password must contain at least 6 characters.";
+
+        password.classList.add("input-error");
+
+        valid = false;
+
+    }
+
+
+    return valid;
+
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+loginForm.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        if (!validateForm()) {
+            return;
+        }
+
+
+        /* Start loading */
+
+        loginButton.disabled = true;
+
+        loginButton.classList.add("loading");
+
+
+        try {
+
+            const enteredEmail =
+                email.value
+                    .trim()
+                    .toLowerCase();
+
+            const enteredPassword =
+                password.value;
+
+            const chosenRole =
+                role.value;
+
+
+            /* =================================================
+               ASK THE BACKEND TO CHECK THIS EMAIL + PASSWORD
+            ================================================= */
+
+            const response = await fetch(
+                API_BASE_URL + "/login",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        email: enteredEmail,
+                        password: enteredPassword
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+
+            /* =================================================
+               SERVER SAID NO (wrong email/password, etc.)
+            ================================================= */
+
+            if (!response.ok) {
+
+                loginError.textContent =
+                    data.message ||
+                    data.error ||
+                    "Invalid login credentials. Please check your email and password.";
+
+                loginError.style.display =
+                    "block";
+
+            }
+
+
+            /* =================================================
+               SERVER SAID YES, BUT WRONG ROLE WAS PICKED
+               (e.g. this account is a teacher account but the
+               person chose "Student" in the dropdown)
+            ================================================= */
+
+            else if (
+                chosenRole &&
+                data.role &&
+                chosenRole !== data.role
+            ) {
+
+                loginError.textContent =
+                    "This account is registered as a " +
+                    data.role +
+                    ". Please select the correct role above.";
+
+                loginError.style.display =
+                    "block";
+
+            }
+
+
+            /* =================================================
+               SUCCESS - remember the user and open their
+               dashboard
+            ================================================= */
+
+            else {
+
+                saveSession({
+                    user_id: data.user_id,
+                    name: data.name,
+                    role: data.role
+                });
+
+                goToDashboard(data.role);
+
+            }
+
+
+            /* Stop loading */
+
+            loginButton.disabled = false;
+
+            loginButton.classList.remove(
+                "loading"
+            );
+
+        }
+
+
+        catch(error) {
+
+            console.error(error);
+
+
+            loginError.textContent =
+                "Couldn't reach the EduGuide AI server. Make sure your backend is running at " +
+                API_BASE_URL +
+                " and try again.";
+
+            loginError.style.display =
+                "block";
+
+
+            loginButton.disabled = false;
+
+            loginButton.classList.remove(
+                "loading"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   CLEAR ERRORS WHILE TYPING (LOGIN)
+========================================================= */
+
+email.addEventListener(
+    "input",
+    function() {
+
+        email.classList.remove(
+            "input-error"
+        );
+
+        emailError.textContent = "";
+
+        loginError.style.display =
+            "none";
+
+    }
+);
+
+
+password.addEventListener(
+    "input",
+    function() {
+
+        password.classList.remove(
+            "input-error"
+        );
+
+        passwordError.textContent = "";
+
+        loginError.style.display =
+            "none";
+
+    }
+);
+
+
+role.addEventListener(
+    "change",
+    function() {
+
+        role.classList.remove(
+            "input-error"
+        );
+
+        roleError.textContent = "";
+
+        loginError.style.display =
+            "none";
+
+    }
+);
+
+
+/* =========================================================
+   FORGOT PASSWORD
+========================================================= */
+
+forgotPassword.addEventListener(
+    "click",
+    function(event) {
+
+        event.preventDefault();
+
+        alert(
+            "Password recovery will be connected to the Django backend."
+        );
+
+    }
+);
+
+
+/* =========================================================
+   SIGNUP ELEMENTS
+========================================================= */
+
+const signupForm =
+    document.getElementById("signupForm");
+
+const firstName =
+    document.getElementById("firstName");
+
+const lastName =
+    document.getElementById("lastName");
+
+const signupRole =
+    document.getElementById("signupRole");
+
+const studentOnlyFields =
+    document.getElementById("studentOnlyFields");
+
+const studentIdField =
+    document.getElementById("studentIdField");
+
+const courseField =
+    document.getElementById("courseField");
+
+const signupEmail =
+    document.getElementById("signupEmail");
+
+const signupPassword =
+    document.getElementById("signupPassword");
+
+const confirmPassword =
+    document.getElementById("confirmPassword");
+
+const agreeTerms =
+    document.getElementById("agreeTerms");
+
+const firstNameError =
+    document.getElementById("firstNameError");
+
+const lastNameError =
+    document.getElementById("lastNameError");
+
+const signupRoleError =
+    document.getElementById("signupRoleError");
+
+const studentIdFieldError =
+    document.getElementById("studentIdFieldError");
+
+const courseFieldError =
+    document.getElementById("courseFieldError");
+
+const signupEmailError =
+    document.getElementById("signupEmailError");
+
+const signupPasswordError =
+    document.getElementById("signupPasswordError");
+
+const confirmPasswordError =
+    document.getElementById("confirmPasswordError");
+
+const agreeTermsError =
+    document.getElementById("agreeTermsError");
+
+const toggleSignupPassword =
+    document.getElementById("toggleSignupPassword");
+
+const toggleConfirmPassword =
+    document.getElementById("toggleConfirmPassword");
+
+const signupButton =
+    document.getElementById("signupButton");
+
+const signupError =
+    document.getElementById("signupError");
+
+const signupSuccess =
+    document.getElementById("signupSuccess");
+
+
+/* =========================================================
+   SHOW / HIDE PASSWORD (SIGNUP)
+========================================================= */
+
+toggleSignupPassword.addEventListener(
+    "click",
+    function () {
+
+        if (signupPassword.type === "password") {
+
+            signupPassword.type = "text";
+
+            toggleSignupPassword.textContent = "Hide";
+
+        } else {
+
+            signupPassword.type = "password";
+
+            toggleSignupPassword.textContent = "Show";
+
+        }
+
+    }
+);
+
+
+toggleConfirmPassword.addEventListener(
+    "click",
+    function () {
+
+        if (confirmPassword.type === "password") {
+
+            confirmPassword.type = "text";
+
+            toggleConfirmPassword.textContent = "Hide";
+
+        } else {
+
+            confirmPassword.type = "password";
+
+            toggleConfirmPassword.textContent = "Show";
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   CLEAR ERRORS (SIGNUP)
+========================================================= */
+
+function clearSignupErrors() {
+
+    firstNameError.textContent = "";
+    lastNameError.textContent = "";
+    signupRoleError.textContent = "";
+    studentIdFieldError.textContent = "";
+    courseFieldError.textContent = "";
+    signupEmailError.textContent = "";
+    signupPasswordError.textContent = "";
+    confirmPasswordError.textContent = "";
+    agreeTermsError.textContent = "";
+
+    signupError.style.display = "none";
+    signupSuccess.style.display = "none";
+
+    firstName.classList.remove("input-error");
+    lastName.classList.remove("input-error");
+    signupRole.classList.remove("input-error");
+    studentIdField.classList.remove("input-error");
+    courseField.classList.remove("input-error");
+    signupEmail.classList.remove("input-error");
+    signupPassword.classList.remove("input-error");
+    confirmPassword.classList.remove("input-error");
+
+}
+
+
+/* =========================================================
+   FORM VALIDATION (SIGNUP)
+========================================================= */
+
+function validateSignupForm() {
+
+    clearSignupErrors();
+
+    let valid = true;
+
+
+    /* FIRST NAME */
+
+    if (!firstName.value.trim()) {
+
+        firstNameError.textContent =
+            "First name is required.";
+
+        firstName.classList.add("input-error");
+
+        valid = false;
+
+    }
+
+
+    /* LAST NAME */
+
+    if (!lastName.value.trim()) {
+
+        lastNameError.textContent =
+            "Last name is required.";
+
+        lastName.classList.add("input-error");
+
+        valid = false;
+
+    }
+
+
+    /* ROLE */
+
+    if (!signupRole.value) {
+
+        signupRoleError.textContent =
+            "Please select your role.";
+
+        signupRole.classList.add("input-error");
+
+        valid = false;
+
+    }
+
+
+    /* STUDENT ID + COURSE (only required for students) */
+
+    if (signupRole.value === "student") {
+
+        if (!studentIdField.value.trim()) {
+
+            studentIdFieldError.textContent =
+                "Student ID is required.";
+
+            studentIdField.classList.add("input-error");
+
+            valid = false;
+
+        }
+
+        if (!courseField.value.trim()) {
+
+            courseFieldError.textContent =
+                "Course is required.";
+
+            courseField.classList.add("input-error");
+
+            valid = false;
+
+        }
+
+    }
+
+
+    /* EMAIL */
+
+    const emailValue =
+        signupEmail.value.trim();
+
+    if (!emailValue) {
+
+        signupEmailError.textContent =
+            "Email address is required.";
+
+        signupEmail.classList.add("input-error");
+
+        valid = false;
+
+    }
+
+    else if (!validateEmail(emailValue)) {
+
+        signupEmailError.textContent =
+            "Please enter a valid email address.";
+
+        signupEmail.classList.add("input-error");
+
+        valid = false;
+
+    }
+
+
+    /* PASSWORD */
+
+    if (!signupPassword.value) {
+
+        signupPasswordError.textContent =
+            "Password is required.";
+
+        signupPassword.classList.add("input-error");
+
+        valid = false;
+
+    }
+
+    else if (signupPassword.value.length < 6) {
+
+        signupPasswordError.textContent =
+            "Password must contain at least 6 characters.";
+
+        signupPassword.classList.add("input-error");
+
+        valid = false;
+
+    }
+
+
+    /* CONFIRM PASSWORD */
+
+    if (!confirmPassword.value) {
+
+        confirmPasswordError.textContent =
+            "Please confirm your password.";
+
+        confirmPassword.classList.add("input-error");
+
+        valid = false;
+
+    }
+
+    else if (
+
+        signupPassword.value &&
+
+        confirmPassword.value !== signupPassword.value
+
+    ) {
+
+        confirmPasswordError.textContent =
+            "Passwords do not match.";
+
+        confirmPassword.classList.add("input-error");
+
+        valid = false;
+
+    }
+
+
+    /* TERMS */
+
+    if (!agreeTerms.checked) {
+
+        agreeTermsError.textContent =
+            "You must agree to the Terms of Service and Privacy Policy.";
+
+        valid = false;
+
+    }
+
+
+    return valid;
+
+}
+
+
+/* =========================================================
+   SIGN UP
+========================================================= */
+
+signupForm.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        if (!validateSignupForm()) {
+            return;
+        }
+
+
+        /* Start loading */
+
+        signupButton.disabled = true;
+
+        signupButton.classList.add("loading");
+
+
+        try {
+
+            /* Combine first + last name into one "name" field,
+               since that's what the backend expects. */
+
+            const fullName =
+                firstName.value.trim() +
+                " " +
+                lastName.value.trim();
+
+
+            const response = await fetch(
+                API_BASE_URL + "/register",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        name: fullName,
+                        email: signupEmail.value.trim().toLowerCase(),
+                        password: signupPassword.value,
+                        role: signupRole.value,
+                        student_id: studentIdField.value.trim(),
+                        course: courseField.value.trim()
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+
+            if (!response.ok) {
+
+                signupError.textContent =
+                    data.message ||
+                    data.error ||
+                    "Couldn't create your account. That email may already be registered.";
+
+                signupError.style.display =
+                    "block";
+
+            }
+
+            else {
+
+                signupSuccess.textContent =
+                    "Account created successfully! You can now sign in.";
+
+                signupSuccess.style.display =
+                    "block";
+
+                signupForm.reset();
+
+                studentOnlyFields.style.display = "none";
+
+
+                /* Send the user to Login after a short pause */
+
+                setTimeout(
+                    function () {
+                        showLogin();
+                    },
+                    1200
+                );
+
+            }
+
+        }
+
+
+        catch (error) {
+
+            console.error(error);
+
+            signupError.textContent =
+                "Couldn't reach the EduGuide AI server. Make sure your backend is running at " +
+                API_BASE_URL +
+                " and try again.";
+
+            signupError.style.display =
+                "block";
+
+        }
+
+
+        finally {
+
+            signupButton.disabled = false;
+
+            signupButton.classList.remove(
+                "loading"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   CLEAR ERRORS WHILE TYPING (SIGNUP)
+========================================================= */
+
+[firstName, lastName, studentIdField, courseField, signupEmail, signupPassword, confirmPassword].forEach(
+    function (field) {
+
+        field.addEventListener(
+            "input",
+            function () {
+
+                field.classList.remove("input-error");
+
+                signupError.style.display = "none";
+
+            }
+        );
+
+    }
+);
+
+
+signupRole.addEventListener(
+    "change",
+    function () {
+
+        signupRole.classList.remove("input-error");
+
+        signupRoleError.textContent = "";
+
+        signupError.style.display = "none";
+
+
+        /* Show the Student ID / Course fields only when
+           "Student" is picked - a teacher doesn't need them. */
+
+        if (signupRole.value === "student") {
+
+            studentOnlyFields.style.display = "flex";
+
+        } else {
+
+            studentOnlyFields.style.display = "none";
+
+            studentIdField.value = "";
+            courseField.value = "";
+
+        }
+
+    }
+);
+
+
+agreeTerms.addEventListener(
+    "change",
+    function () {
+
+        agreeTermsError.textContent = "";
+
+    }
+);
+
+
+/* =========================================================
+   NAVIGATION LINKS - CLOSE MOBILE MENU
+========================================================= */
+
+document
+    .querySelectorAll(".nav-links a")
+    .forEach(link => {
+
+        link.addEventListener(
+            "click",
+            function() {
+
+                if (
+                    window.innerWidth <= 950
+                ) {
+
+                    document.querySelector(
+                        ".nav-links"
+                    ).style.display = "none";
+
+                }
+
+            }
+        );
+
+    });
+
+</script>
+
+</body>
+</html>

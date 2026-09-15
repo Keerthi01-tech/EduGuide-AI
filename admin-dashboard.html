@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduGuide AI | Admin Dashboard</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+
+<style>
+:root {
+    --primary:#4f46e5; --primary-dark:#3730a3; --primary-light:#eef2ff;
+    --text:#172033; --muted:#687386; --border:#e3e6ee; --bg:#f6f7fb;
+    --green:#16a34a; --green-light:#ecfdf3;
+    --orange:#d97706; --orange-light:#fff7ed;
+    --red:#dc2626; --red-light:#fef2f2;
+    --shadow:0 15px 45px rgba(30,41,59,.08);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:Inter,sans-serif; background:var(--bg); color:var(--text); }
+button,input,textarea { font-family:inherit; }
+button { cursor:pointer; }
+
+.navbar {
+    height:72px; padding:0 5%; display:flex; align-items:center;
+    justify-content:space-between; background:#fff; border-bottom:1px solid var(--border);
+    position:sticky; top:0; z-index:100;
+}
+.brand { display:flex; align-items:center; gap:12px; }
+.brand-icon {
+    width:42px; height:42px; display:grid; place-items:center; background:#fff;
+    border:1px solid #eef0f6; border-radius:12px; box-shadow:0 7px 18px rgba(79,70,229,.14);
+}
+.brand-icon svg { width:34px; height:34px; }
+.brand-name { font-size:18px; font-weight:800; letter-spacing:-.5px; }
+.brand-name span { color:var(--primary); }
+.brand-subtitle { color:var(--muted); font-size:10px; margin-top:2px; }
+.nav-right { display:flex; align-items:center; gap:14px; }
+.nav-user-name { font-size:13px; font-weight:700; text-align:right; }
+.nav-user-role { display:block; margin-top:2px; color:var(--muted); font-size:10px; }
+.avatar {
+    width:38px; height:38px; display:grid; place-items:center; border-radius:50%;
+    background:linear-gradient(135deg,var(--primary),#6366f1); color:#fff; font-weight:800;
+}
+.logout-btn {
+    border:1px solid var(--border); border-radius:9px; background:#fff; color:var(--muted);
+    padding:10px 15px; font-size:12px; font-weight:700;
+}
+.logout-btn:hover { color:var(--red); border-color:var(--red); }
+
+.page-container { max-width:1180px; margin:auto; padding:42px 30px 90px; }
+.badge {
+    display:inline-flex; border-radius:999px; padding:7px 12px; background:var(--primary-light);
+    color:var(--primary); font-size:10px; font-weight:800; letter-spacing:.8px;
+}
+.page-header h1 { margin-top:14px; font-size:30px; letter-spacing:-1px; }
+.page-header p { max-width:650px; margin-top:8px; color:var(--muted); font-size:13px; line-height:1.6; }
+
+/* ---------- SECTIONS: full-width, generous vertical rhythm ---------- */
+.section { margin-top:38px; }
+.section-label {
+    font-size:11px; font-weight:800; color:var(--muted); letter-spacing:.7px;
+    text-transform:uppercase; margin-bottom:14px;
+}
+.card {
+    background:#fff; border:1px solid var(--border); border-radius:16px;
+    padding:28px; box-shadow:var(--shadow);
+}
+.card-header-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:10px; }
+.card-header-row h2 { font-size:16.5px; }
+.card-header-row p { margin-top:4px; color:var(--muted); font-size:11.5px; }
+
+.live-tag {
+    display:inline-flex; align-items:center; gap:7px; padding:6px 11px; border-radius:999px;
+    background:var(--red-light); color:var(--red); font-size:10px; font-weight:800; letter-spacing:.8px;
+}
+.live-dot { width:7px; height:7px; border-radius:50%; background:var(--red); animation:pulse 1.4s infinite; }
+@keyframes pulse {
+    0% { box-shadow:0 0 0 0 rgba(220,38,38,.55); }
+    70% { box-shadow:0 0 0 7px rgba(220,38,38,0); }
+    100% { box-shadow:0 0 0 0 rgba(220,38,38,0); }
+}
+
+/* ---------- METRIC CARDS (clickable) ---------- */
+.metric-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:26px; }
+.metric-card {
+    background:#fff; border:1px solid var(--border); border-radius:14px; padding:20px;
+    box-shadow:0 10px 26px rgba(30,41,59,.05); cursor:pointer; transition:.15s; text-align:left;
+}
+.metric-card:hover { border-color:var(--primary); transform:translateY(-2px); box-shadow:0 14px 30px rgba(79,70,229,.12); }
+.metric-card.active { border-color:var(--primary); background:var(--primary-light); }
+.metric-label { font-size:11px; color:var(--muted); font-weight:700; }
+.metric-value { margin-top:8px; font-size:27px; font-weight:800; }
+.metric-value.red { color:var(--red); }
+.metric-hint { margin-top:4px; font-size:10px; color:var(--primary); font-weight:700; }
+
+/* ---------- DIRECTORY ---------- */
+.tab-row { display:flex; gap:8px; }
+.tab-btn {
+    border:1px solid var(--border); background:#fff; color:var(--muted); border-radius:8px;
+    padding:8px 14px; font-size:11.5px; font-weight:700;
+}
+.tab-btn.active { background:var(--primary); border-color:var(--primary); color:#fff; }
+.search-input {
+    border:1px solid var(--border); border-radius:9px; height:38px; padding:0 13px;
+    font-size:12.5px; width:220px; outline:none;
+}
+.search-input:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(79,70,229,.08); }
+
+table { width:100%; border-collapse:collapse; font-size:12.5px; }
+th {
+    text-align:left; padding:10px; color:var(--muted); font-size:10px;
+    font-weight:800; letter-spacing:.4px; border-bottom:1px solid var(--border);
+}
+td { padding:12px 10px; border-bottom:1px solid #f0f1f6; }
+tr.row-clickable { cursor:pointer; transition:.15s; }
+tr.row-clickable:hover { background:#fafbff; }
+.role-pill { padding:4px 10px; border-radius:999px; font-size:10.5px; font-weight:800; }
+.role-pill.student { background:var(--primary-light); color:var(--primary); }
+.role-pill.teacher { background:var(--orange-light); color:var(--orange); }
+.role-pill.admin { background:var(--green-light); color:var(--green); }
+.risk-pill { display:inline-block; padding:5px 11px; border-radius:999px; font-size:11px; font-weight:800; }
+.risk-pill.high { background:var(--red-light); color:var(--red); }
+.risk-pill.medium { background:var(--orange-light); color:var(--orange); }
+.risk-pill.low { background:var(--green-light); color:var(--green); }
+.risk-pill.nodata { background:#eef0f6; color:var(--muted); }
+.warn-badge { color:var(--red); font-size:10.5px; font-weight:800; margin-left:6px; }
+.delete-btn {
+    border:1px solid var(--border); background:#fff; color:var(--red); border-radius:7px;
+    padding:5px 10px; font-size:10.5px; font-weight:700;
+}
+.delete-btn:hover { background:var(--red-light); border-color:var(--red); }
+.empty-msg { text-align:center; color:var(--muted); font-size:12.5px; padding:26px 0; }
+
+/* ---------- 2-col rows (only used where content genuinely pairs up) ---------- */
+.row-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:start; }
+.row-2 .card { height:100%; }
+
+.donut-wrap { position:relative; height:200px; }
+.donut-center { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.donut-center span:first-child { font-size:24px; font-weight:800; }
+.donut-center span:last-child { font-size:10px; color:var(--muted); font-weight:700; }
+.legend-row { display:flex; justify-content:center; gap:16px; margin-top:14px; }
+.legend-item { display:flex; align-items:center; gap:6px; font-size:11px; color:var(--muted); font-weight:700; }
+.legend-dot { width:9px; height:9px; border-radius:50%; }
+
+.model-info-row { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #f0f1f6; font-size:12.5px; }
+.model-info-row:last-child { border-bottom:none; }
+.model-info-row strong { color:var(--muted); font-weight:700; }
+.fairness-row { display:flex; align-items:center; gap:12px; margin:12px 0; }
+.fairness-label { width:70px; font-size:12px; font-weight:700; }
+.fairness-bars { flex:1; display:flex; gap:2px; height:20px; border-radius:6px; overflow:hidden; }
+.fairness-seg { display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:800; color:#fff; }
+
+/* ---------- Presence + Activity ---------- */
+.presence-row { display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+.eye-icon { font-size:18px; }
+.presence-count { font-size:22px; font-weight:800; }
+.presence-list { display:flex; flex-wrap:wrap; gap:8px; }
+.presence-chip {
+    display:flex; align-items:center; gap:7px; padding:6px 11px; border-radius:999px;
+    background:#fafbff; border:1px solid var(--border); font-size:11.5px; font-weight:700;
+}
+.presence-chip .dot { width:7px; height:7px; border-radius:50%; background:var(--green); }
+.presence-chip .role-tag { color:var(--muted); font-weight:600; font-size:10px; }
+
+.activity-item { border-bottom:1px solid #f0f1f6; }
+.activity-item:last-child { border-bottom:none; }
+.activity-row { display:flex; gap:12px; padding:13px 4px; cursor:pointer; }
+.activity-row:hover { background:#fafbff; }
+.activity-icon {
+    width:30px; height:30px; flex-shrink:0; border-radius:50%; display:flex; align-items:center;
+    justify-content:center; font-size:13px; background:var(--primary-light); color:var(--primary);
+}
+.activity-icon.prediction { background:var(--orange-light); color:var(--orange); }
+.activity-text { font-size:12.5px; }
+.activity-time { font-size:10.5px; color:var(--muted); margin-top:2px; }
+.activity-detail {
+    display:none; margin:0 4px 14px 46px; padding:11px 13px; border-radius:9px;
+    background:var(--primary-light); color:var(--primary-dark); font-size:11.5px; line-height:1.6;
+}
+.activity-detail.open { display:block; }
+
+/* ---------- System status: horizontal pills ---------- */
+.status-pill-row { display:flex; gap:14px; flex-wrap:wrap; }
+.status-pill-box {
+    flex:1; min-width:150px; display:flex; align-items:center; gap:10px; padding:14px 16px;
+    border-radius:12px; border:1px solid var(--border); background:#fafbff;
+}
+.status-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.status-dot.online { background:var(--green); }
+.status-dot.offline { background:var(--red); }
+.status-pill-box strong { display:block; font-size:12.5px; }
+.status-pill-box span { font-size:10.5px; color:var(--muted); }
+
+/* ---------- Slide-in panel (generic: student or teacher) ---------- */
+#overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.35); z-index:1500; }
+#overlay.open { display:block; }
+#sidePanel {
+    position:fixed; top:0; right:-460px; width:440px; max-width:92vw; height:100vh;
+    background:#fff; box-shadow:-20px 0 50px rgba(15,23,42,.18); z-index:1600;
+    transition:right .3s ease; overflow-y:auto;
+}
+#sidePanel.open { right:0; }
+.panel-header {
+    position:sticky; top:0; background:var(--primary); color:#fff; padding:22px 24px;
+    display:flex; align-items:center; justify-content:space-between; z-index:2;
+}
+.panel-header h2 { font-size:16px; }
+.panel-header p { margin-top:3px; font-size:11px; opacity:.85; }
+.panel-close { background:none; border:0; color:#fff; font-size:20px; }
+.panel-body { padding:22px 24px; }
+.panel-section { margin-bottom:22px; }
+.panel-section h3 { font-size:12px; font-weight:800; color:var(--muted); letter-spacing:.5px; margin-bottom:10px; text-transform:uppercase; }
+.data-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:12px; }
+.data-grid div { padding:8px 10px; background:#fafbff; border:1px solid var(--border); border-radius:8px; }
+.data-grid strong { display:block; font-size:9.5px; color:var(--muted); text-transform:uppercase; margin-bottom:2px; }
+.panel-actions { display:flex; gap:8px; margin-bottom:18px; }
+.panel-btn { flex:1; border:1px solid var(--border); background:#fff; border-radius:9px; padding:9px; font-size:11.5px; font-weight:700; color:var(--muted); }
+.panel-btn:hover { color:var(--primary); border-color:var(--primary); }
+.panel-btn.danger { color:var(--red); }
+.panel-btn.danger:hover { border-color:var(--red); background:var(--red-light); }
+.warning-item { padding:10px 11px; border-radius:9px; background:var(--red-light); color:var(--red); font-size:11.5px; margin-bottom:8px; }
+.warning-item .w-date { display:block; font-size:9.5px; color:var(--red); opacity:.75; margin-top:3px; }
+.warn-form { display:flex; flex-direction:column; gap:8px; margin-top:10px; }
+.warn-form textarea { border:1px solid var(--border); border-radius:9px; padding:9px; font-size:12px; min-height:60px; resize:vertical; }
+.warn-form button { align-self:flex-end; }
+
+@media (max-width:950px) {
+    .metric-grid { grid-template-columns:repeat(2,1fr); }
+    .row-2 { grid-template-columns:1fr; }
+}
+@media (max-width:650px) {
+    .navbar { padding:0 18px; }
+    .nav-user-name,.nav-user-role { display:none; }
+    .page-container { padding:30px 18px 70px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="brand">
+        <div class="brand-icon">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16 61 C28 55 38 57 50 66 C62 57 72 55 84 61 L84 76 C71 69 61 70 50 79 C39 70 29 69 16 76 Z" fill="#18296b"/>
+                <path d="M18 61 C29 56 39 59 50 67 L50 77 C39 69 29 67 18 72 Z" fill="#3346a3"/>
+                <path d="M50 67 C61 59 71 56 82 61 L82 72 C71 67 61 69 50 77 Z" fill="#4f46e5"/>
+                <rect x="42" y="39" width="7" height="18" rx="2" fill="#38bdf8"/>
+                <rect x="51" y="31" width="7" height="26" rx="2" fill="#4f46e5"/>
+                <rect x="60" y="23" width="7" height="34" rx="2" fill="#6366f1"/>
+                <path d="M27 25 L57 13 L84 25 L57 38 Z" fill="#111b48"/>
+                <path d="M38 30 L38 39 C43 44 52 45 59 40 L59 33 L57 34 Z" fill="#263b91"/>
+                <path d="M83 25 L83 39" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+        </div>
+        <div>
+            <div class="brand-name">EduGuide <span>AI</span></div>
+            <div class="brand-subtitle">Smart Academic Guidance</div>
+        </div>
+    </div>
+
+    <div class="nav-right">
+        <div>
+            <div class="nav-user-name" id="navUserName">Admin</div>
+            <span class="nav-user-role">Admin Portal</span>
+        </div>
+        <div class="avatar" id="navAvatar">A</div>
+        <button class="logout-btn" onclick="logout()">Log out</button>
+    </div>
+</nav>
+
+<main class="page-container">
+    <section class="page-header">
+        <span class="badge">SYSTEM OVERVIEW</span>
+        <h1>Admin Dashboard</h1>
+        <p>Manage accounts, monitor the model, and keep an eye on the whole platform.</p>
+    </section>
+
+    <div class="metric-grid">
+        <button class="metric-card" id="cardStudents" onclick="selectMetric('students')">
+            <div class="metric-label">TOTAL STUDENTS</div>
+            <div class="metric-value" id="metricStudents">—</div>
+            <div class="metric-hint">View all →</div>
+        </button>
+        <button class="metric-card" id="cardTeachers" onclick="selectMetric('teachers')">
+            <div class="metric-label">TOTAL TEACHERS</div>
+            <div class="metric-value" id="metricTeachers">—</div>
+            <div class="metric-hint">View all →</div>
+        </button>
+        <button class="metric-card" onclick="document.getElementById('predictionsSection').scrollIntoView({behavior:'smooth'})">
+            <div class="metric-label">TOTAL PREDICTIONS</div>
+            <div class="metric-value" id="metricPredictions">—</div>
+            <div class="metric-hint">See trend →</div>
+        </button>
+        <button class="metric-card" id="cardHighRisk" onclick="selectMetric('highrisk')">
+            <div class="metric-label">HIGH RISK NOW</div>
+            <div class="metric-value red" id="metricHighRisk">—</div>
+            <div class="metric-hint">View all →</div>
+        </button>
+    </div>
+
+    <!-- DIRECTORY -->
+    <div class="section">
+        <div class="section-label">Directory</div>
+        <div class="card">
+            <div class="card-header-row">
+                <div class="tab-row">
+                    <button class="tab-btn active" id="tabStudents" onclick="selectMetric('students')">Students</button>
+                    <button class="tab-btn" id="tabTeachers" onclick="selectMetric('teachers')">Teachers</button>
+                    <button class="tab-btn" id="tabHighRisk" onclick="selectMetric('highrisk')">High Risk</button>
+                </div>
+                <input type="text" class="search-input" id="userSearch" placeholder="Search by name or email…">
+            </div>
+            <table>
+                <thead>
+                    <tr id="tableHead"><th>Name</th><th>Email</th><th>Risk</th><th>Joined</th><th></th></tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <tr><td colspan="5" class="empty-msg">Loading…</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- RISK & MODEL -->
+    <div class="section">
+        <div class="section-label">Risk &amp; Model Insight</div>
+        <div class="row-2">
+            <div class="card">
+                <div class="card-header-row"><h2>Overall Risk Distribution</h2><p>Hover a segment for details.</p></div>
+                <div class="donut-wrap">
+                    <canvas id="riskDonut"></canvas>
+                    <div class="donut-center"><span id="donutTotal">—</span><span>STUDENTS</span></div>
+                </div>
+                <div class="legend-row">
+                    <div class="legend-item"><span class="legend-dot" style="background:var(--green)"></span>Low</div>
+                    <div class="legend-item"><span class="legend-dot" style="background:var(--orange)"></span>Medium</div>
+                    <div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span>High</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header-row"><h2>Model &amp; Fairness</h2></div>
+                <div class="model-info-row"><span>Active model</span><strong>Logistic Regression</strong></div>
+                <div class="model-info-row"><span>Explainability</span><strong>SHAP</strong></div>
+                <div class="model-info-row"><span>High-risk recall</span><strong>94%</strong></div>
+                <p style="font-size:11px; color:var(--muted); margin-top:16px;">Risk distribution by gender:</p>
+                <div id="fairnessRows"><div class="empty-msg">Loading…</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PREDICTIONS -->
+    <div class="section" id="predictionsSection">
+        <div class="section-label">Usage Over Time</div>
+        <div class="card">
+            <div class="card-header-row">
+                <div><h2>Predictions Over Time</h2><p>Assessments run per day, platform-wide. Hover a point for the exact count.</p></div>
+            </div>
+            <div style="height:230px;"><canvas id="predictionsChart"></canvas></div>
+        </div>
+    </div>
+
+    <!-- LIVE PULSE -->
+    <div class="section">
+        <div class="section-label">Live Pulse</div>
+        <div class="row-2">
+            <div class="card">
+                <div class="card-header-row">
+                    <div><h2>Currently Viewing</h2><p>Anyone active on EduGuide in the last minute.</p></div>
+                    <span class="live-tag"><span class="live-dot"></span>LIVE</span>
+                </div>
+                <div class="presence-row">
+                    <span class="eye-icon">👁</span>
+                    <span class="presence-count" id="presenceCount">0</span>
+                    <span style="color:var(--muted); font-size:12px;">people online now</span>
+                </div>
+                <div class="presence-list" id="presenceList"></div>
+            </div>
+
+            <div class="card">
+                <div class="card-header-row">
+                    <div><h2>Live Activity Feed</h2><p>Click any entry for more detail.</p></div>
+                    <span class="live-tag"><span class="live-dot"></span>LIVE</span>
+                </div>
+                <div id="activityFeed" style="max-height:280px; overflow-y:auto;">
+                    <div class="empty-msg">Loading…</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SYSTEM STATUS -->
+    <div class="section">
+        <div class="section-label">System Status</div>
+        <div class="card">
+            <div class="status-pill-row" id="statusPillRow">
+                <div class="empty-msg">Checking…</div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- SLIDE-IN DETAIL PANEL -->
+<div id="overlay" onclick="closePanel()"></div>
+<div id="sidePanel">
+    <div class="panel-header">
+        <div><h2 id="panelName">User</h2><p id="panelSubtitle">Loading…</p></div>
+        <button class="panel-close" onclick="closePanel()">✕</button>
+    </div>
+    <div class="panel-body" id="panelBody">
+        <div class="empty-msg">Loading…</div>
+    </div>
+</div>
+
+<script>
+const API_BASE_URL = "http://127.0.0.1:5000";
+
+const sessionRaw = localStorage.getItem("eduguide_user");
+let currentUser = null;
+
+if (!sessionRaw) {
+    window.location.href = "index.html";
+} else {
+    currentUser = JSON.parse(sessionRaw);
+    if (currentUser.role !== "admin") {
+        window.location.href = "index.html";
+    }
+}
+
+function logout() {
+    localStorage.removeItem("eduguide_user");
+    window.location.href = "index.html";
+}
+
+let allStudents = [];
+let allTeachers = [];
+let currentTab = "students";
+let donutInstance = null;
+let predictionsChartInstance = null;
+let currentPanelUserId = null;
+
+window.addEventListener("DOMContentLoaded", async () => {
+    const name = currentUser.name || "Admin";
+    document.getElementById("navUserName").textContent = name;
+    document.getElementById("navAvatar").textContent = name.charAt(0).toUpperCase();
+
+    await Promise.all([
+        loadOverview(),
+        loadUsers(),
+        loadRiskAnalytics(),
+        loadFairness(),
+        loadPredictionsTimeline(),
+        loadActivityFeed(),
+        loadSystemStatus(),
+        loadPresence()
+    ]);
+
+    sendHeartbeat();
+    setInterval(sendHeartbeat, 20000);
+    setInterval(loadPresence, 15000);
+    setInterval(loadSystemStatus, 30000);
+    setInterval(loadActivityFeed, 20000);
+});
+
+function sendHeartbeat() {
+    fetch(API_BASE_URL + "/heartbeat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: currentUser.user_id })
+    }).catch(() => {});
+}
+
+async function loadOverview() {
+    try {
+        const res = await fetch(API_BASE_URL + "/admin/overview");
+        const data = await res.json();
+        document.getElementById("metricStudents").textContent = data.total_students ?? "—";
+        document.getElementById("metricTeachers").textContent = data.total_teachers ?? "—";
+        document.getElementById("metricPredictions").textContent = data.total_predictions ?? "—";
+    } catch (error) { console.error(error); }
+}
+
+async function loadUsers() {
+    try {
+        const res = await fetch(API_BASE_URL + "/admin/users");
+        const data = await res.json();
+        const users = data.users || [];
+        allStudents = users.filter(u => u.role === "student");
+        allTeachers = users.filter(u => u.role === "teacher");
+        renderDirectory();
+    } catch (error) {
+        console.error(error);
+        document.getElementById("usersTableBody").innerHTML = `<tr><td colspan="5" class="empty-msg">Could not load accounts.</td></tr>`;
+    }
+}
+
+function selectMetric(which) {
+    currentTab = which;
+    ["cardStudents","cardTeachers","cardHighRisk"].forEach(id => document.getElementById(id)?.classList.remove("active"));
+    ["tabStudents","tabTeachers","tabHighRisk"].forEach(id => document.getElementById(id).classList.remove("active"));
+
+    if (which === "students") { document.getElementById("cardStudents").classList.add("active"); document.getElementById("tabStudents").classList.add("active"); }
+    if (which === "teachers") { document.getElementById("cardTeachers").classList.add("active"); document.getElementById("tabTeachers").classList.add("active"); }
+    if (which === "highrisk") { document.getElementById("cardHighRisk").classList.add("active"); document.getElementById("tabHighRisk").classList.add("active"); }
+
+    document.getElementById("userSearch").value = "";
+    renderDirectory();
+    document.querySelector(".section .card").scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function renderDirectory() {
+    const tbody = document.getElementById("usersTableBody");
+    const head = document.getElementById("tableHead");
+
+    let rows = currentTab === "teachers" ? allTeachers : allStudents;
+    if (currentTab === "highrisk") {
+        rows = allStudents.filter(s => (s.risk_level_cache || "").toLowerCase() === "high");
+    }
+
+    if (currentTab === "teachers") {
+        head.innerHTML = `<th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th></th>`;
+    } else {
+        head.innerHTML = `<th>Name</th><th>Email</th><th>Risk</th><th>Joined</th><th></th>`;
+    }
+
+    if (!rows.length) {
+        tbody.innerHTML = `<tr><td colspan="5" class="empty-msg">No results.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = rows.map(u => {
+        const warnBadge = u.warning_count > 0 ? `<span class="warn-badge">⚠ ${u.warning_count}</span>` : "";
+        const middleCol = currentTab === "teachers"
+            ? `<span class="role-pill teacher">Teacher</span>`
+            : riskPillFor(u);
+
+        return `
+            <tr class="row-clickable" onclick="openPanel(${u.user_id})">
+                <td>${u.name}${warnBadge}</td>
+                <td style="color:var(--muted);">${u.email}</td>
+                <td>${middleCol}</td>
+                <td style="color:var(--muted); font-size:11.5px;">${u.created_at}</td>
+                <td><button class="delete-btn" onclick="event.stopPropagation(); deleteUser(${u.user_id}, '${u.name.replace(/'/g,"")}')">Delete</button></td>
+            </tr>
+        `;
+    }).join("");
+}
+
+function riskPillFor(u) {
+    const risk = (u.risk_level_cache || "").toLowerCase();
+    if (!risk) return `<span class="risk-pill nodata">No data</span>`;
+    return `<span class="risk-pill ${risk}">${risk.charAt(0).toUpperCase()+risk.slice(1)}</span>`;
+}
+
+document.getElementById("userSearch").addEventListener("input", e => {
+    const q = e.target.value.trim().toLowerCase();
+    const rows = document.querySelectorAll("#usersTableBody tr");
+    rows.forEach(row => {
+        row.style.display = row.textContent.toLowerCase().includes(q) ? "" : "none";
+    });
+});
+
+async function deleteUser(userId, name) {
+    if (!confirm(`Delete ${name}'s account? This also removes their prediction history and cannot be undone.`)) return;
+    try {
+        const res = await fetch(API_BASE_URL + "/admin/users/" + userId, { method: "DELETE" });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Could not delete this account.");
+        await Promise.all([loadUsers(), loadOverview(), loadRiskAnalytics()]);
+    } catch (error) { alert(error.message); }
+}
+
+async function loadRiskAnalytics() {
+    try {
+        const res = await fetch(API_BASE_URL + "/teacher/students");
+        const data = await res.json();
+        const students = data.students || [];
+
+        // cache each student's risk onto our local list for the directory table
+        const riskMap = {};
+        students.forEach(s => riskMap[s.user_id] = s.risk_level);
+        allStudents.forEach(s => s.risk_level_cache = riskMap[s.user_id] || "");
+        if (currentTab === "students" || currentTab === "highrisk") renderDirectory();
+
+        const counts = { high:0, medium:0, low:0 };
+        students.forEach(s => { const r=(s.risk_level||"").toLowerCase(); if (counts[r]!==undefined) counts[r]++; });
+        document.getElementById("metricHighRisk").textContent = counts.high;
+        document.getElementById("donutTotal").textContent = students.length;
+
+        const ctx = document.getElementById("riskDonut").getContext("2d");
+        if (donutInstance) donutInstance.destroy();
+        donutInstance = new Chart(ctx, {
+            type: "doughnut",
+            data: { labels:["Low","Medium","High"], datasets:[{ data:[counts.low,counts.medium,counts.high], backgroundColor:["#16a34a","#d97706","#dc2626"], borderWidth:0 }] },
+            options: {
+                responsive:true, maintainAspectRatio:false, cutout:"72%",
+                plugins:{
+                    legend:{ display:false },
+                    tooltip:{
+                        callbacks: {
+                            label: (ctx) => {
+                                const symbol = { Low:"🟢", Medium:"🟠", High:"🔴" }[ctx.label] || "";
+                                return `${symbol} ${ctx.label}: ${ctx.raw} student${ctx.raw===1?"":"s"}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    } catch (error) { console.error(error); }
+}
+
+async function loadFairness() {
+    try {
+        const res = await fetch(API_BASE_URL + "/fairness-report");
+        const data = await res.json();
+        const results = data.results || {};
+        const container = document.getElementById("fairnessRows");
+        const groups = Object.keys(results);
+        if (!groups.length) { container.innerHTML = `<div class="empty-msg">No data.</div>`; return; }
+
+        container.innerHTML = groups.map(group => {
+            const dist = results[group];
+            const low = Math.round((dist.low||0)*100), medium = Math.round((dist.medium||0)*100), high = Math.round((dist.high||0)*100);
+            return `
+                <div class="fairness-row">
+                    <span class="fairness-label">${group.charAt(0).toUpperCase()+group.slice(1)}</span>
+                    <div class="fairness-bars">
+                        <div class="fairness-seg" style="width:${low}%; background:var(--green);">${low>8?low+"%":""}</div>
+                        <div class="fairness-seg" style="width:${medium}%; background:var(--orange);">${medium>8?medium+"%":""}</div>
+                        <div class="fairness-seg" style="width:${high}%; background:var(--red);">${high>8?high+"%":""}</div>
+                    </div>
+                </div>`;
+        }).join("");
+    } catch (error) { console.error(error); document.getElementById("fairnessRows").innerHTML = `<div class="empty-msg">Could not load.</div>`; }
+}
+
+async function loadPredictionsTimeline() {
+    try {
+        const res = await fetch(API_BASE_URL + "/admin/predictions-timeline");
+        const data = await res.json();
+        const timeline = data.timeline || [];
+        const labels = timeline.map(t => t.date);
+        const values = timeline.map(t => t.count);
+
+        const ctx = document.getElementById("predictionsChart").getContext("2d");
+        if (predictionsChartInstance) predictionsChartInstance.destroy();
+        predictionsChartInstance = new Chart(ctx, {
+            type: "line",
+            data: { labels, datasets:[{ data:values, borderColor:"#4f46e5", backgroundColor:"rgba(79,70,229,.08)", fill:true, tension:.35, pointRadius:4, pointBackgroundColor:"#4f46e5" }] },
+            options: {
+                responsive:true, maintainAspectRatio:false,
+                plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:(ctx)=>`📈 ${ctx.raw} assessment${ctx.raw===1?"":"s"} on ${ctx.label}` } } },
+                scales:{ y:{ beginAtZero:true, ticks:{ stepSize:1 }, grid:{ color:"#f0f1f6" } }, x:{ grid:{display:false} } }
+            }
+        });
+    } catch (error) { console.error(error); }
+}
+
+async function loadActivityFeed() {
+    try {
+        const res = await fetch(API_BASE_URL + "/admin/activity-feed");
+        const data = await res.json();
+        const feed = data.feed || [];
+        const container = document.getElementById("activityFeed");
+        if (!feed.length) { container.innerHTML = `<div class="empty-msg">No recent activity.</div>`; return; }
+
+        container.innerHTML = feed.map((item, i) => `
+            <div class="activity-item">
+                <div class="activity-row" onclick="toggleActivityDetail(${i})">
+                    <div class="activity-icon ${item.type}">${item.type==="prediction"?"◈":"◉"}</div>
+                    <div>
+                        <div class="activity-text">${item.text}</div>
+                        <div class="activity-time">${item.time}</div>
+                    </div>
+                </div>
+                <div class="activity-detail" id="activityDetail${i}">
+                    ${item.type === "prediction"
+                        ? "An assessment was submitted and processed through the prediction, explainability, and recommendation pipeline."
+                        : "A new account was created and is now part of the platform's user base."}
+                </div>
+            </div>
+        `).join("");
+    } catch (error) { console.error(error); }
+}
+
+function toggleActivityDetail(i) {
+    document.getElementById("activityDetail"+i).classList.toggle("open");
+}
+
+async function loadPresence() {
+    try {
+        const res = await fetch(API_BASE_URL + "/admin/active-users");
+        const data = await res.json();
+        document.getElementById("presenceCount").textContent = data.count || 0;
+
+        const list = document.getElementById("presenceList");
+        const users = data.active_users || [];
+        if (!users.length) { list.innerHTML = `<span style="color:var(--muted); font-size:12px;">No one else is online right now.</span>`; return; }
+
+        list.innerHTML = users.map(u => `
+            <div class="presence-chip"><span class="dot"></span>${u.name}<span class="role-tag">${u.role}</span></div>
+        `).join("");
+    } catch (error) { console.error(error); }
+}
+
+async function loadSystemStatus() {
+    try {
+        const res = await fetch(API_BASE_URL + "/admin/system-status");
+        const data = await res.json();
+        const rows = [["Database", data.database], ["ML Model", data.ml_model], ["AI Chatbot", data.chatbot]];
+        document.getElementById("statusPillRow").innerHTML = rows.map(([label,status]) => `
+            <div class="status-pill-box">
+                <span class="status-dot ${status}"></span>
+                <div><strong>${label}</strong><span>${status === "online" ? "Online" : "Offline"}</span></div>
+            </div>
+        `).join("");
+    } catch (error) {
+        console.error(error);
+        document.getElementById("statusPillRow").innerHTML = `<div class="empty-msg">Could not reach the server.</div>`;
+    }
+}
+
+function prettyFeatureName(feature) {
+    return String(feature||"").replace(/_/g," ").replace(/\b\w/g,c=>c.toUpperCase());
+}
+
+async function openPanel(userId) {
+    currentPanelUserId = userId;
+    document.getElementById("overlay").classList.add("open");
+    document.getElementById("sidePanel").classList.add("open");
+    document.getElementById("panelBody").innerHTML = `<div class="empty-msg">Loading…</div>`;
+
+    try {
+        const res = await fetch(API_BASE_URL + "/admin/user/" + userId);
+        const data = await res.json();
+
+        document.getElementById("panelName").textContent = data.name;
+        document.getElementById("panelSubtitle").textContent = (data.student_id || data.role) + (data.course ? " · " + data.course : "");
+
+        const warningsHtml = (data.warnings||[]).length
+            ? data.warnings.map(w => `<div class="warning-item">${w.reason}<span class="w-date">${w.date}</span></div>`).join("")
+            : `<p style="font-size:12px; color:var(--muted);">No warnings on record.</p>`;
+
+        let academicHtml = "";
+        if (data.role === "student") {
+            const academic = data.academic_data || {};
+            const risk = (data.risk_level || "nodata").toLowerCase();
+            academicHtml = `
+                <div class="panel-section">
+                    <h3>Current Risk</h3>
+                    ${riskPillFor({risk_level_cache: risk})}
+                </div>
+                <div class="panel-section">
+                    <h3>Academic Snapshot</h3>
+                    <div class="data-grid">
+                        <div><strong>Attendance</strong>${academic.attendance !== undefined ? academic.attendance+"%" : "—"}</div>
+                        <div><strong>GPA</strong>${academic.GPA ?? "—"}</div>
+                        <div><strong>Avg Score</strong>${academic.avg_score ?? "—"}</div>
+                        <div><strong>Study Hours</strong>${academic.hours_studied ?? "—"}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        document.getElementById("panelBody").innerHTML = `
+            <div class="panel-actions">
+                ${data.role !== "admin" ? `<button class="panel-btn danger" onclick="deleteUser(${userId}, '${data.name.replace(/'/g,"")}'); closePanel();">Delete Account</button>` : ""}
+            </div>
+
+            <div class="panel-section">
+                <h3>Contact</h3>
+                <div class="data-grid">
+                    <div><strong>Email</strong>${data.email}</div>
+                    <div><strong>Joined</strong>${data.joined}</div>
+                </div>
+            </div>
+
+            ${academicHtml}
+
+            ${data.role === "student" ? `
+            <div class="panel-section">
+                <h3>Warnings</h3>
+                ${warningsHtml}
+                <div class="warn-form">
+                    <textarea id="warnReason" placeholder="Reason for this warning…"></textarea>
+                    <button class="panel-btn danger" onclick="issueWarning(${userId})">⚠ Issue Warning</button>
+                </div>
+            </div>` : ""}
+        `;
+
+    } catch (error) {
+        console.error(error);
+        document.getElementById("panelBody").innerHTML = `<div class="empty-msg">Could not reach the server.</div>`;
+    }
+}
+
+async function issueWarning(userId) {
+    const reason = document.getElementById("warnReason").value.trim();
+    if (!reason) { alert("Please enter a reason for the warning."); return; }
+
+    try {
+        const res = await fetch(API_BASE_URL + "/admin/users/" + userId + "/warn", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ reason })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Could not issue warning.");
+
+        await loadUsers();
+        openPanel(userId);
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
+function closePanel() {
+    document.getElementById("overlay").classList.remove("open");
+    document.getElementById("sidePanel").classList.remove("open");
+}
+</script>
+
+</body>
+</html>

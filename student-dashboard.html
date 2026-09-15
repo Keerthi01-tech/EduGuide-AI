@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduGuide AI | Student Assessment</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+
+<style>
+:root {
+    --primary:#4f46e5; --primary-dark:#3730a3; --primary-light:#eef2ff;
+    --text:#172033; --muted:#687386; --border:#e3e6ee; --bg:#f6f7fb;
+    --green:#16a34a; --green-light:#ecfdf3;
+    --orange:#d97706; --orange-light:#fff7ed;
+    --red:#dc2626; --red-light:#fef2f2;
+    --shadow:0 15px 45px rgba(30,41,59,.08);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:Inter,sans-serif; background:var(--bg); color:var(--text); }
+button,input,select,textarea { font-family:inherit; }
+button { cursor:pointer; }
+
+.navbar {
+    height:72px; padding:0 5%; display:flex; align-items:center;
+    justify-content:space-between; background:#fff; border-bottom:1px solid var(--border);
+    position:sticky; top:0; z-index:100;
+}
+.brand { display:flex; align-items:center; gap:12px; }
+.brand-icon {
+    width:42px; height:42px; display:grid; place-items:center; background:#fff;
+    border:1px solid #eef0f6; border-radius:12px; box-shadow:0 7px 18px rgba(79,70,229,.14);
+}
+.brand-icon svg { width:34px; height:34px; }
+.brand-name { font-size:18px; font-weight:800; letter-spacing:-.5px; }
+.brand-name span { color:var(--primary); }
+.brand-subtitle { color:var(--muted); font-size:10px; margin-top:2px; }
+.nav-right { display:flex; align-items:center; gap:14px; }
+.nav-user-name { font-size:13px; font-weight:700; text-align:right; }
+.nav-user-role { display:block; margin-top:2px; color:var(--muted); font-size:10px; }
+.avatar {
+    width:38px; height:38px; display:grid; place-items:center; border-radius:50%;
+    background:linear-gradient(135deg,var(--primary),#6366f1); color:#fff; font-weight:800;
+}
+.logout-btn,.secondary-btn {
+    border:1px solid var(--border); border-radius:9px; background:#fff; color:var(--muted);
+    padding:10px 15px; font-size:12px; font-weight:700;
+}
+.logout-btn:hover { color:var(--red); border-color:var(--red); }
+
+.page-container { max-width:1250px; margin:auto; padding:42px 30px 80px; }
+.badge {
+    display:inline-flex; border-radius:999px; padding:7px 12px; background:var(--primary-light);
+    color:var(--primary); font-size:10px; font-weight:800; letter-spacing:.8px;
+}
+.page-header h1 { margin-top:14px; font-size:30px; letter-spacing:-1px; }
+.page-header p { max-width:650px; margin-top:8px; color:var(--muted); font-size:13px; line-height:1.6; }
+
+.stepper { display:flex; align-items:center; gap:12px; margin-top:25px; }
+.step { display:flex; align-items:center; gap:8px; color:var(--muted); font-size:11px; }
+.step-num {
+    width:27px; height:27px; display:grid; place-items:center; border-radius:50%;
+    background:#e9ebf2; font-size:11px; font-weight:800;
+}
+.step.active { color:var(--primary); font-weight:800; }
+.step.active .step-num { background:var(--primary); color:#fff; }
+.step.done .step-num { background:var(--green); color:#fff; }
+.step-line { width:50px; height:1px; background:var(--border); }
+
+.alert-banner {
+    display:none; align-items:center; gap:10px; margin:22px 0; padding:14px 17px;
+    background:var(--red-light); border:1px solid #fecaca; border-radius:12px;
+    color:var(--red); font-size:13px; font-weight:700;
+}
+
+.content-grid { display:grid; grid-template-columns:1fr 320px; gap:25px; align-items:start; }
+.content-grid.results-mode { grid-template-columns:1fr; }
+.content-grid.results-mode .info-column { display:none; }
+
+.card,.form-card {
+    background:#fff; border:1px solid var(--border); border-radius:16px;
+    padding:30px; box-shadow:var(--shadow);
+}
+.card + .card { margin-top:22px; }
+.card-header { padding-bottom:18px; margin-bottom:24px; border-bottom:1px solid #edf0f5; }
+.card-header h2 { font-size:18px; }
+.card-header p { margin-top:5px; color:var(--muted); font-size:11px; }
+
+.form-section { margin-bottom:30px; }
+.section-title { display:flex; align-items:center; gap:10px; margin-bottom:17px; }
+.section-icon {
+    width:30px; height:30px; display:grid; place-items:center; border-radius:8px;
+    background:var(--primary-light); color:var(--primary); font-size:13px;
+}
+.section-title h3 { font-size:13px; }
+.form-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
+.form-group { display:flex; flex-direction:column; }
+.form-group.full { grid-column:1/-1; }
+.form-group label { margin-bottom:7px; font-size:11px; font-weight:700; }
+.required { color:var(--red); }
+
+input,select,textarea {
+    width:100%; border:1px solid var(--border); border-radius:9px; background:#fff;
+    color:var(--text); outline:none; font-size:12.5px; transition:.2s;
+}
+input,select { height:45px; padding:0 13px; }
+textarea { min-height:82px; padding:12px 13px; resize:vertical; }
+input:focus,select:focus,textarea:focus {
+    border-color:var(--primary); box-shadow:0 0 0 3px rgba(79,70,229,.08);
+}
+.input-error { border-color:var(--red)!important; box-shadow:0 0 0 3px rgba(220,38,38,.07)!important; }
+.unit-input { position:relative; }
+.unit-input input { padding-right:48px; }
+.unit {
+    position:absolute; right:13px; top:50%; transform:translateY(-50%);
+    color:var(--muted); font-size:10px; font-weight:700;
+}
+.helper-text,.error-message { margin-top:5px; color:var(--muted); font-size:9px; }
+.error-message { color:var(--red); min-height:14px; }
+
+.button-area { display:flex; justify-content:flex-end; gap:12px; margin-top:8px; }
+.primary-btn {
+    min-width:190px; height:45px; border:0; border-radius:9px; background:var(--primary);
+    color:#fff; font-size:12px; font-weight:800;
+}
+.primary-btn:hover { background:var(--primary-dark); }
+.primary-btn:disabled { opacity:.7; cursor:not-allowed; }
+.spinner {
+    display:none; width:15px; height:15px; margin-left:7px; border-radius:50%;
+    border:2px solid rgba(255,255,255,.4); border-top-color:#fff; animation:spin .7s linear infinite;
+}
+.primary-btn.loading .spinner { display:inline-block; }
+.primary-btn.loading .btn-label { display:none; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+.info-column { display:flex; flex-direction:column; gap:18px; }
+.info-card {
+    background:#fff; border:1px solid var(--border); border-radius:15px; padding:22px;
+    box-shadow:0 10px 30px rgba(30,41,59,.05);
+}
+.info-card h3 { margin-bottom:15px; font-size:14px; }
+.info-feature { display:flex; align-items:flex-start; gap:10px; margin-bottom:14px; }
+.info-icon {
+    width:30px; height:30px; flex-shrink:0; display:grid; place-items:center; border-radius:8px;
+    background:var(--primary-light); color:var(--primary); font-size:12px;
+}
+.info-feature strong { font-size:10px; }
+.info-feature p { margin-top:3px; color:var(--muted); font-size:9px; line-height:1.5; }
+.model-card {
+    padding:22px; border-radius:15px; color:#fff;
+    background:linear-gradient(145deg,#4f46e5,#3730a3);
+}
+.model-card h3 { font-size:14px; margin-bottom:7px; }
+.model-card p { color:rgba(255,255,255,.75); font-size:10px; line-height:1.55; }
+
+#resultsSection { display:none; }
+.results-top { display:flex; justify-content:space-between; gap:16px; align-items:flex-start; }
+.live-tag {
+    display:inline-flex; align-items:center; gap:7px; padding:7px 11px; border-radius:999px;
+    background:var(--red-light); color:var(--red); font-size:10px; font-weight:800; letter-spacing:.8px;
+}
+.live-dot { width:7px; height:7px; border-radius:50%; background:var(--red); animation:pulse 1.4s infinite; }
+@keyframes pulse {
+    0% { box-shadow:0 0 0 0 rgba(220,38,38,.55); }
+    70% { box-shadow:0 0 0 8px rgba(220,38,38,0); }
+    100% { box-shadow:0 0 0 0 rgba(220,38,38,0); }
+}
+
+.risk-overview { display:grid; grid-template-columns:.8fr 1.2fr; align-items:center; gap:32px; margin-top:24px; }
+.gauge-wrap { width:230px; height:136px; position:relative; margin:auto; }
+.gauge-center { position:absolute; bottom:4px; left:0; right:0; text-align:center; }
+.gauge-score { font-size:31px; font-weight:800; letter-spacing:-1px; }
+.gauge-label { margin-top:2px; color:var(--muted); font-size:10px; font-weight:800; letter-spacing:.8px; }
+.risk-badge {
+    display:inline-block; margin-top:8px; padding:9px 18px; border-radius:999px;
+    font-size:13px; font-weight:800;
+}
+.risk-badge.Low { background:var(--green-light); color:var(--green); }
+.risk-badge.Medium { background:var(--orange-light); color:var(--orange); }
+.risk-badge.High { background:var(--red-light); color:var(--red); }
+.timestamp { margin-top:7px; color:var(--muted); font-size:11px; }
+
+.prob-row { display:flex; flex-direction:column; gap:13px; margin-top:15px; }
+.prob-item { display:grid; grid-template-columns:64px 1fr 42px; align-items:center; gap:10px; }
+.prob-label { color:var(--muted); font-size:12px; font-weight:700; }
+.prob-track { height:9px; background:#eef0f6; border-radius:999px; overflow:hidden; }
+.prob-fill { height:100%; border-radius:999px; transition:width .8s ease; }
+.prob-fill.Low { background:var(--green); }
+.prob-fill.Medium { background:var(--orange); }
+.prob-fill.High { background:var(--red); }
+.prob-value { font-size:12px; font-weight:800; text-align:right; }
+
+.tooltip {
+    display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px;
+    margin-left:5px; border-radius:50%; background:var(--primary-light); color:var(--primary);
+    font-size:10px; font-weight:800; position:relative; cursor:help;
+}
+.tooltip:hover::after {
+    content:attr(data-tip); position:absolute; z-index:20; width:230px; bottom:24px; right:0;
+    padding:10px; border-radius:8px; background:#172033; color:#fff; font-size:10px;
+    font-weight:500; line-height:1.5; text-align:left;
+}
+
+.info-panel {
+    margin-top:16px; padding:16px; border:1px solid var(--border); border-radius:12px; background:#fafbff;
+}
+.info-panel h3 { font-size:13px; margin-bottom:7px; }
+.info-panel p { color:var(--muted); font-size:12px; line-height:1.6; }
+.info-panel ul { margin:10px 0 0 18px; }
+.info-panel li { font-size:12px; line-height:1.65; margin-bottom:3px; }
+
+.shap-chart-wrap { height:250px; margin-top:18px; }
+.section-heading { font-size:17px; font-weight:800; }
+.section-subheading { margin-top:6px; color:var(--muted); font-size:12px; line-height:1.55; }
+
+.reco-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:20px; }
+.reco-title { color:var(--primary); font-size:12px; font-weight:800; margin-bottom:12px; }
+.reco-list { display:flex; flex-direction:column; gap:10px; list-style:none; }
+.reco-list li {
+    display:flex; gap:9px; align-items:flex-start; padding:11px; border:1px solid var(--border);
+    border-radius:10px; background:#fafbff; font-size:12px; line-height:1.5;
+}
+.status-icon { min-width:18px; height:18px; display:grid; place-items:center; border-radius:50%; font-size:10px; font-weight:800; }
+.status-red { color:var(--red); background:var(--red-light); }
+.status-yellow { color:var(--orange); background:var(--orange-light); }
+.status-green { color:var(--green); background:var(--green-light); }
+
+.next-checkin {
+    margin-top:18px; padding:14px; display:flex; align-items:center; gap:10px;
+    border-radius:10px; background:var(--primary-light); color:var(--primary-dark); font-size:12px; font-weight:700;
+}
+
+.trend-insight {
+    margin:16px 0; padding:13px; border-radius:10px; background:var(--primary-light);
+    color:var(--primary-dark); font-size:12px; font-weight:700; line-height:1.55;
+}
+.progress-chart-wrap { height:245px; }
+.no-history { display:none; padding:34px 0; text-align:center; color:var(--muted); font-size:13px; }
+
+.disclaimer {
+    margin-top:28px; padding:14px 16px; border-left:4px solid var(--primary); border-radius:9px;
+    background:#f8f9ff; color:var(--muted); font-size:11px; line-height:1.6;
+}
+
+.streak-badge {
+    display:none; align-items:center; gap:7px; margin-top:14px; padding:8px 14px;
+    border-radius:999px; background:linear-gradient(135deg,#fff7ed,#fff);
+    border:1px solid #fed7aa; color:#c2410c; font-size:11.5px; font-weight:800; width:fit-content;
+}
+
+.confetti-piece {
+    position:fixed; top:-20px; width:9px; height:14px; z-index:5000; pointer-events:none;
+    animation:confettiFall linear forwards;
+}
+@keyframes confettiFall {
+    0% { transform:translateY(0) rotate(0deg); opacity:1; }
+    100% { transform:translateY(105vh) rotate(540deg); opacity:.9; }
+}
+
+.bell-btn {
+    position:relative; border:1px solid var(--border); background:#fff; border-radius:10px;
+    width:38px; height:38px; display:grid; place-items:center; font-size:16px;
+}
+.bell-btn:hover { border-color:var(--primary); }
+.bell-badge {
+    position:absolute; top:-5px; right:-5px; min-width:17px; height:17px; padding:0 4px;
+    border-radius:999px; background:var(--red); color:#fff; font-size:9.5px; font-weight:800;
+    display:flex; align-items:center; justify-content:center;
+}
+#remarksPanel {
+    display:none; position:absolute; top:60px; right:5%; width:340px; max-width:90vw;
+    background:#fff; border:1px solid var(--border); border-radius:14px;
+    box-shadow:0 20px 50px rgba(15,23,42,.18); z-index:1500; overflow:hidden;
+}
+#remarksPanel.open { display:block; }
+.remarks-panel-header {
+    padding:14px 16px; background:var(--primary); color:#fff; display:flex;
+    justify-content:space-between; align-items:center; font-size:12.5px; font-weight:800;
+}
+.remarks-panel-header button { border:0; background:none; color:#fff; font-size:16px; }
+.remarks-list { max-height:340px; overflow-y:auto; padding:10px; }
+.remark-item {
+    padding:11px 12px; border-radius:10px; margin-bottom:8px; background:#fafbff;
+    border:1px solid var(--border); font-size:12px; line-height:1.55;
+}
+.remark-item.unread { background:var(--primary-light); border-color:#c7d2fe; }
+.remark-item strong { display:block; font-size:11.5px; color:var(--primary); margin-bottom:4px; }
+.remark-item .remark-time { display:block; margin-top:6px; font-size:9.5px; color:var(--muted); }
+.remarks-empty { padding:24px; text-align:center; color:var(--muted); font-size:12px; }
+
+.chat-suggestions { display:flex; flex-wrap:wrap; gap:6px; padding:0 14px 12px; }
+.chip-suggest {
+    border:1px solid var(--border); background:#fff; border-radius:999px; padding:7px 12px;
+    font-size:10.5px; font-weight:700; color:var(--primary); white-space:nowrap;
+}
+.chip-suggest:hover { background:var(--primary-light); }
+
+#chatroomSection { margin-top:22px; }
+.chatroom-locked-note {
+    display:flex; gap:8px; align-items:center; padding:10px 13px; border-radius:9px;
+    background:var(--orange-light); color:#9a5b0a; font-size:11.5px; font-weight:700; margin-bottom:14px;
+}
+.chatroom-messages { max-height:320px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; padding:4px; margin-bottom:14px; }
+.chatroom-msg {
+    padding:10px 13px; border-radius:12px; border:1px solid var(--border); background:#fafbff; font-size:12.5px; max-width:85%;
+}
+.chatroom-msg.mine { align-self:flex-end; background:var(--primary-light); border-color:#c7d2fe; }
+.chatroom-msg.teacher { border-left:3px solid var(--primary); }
+.chatroom-msg .cm-head { display:flex; justify-content:space-between; gap:10px; margin-bottom:3px; }
+.chatroom-msg .cm-name { font-weight:800; font-size:11.5px; }
+.chatroom-msg .cm-role {
+    font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.4px;
+    padding:2px 7px; border-radius:999px; background:var(--primary-light); color:var(--primary);
+}
+.chatroom-msg .cm-time { font-size:9.5px; color:var(--muted); }
+.chatroom-input-row { display:flex; gap:10px; }
+.chatroom-input-row input { flex:1; }
+.chatroom-empty { text-align:center; color:var(--muted); font-size:12.5px; padding:24px 0; }
+
+#chatToggle {
+    position:fixed; right:26px; bottom:26px; width:58px; height:58px; border:0; border-radius:50%;
+    background:var(--primary); color:#fff; box-shadow:0 12px 30px rgba(79,70,229,.35); font-size:22px; z-index:2000;
+}
+#chatToggle:hover { background:var(--primary-dark); transform:translateY(-2px); }
+#chatWindow {
+    display:none; flex-direction:column; overflow:hidden; position:fixed; right:26px; bottom:96px;
+    width:350px; max-width:90vw; height:460px; max-height:70vh; background:#fff; border:1px solid var(--border);
+    border-radius:18px; box-shadow:0 25px 60px rgba(15,23,42,.22); z-index:2000;
+}
+#chatWindow.open { display:flex; }
+.chat-header { display:flex; align-items:center; justify-content:space-between; padding:16px 18px; background:var(--primary); color:#fff; }
+.chat-header-title { font-size:13px; font-weight:800; }
+.chat-header-subtitle { margin-top:2px; font-size:10px; opacity:.85; }
+.chat-close { border:0; background:none; color:#fff; font-size:18px; }
+.chat-messages { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:12px; background:#f9fafc; }
+.chat-bubble { max-width:82%; padding:10px 13px; border-radius:14px; font-size:12px; line-height:1.5; }
+.chat-bubble.bot { align-self:flex-start; background:#fff; border:1px solid var(--border); border-bottom-left-radius:4px; }
+.chat-bubble.user { align-self:flex-end; background:var(--primary); color:#fff; border-bottom-right-radius:4px; }
+.chat-bubble.typing { color:var(--muted); font-style:italic; }
+.chat-input-row { display:flex; gap:8px; padding:12px; border-top:1px solid var(--border); }
+.chat-input-row input { flex:1; min-width:0; height:38px; border-radius:999px; padding:0 14px; }
+.chat-send { width:38px; height:38px; border:0; border-radius:50%; background:var(--primary); color:#fff; }
+
+@media print {
+    .navbar, #formSection, .info-column, #chatToggle, #chatWindow, .button-area { display:none!important; }
+    #resultsSection { display:block!important; }
+    .content-grid { display:block!important; }
+    body { background:#fff; }
+    .card { box-shadow:none; }
+}
+
+@media (max-width:950px) {
+    .content-grid, .risk-overview, .reco-grid { grid-template-columns:1fr; }
+    .info-column { display:grid; grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width:650px) {
+    .navbar { padding:0 18px; }
+    .nav-user-name,.nav-user-role { display:none; }
+    .page-container { padding:30px 18px 70px; }
+    .form-grid,.info-column { grid-template-columns:1fr; }
+    .stepper { gap:6px; }
+    .step-line { width:18px; }
+    .step { font-size:9px; }
+    .button-area { flex-direction:column-reverse; }
+    .btn,.primary-btn,.secondary-btn { width:100%; }
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="brand">
+        <div class="brand-icon">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16 61 C28 55 38 57 50 66 C62 57 72 55 84 61 L84 76 C71 69 61 70 50 79 C39 70 29 69 16 76 Z" fill="#18296b"/>
+                <path d="M18 61 C29 56 39 59 50 67 L50 77 C39 69 29 67 18 72 Z" fill="#3346a3"/>
+                <path d="M50 67 C61 59 71 56 82 61 L82 72 C71 67 61 69 50 77 Z" fill="#4f46e5"/>
+                <rect x="42" y="39" width="7" height="18" rx="2" fill="#38bdf8"/>
+                <rect x="51" y="31" width="7" height="26" rx="2" fill="#4f46e5"/>
+                <rect x="60" y="23" width="7" height="34" rx="2" fill="#6366f1"/>
+                <path d="M27 25 L57 13 L84 25 L57 38 Z" fill="#111b48"/>
+                <path d="M38 30 L38 39 C43 44 52 45 59 40 L59 33 L57 34 Z" fill="#263b91"/>
+                <path d="M83 25 L83 39" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+        </div>
+        <div>
+            <div class="brand-name">EduGuide <span>AI</span></div>
+            <div class="brand-subtitle">Smart Academic Guidance</div>
+        </div>
+    </div>
+
+    <div class="nav-right">
+        <button class="bell-btn" onclick="toggleRemarksPanel()" aria-label="Remarks from your teacher">
+            🔔<span class="bell-badge" id="remarksBadge" style="display:none;">0</span>
+        </button>
+        <div id="remarksPanel">
+            <div class="remarks-panel-header">
+                <span>Remarks from your teacher</span>
+                <button onclick="toggleRemarksPanel()">✕</button>
+            </div>
+            <div class="remarks-list" id="remarksList">
+                <div class="remarks-empty">Loading…</div>
+            </div>
+        </div>
+        <div>
+            <div class="nav-user-name" id="navUserName">Student</div>
+            <span class="nav-user-role">Student Portal</span>
+        </div>
+        <div class="avatar" id="navAvatar">S</div>
+        <button class="logout-btn" onclick="logout()">Log out</button>
+    </div>
+</nav>
+
+<main class="page-container">
+    <section class="page-header">
+        <span class="badge">ACADEMIC ASSESSMENT</span>
+        <h1 id="pageHeading">Your Academic Check-In</h1>
+        <p>Share your latest academic information to receive an explainable risk assessment and a practical action plan.</p>
+        <div class="streak-badge" id="streakBadge">🔥 <span id="streakText"></span></div>
+
+        <div class="stepper">
+            <div class="step active" id="stepDetails"><span class="step-num">1</span>Your Details</div>
+            <div class="step-line"></div>
+            <div class="step" id="stepAnalysis"><span class="step-num">2</span>Risk Analysis</div>
+            <div class="step-line"></div>
+            <div class="step" id="stepGuidance"><span class="step-num">3</span>Guidance</div>
+        </div>
+    </section>
+
+    <div class="alert-banner" id="alertBanner">
+        <span>⚠</span><span id="alertBannerText"></span>
+    </div>
+
+    <div class="content-grid" id="dashboardGrid">
+        <div>
+            <section class="form-card" id="formSection">
+                <div class="card-header">
+                    <h2>A Few Quick Details</h2>
+                    <p>Fields marked with <span class="required">*</span> are required.</p>
+                </div>
+
+                <form id="studentForm" novalidate>
+                    <div class="form-section">
+                        <div class="section-title"><div class="section-icon">◉</div><h3>Basic Information</h3></div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Student ID <span class="required">*</span></label>
+                                <input id="studentId" placeholder="e.g. STU2026001">
+                            </div>
+                            <div class="form-group">
+                                <label>Student Name <span class="required">*</span></label>
+                                <input id="studentName" placeholder="Enter your full name">
+                            </div>
+                            <div class="form-group">
+                                <label>Department <span class="required">*</span></label>
+                                <select id="department">
+                                    <option value="">Select department</option>
+                                    <option value="Computer Science and Engineering">Computer Science and Engineering</option>
+                                    <option value="Information Technology">Information Technology</option>
+                                    <option value="Electronics and Communication">Electronics and Communication</option>
+                                    <option value="Electrical and Electronics">Electrical and Electronics</option>
+                                    <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                    <option value="Civil Engineering">Civil Engineering</option>
+                                    <option value="Artificial Intelligence and Data Science">Artificial Intelligence and Data Science</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Academic Year <span class="required">*</span></label>
+                                <select id="year">
+                                    <option value="">Select year</option>
+                                    <option value="1st Year">1st Year</option>
+                                    <option value="2nd Year">2nd Year</option>
+                                    <option value="3rd Year">3rd Year</option>
+                                    <option value="4th Year">4th Year</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="section-title"><div class="section-icon">◈</div><h3>Academic Performance</h3></div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Attendance <span class="required">*</span></label>
+                                <div class="unit-input"><input type="number" id="attendance" min="0" max="100" placeholder="e.g. 85"><span class="unit">%</span></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Average Score <span class="required">*</span></label>
+                                <div class="unit-input"><input type="number" id="grades" min="0" max="100" placeholder="e.g. 78"><span class="unit">/100</span></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Assignment Completion <span class="required">*</span></label>
+                                <div class="unit-input"><input type="number" id="assignments" min="0" max="100" placeholder="e.g. 90"><span class="unit">%</span></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Average Study Time <span class="required">*</span></label>
+                                <div class="unit-input"><input type="number" id="studyTime" min="0" max="24" step=".5" placeholder="e.g. 3"><span class="unit">hrs/day</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="section-title"><div class="section-icon">✦</div><h3>Required for AI Analysis</h3></div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Gender <span class="required">*</span></label>
+                                <select id="gender">
+                                    <option value="">Select</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Male">Male</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Age <span class="required">*</span></label>
+                                <input type="number" id="age" min="10" max="60" placeholder="e.g. 20">
+                            </div>
+                            <div class="form-group">
+                                <label>Sleep Time <span class="required">*</span></label>
+                                <div class="unit-input"><input type="number" id="sleepTime" min="0" max="24" step=".5" placeholder="e.g. 7"><span class="unit">hrs/day</span></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Motivation Level <span class="required">*</span></label>
+                                <select id="motivation">
+                                    <option value="">Select</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="High">High</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="section-title"><div class="section-icon">◎</div><h3>Classroom Participation</h3></div>
+                        <div class="form-grid">
+                            <div class="form-group full">
+                                <label>Participation Level</label>
+                                <div style="display:flex;align-items:center;gap:12px">
+                                    <input type="range" id="participation" min="0" max="100" value="50" style="accent-color:var(--primary)">
+                                    <span id="participationValue" style="width:48px;text-align:center;padding:7px 5px;background:var(--primary-light);color:var(--primary);border-radius:7px;font-size:11px;font-weight:700">50%</span>
+                                </div>
+                            </div>
+                            <div class="form-group full">
+                                <label>Additional Remarks <span style="font-weight:400;color:var(--muted)">(Optional)</span></label>
+                                <textarea id="remarks" placeholder="Anything about your learning experience or difficulties you'd like to add..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-area">
+                        <button type="button" class="secondary-btn" id="clearButton">Clear Form</button>
+                        <button type="submit" class="primary-btn" id="analyzeButton">
+                            <span class="btn-label">Analyze My Risk →</span><span class="spinner"></span>
+                        </button>
+                    </div>
+
+                    <small class="error-message" id="formError" style="text-align:right;display:block;margin-top:10px"></small>
+                </form>
+            </section>
+
+            <section id="resultsSection">
+                <div class="card">
+                    <div class="results-top">
+                        <div>
+                            <h2 class="section-heading">Your Current Risk Level</h2>
+                            <p class="section-subheading">Your latest AI-based academic-risk assessment.</p>
+                        </div>
+                        <span class="live-tag"><span class="live-dot"></span>LIVE</span>
+                    </div>
+
+                    <div class="risk-overview">
+                        <div style="text-align:center">
+                            <div class="gauge-wrap">
+                                <canvas id="riskGauge"></canvas>
+                                <div class="gauge-center">
+                                    <div class="gauge-score" id="gaugeScore">0%</div>
+                                    <div class="gauge-label">MODEL CONFIDENCE</div>
+                                </div>
+                            </div>
+
+                            <span class="risk-badge" id="riskBadge">—</span>
+                            <div class="timestamp" id="lastUpdated">—</div>
+                        </div>
+
+                        <div>
+                            <h3 style="font-size:14px">
+                                Probability Breakdown
+                                <span class="tooltip" data-tip="Model confidence shows how strongly the model chose one risk category from Low, Medium, and High. It is not a guarantee about your future academic outcome.">i</span>
+                            </h3>
+
+                            <p class="section-subheading">The model compares all three possible risk levels.</p>
+
+                            <div class="prob-row" id="probRow"></div>
+
+                            <div class="info-panel" id="confidenceExplanation">
+                                <h3>What does this confidence mean?</h3>
+                                <p>Complete an assessment to see the explanation.</p>
+                            </div>
+
+                            <div class="next-checkin" id="nextCheckin">
+                                📅 Your suggested next check-in will appear here.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="section-heading">Why Did I Get This Result?</h2>
+                    <p class="section-subheading">EduGuide uses SHAP explainable AI to identify which academic factors had the strongest influence on this prediction.</p>
+
+                    <div class="info-panel" id="shapExplanation">
+                        <h3>Explanation will appear after analysis</h3>
+                        <p>Your top academic factors will be explained here in simple language.</p>
+                    </div>
+
+                    <div class="shap-chart-wrap">
+                        <canvas id="factorsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="section-heading">Your Personalized Action Plan</h2>
+                    <p class="section-subheading">Practical next steps based on the factors identified above.</p>
+
+                    <div class="reco-grid">
+                        <div>
+                            <h3 class="reco-title">IMMEDIATE ACTIONS</h3>
+                            <ul class="reco-list" id="immediateActions"></ul>
+                        </div>
+                        <div>
+                            <h3 class="reco-title">SHORT-TERM GOALS</h3>
+                            <ul class="reco-list" id="shortTermGoals"></ul>
+                        </div>
+                        <div>
+                            <h3 class="reco-title">HELPFUL RESOURCES</h3>
+                            <ul class="reco-list" id="resourcesList"></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="section-heading">Your Progress Over Time</h2>
+                    <p class="section-subheading">This chart compares the risk category from each assessment you complete.</p>
+
+                    <div class="trend-insight" id="trendInsight">
+                        Complete at least two assessments to see a meaningful trend.
+                    </div>
+
+                    <div class="progress-chart-wrap" id="progressChartWrap">
+                        <canvas id="progressChart"></canvas>
+                    </div>
+
+                    <div class="no-history" id="noHistoryMsg">
+                        You need at least two assessments to see a trend. Complete another check-in later to compare changes over time.
+                    </div>
+                </div>
+
+                <div class="button-area" style="margin-top:20px">
+                    <button type="button" class="secondary-btn" onclick="downloadReport()">Download / Save Report as PDF</button>
+                    <button type="button" class="secondary-btn" onclick="showForm()">← Update My Details</button>
+                </div>
+
+                <!-- CLASS CHATROOM — now part of the Guidance page, above the disclaimer -->
+                <section id="chatroomSection" class="card">
+                    <div class="card-header">
+                        <h2>Class Chatroom</h2>
+                        <p>Messages from your teacher and classmates. Refresh to check for new ones.</p>
+                    </div>
+
+                    <div class="chatroom-locked-note" id="chatroomLockedNote" style="display:none;">
+                        🔒 Your teacher has locked the chatroom — only teachers can post right now.
+                    </div>
+
+                    <div class="button-area" style="justify-content:flex-start; margin-bottom:14px;">
+                        <button type="button" class="secondary-btn" onclick="loadChatroom()">Refresh Messages</button>
+                    </div>
+
+                    <div class="chatroom-messages" id="chatroomMessages">
+                        <div class="chatroom-empty">Loading messages…</div>
+                    </div>
+
+                    <div class="chatroom-input-row">
+                        <input type="text" id="chatroomInput" placeholder="Write a message to the class…" onkeydown="if(event.key==='Enter') sendChatroomMessage()">
+                        <button class="primary-btn" style="min-width:auto; padding:0 20px;" onclick="sendChatroomMessage()">Send</button>
+                    </div>
+                    <small class="error-message" id="chatroomError" style="display:block; margin-top:8px;"></small>
+                </section>
+
+                <div class="disclaimer">
+                    This is an AI-generated academic-risk prediction based on the information provided and supports early guidance only; it is not a final academic decision, and results may change as attendance, scores, study habits, and circumstances change.
+                </div>
+            </section>
+        </div>
+
+        <aside class="info-column">
+            <div class="info-card">
+                <h3>What EduGuide AI analyzes</h3>
+
+                <div class="info-feature">
+                    <div class="info-icon">%</div>
+                    <div><strong>Attendance</strong><p>Identifies attendance patterns that may affect academic progress.</p></div>
+                </div>
+
+                <div class="info-feature">
+                    <div class="info-icon">A</div>
+                    <div><strong>Academic Performance</strong><p>Uses scores and grades to understand current performance.</p></div>
+                </div>
+
+                <div class="info-feature">
+                    <div class="info-icon">✓</div>
+                    <div><strong>Assignments</strong><p>Measures consistency in completing academic work.</p></div>
+                </div>
+
+                <div class="info-feature">
+                    <div class="info-icon">◷</div>
+                    <div><strong>Study Habits</strong><p>Considers estimated daily study effort and sleep.</p></div>
+                </div>
+            </div>
+
+            <div class="model-card">
+                <h3>AI Risk Assessment</h3>
+                <p>EduGuide uses a supervised machine-learning model and SHAP explainable AI to provide understandable academic guidance.</p>
+            </div>
+        </aside>
+    </div>
+</main>
+
+<button id="chatToggle" onclick="toggleChat()" aria-label="Open EduGuide Assistant">💬</button>
+
+<div id="chatWindow">
+    <div class="chat-header">
+        <div>
+            <div class="chat-header-title">EduGuide Assistant</div>
+            <div class="chat-header-subtitle">Ask me about your results</div>
+        </div>
+        <button class="chat-close" onclick="toggleChat()">✕</button>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+        <div class="chat-bubble bot">Hi! What can I help you with today?</div>
+    </div>
+
+    <div class="chat-suggestions">
+        <button class="chip-suggest" onclick="sendSuggestedChat('Why is my risk level like this?')">Why is my risk level like this?</button>
+        <button class="chip-suggest" onclick="sendSuggestedChat('What should I focus on first?')">What should I focus on first?</button>
+        <button class="chip-suggest" onclick="sendSuggestedChat('How can I improve my attendance?')">How can I improve my attendance?</button>
+    </div>
+
+    <div class="chat-input-row">
+        <input type="text" id="chatInput" placeholder="Type a question…" onkeydown="if(event.key==='Enter') sendChatMessage()">
+        <button class="chat-send" onclick="sendChatMessage()">➤</button>
+    </div>
+</div>
+
+<script>
+const API_BASE_URL = "http://127.0.0.1:5000";
+
+const sessionRaw = localStorage.getItem("eduguide_user");
+let currentUser = null;
+
+if (!sessionRaw) {
+    window.location.href = "index.html";
+} else {
+    currentUser = JSON.parse(sessionRaw);
+
+    if (currentUser.role !== "student") {
+        window.location.href = "index.html";
+    }
+}
+
+let lastAcademicData = null;
+let gaugeChartInstance = null;
+let factorsChartInstance = null;
+let progressChartInstance = null;
+
+const studentForm = document.getElementById("studentForm");
+const formSection = document.getElementById("formSection");
+const resultsSection = document.getElementById("resultsSection");
+const dashboardGrid = document.getElementById("dashboardGrid");
+const analyzeButton = document.getElementById("analyzeButton");
+const formError = document.getElementById("formError");
+const clearButton = document.getElementById("clearButton");
+const participationInput = document.getElementById("participation");
+const participationValue = document.getElementById("participationValue");
+
+const REQUIRED_FIELDS = [
+    "studentId", "studentName", "department", "year",
+    "attendance", "grades", "assignments", "studyTime",
+    "gender", "age", "sleepTime", "motivation"
+];
+
+window.addEventListener("DOMContentLoaded", async () => {
+    const name = currentUser.name || "Student";
+
+    document.getElementById("navUserName").textContent = name;
+    document.getElementById("navAvatar").textContent = name.charAt(0).toUpperCase();
+    document.getElementById("pageHeading").textContent = "Your Academic Check-In, " + name.split(" ")[0];
+
+    await Promise.all([loadProgressHistory(false), loadAlerts(), loadRemarks(), loadChatroom()]);
+});
+
+participationInput.addEventListener("input", () => {
+    participationValue.textContent = participationInput.value + "%";
+});
+
+function logout() {
+    localStorage.removeItem("eduguide_user");
+    window.location.href = "index.html";
+}
+
+function setStep(step) {
+    const steps = [
+        document.getElementById("stepDetails"),
+        document.getElementById("stepAnalysis"),
+        document.getElementById("stepGuidance")
+    ];
+
+    steps.forEach(item => item.classList.remove("active", "done"));
+
+    if (step === "details") {
+        steps[0].classList.add("active");
+    } else {
+        steps[0].classList.add("done");
+        steps[1].classList.add("done");
+        steps[2].classList.add("active");
+    }
+}
+
+function showForm() {
+    formSection.style.display = "block";
+    resultsSection.style.display = "none";
+    dashboardGrid.classList.remove("results-mode");
+    setStep("details");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function showResults() {
+    formSection.style.display = "none";
+    resultsSection.style.display = "block";
+    dashboardGrid.classList.add("results-mode");
+    setStep("results");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function validateForm() {
+    let valid = true;
+
+    REQUIRED_FIELDS.forEach(id => {
+        const element = document.getElementById(id);
+
+        if (!element.value) {
+            element.classList.add("input-error");
+            valid = false;
+        } else {
+            element.classList.remove("input-error");
+        }
+    });
+
+    formError.textContent = valid ? "" : "Please complete all required fields.";
+    return valid;
+}
+
+document.querySelectorAll("#studentForm input, #studentForm select").forEach(element => {
+    element.addEventListener("input", () => element.classList.remove("input-error"));
+    element.addEventListener("change", () => element.classList.remove("input-error"));
+});
+
+function buildPayload() {
+    const grades = Number(document.getElementById("grades").value);
+    const attendance = Number(document.getElementById("attendance").value);
+    const studyTime = Number(document.getElementById("studyTime").value);
+
+    const GENDER_MAP = { Female: 0, Male: 1 };
+    const MOTIVATION_MAP = { High: 0, Low: 1, Medium: 2 };
+
+    const derivedGrade = grades >= 90 ? 0 : grades >= 75 ? 1 : grades >= 60 ? 2 : 3;
+    const courseValue = 2;
+    const absenceDaysCategory = attendance >= 90 ? 1 : 0;
+
+    return {
+        user_id: Number(currentUser.user_id),
+
+        gender: GENDER_MAP[document.getElementById("gender").value],
+        age: Number(document.getElementById("age").value),
+        Grade: derivedGrade,
+        absence_days: absenceDaysCategory,
+        Course: courseValue,
+        GPA: Number((grades / 25).toFixed(2)),
+        Absent: attendance < 75 ? 1 : 0,
+        study_time: studyTime < 2 ? 1 : studyTime < 5 ? 2 : studyTime < 10 ? 3 : 4,
+        Python_score: grades,
+        Java_score: grades,
+        C_score: grades,
+        avg_score: grades,
+        test_prep: 1,
+        exam_score: grades,
+        attendance: attendance,
+        hours_studied: studyTime,
+        motivation_level: MOTIVATION_MAP[document.getElementById("motivation").value],
+        internet_access: 1,
+        previous_scores: grades,
+        sleep_hours: Number(document.getElementById("sleepTime").value),
+
+        student_id: document.getElementById("studentId").value,
+        student_name: document.getElementById("studentName").value,
+        assignment_completion: Number(document.getElementById("assignments").value),
+        participation_level: Number(document.getElementById("participation").value),
+        remarks: document.getElementById("remarks").value
+    };
+}
+
+async function postRequest(path, payload) {
+    const response = await fetch(API_BASE_URL + path, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.error || "The server could not process this request.");
+    }
+
+    return data;
+}
+
+studentForm.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    if (!validateForm()) return;
+
+    const payload = buildPayload();
+    lastAcademicData = payload;
+
+    analyzeButton.disabled = true;
+    analyzeButton.classList.add("loading");
+    formError.textContent = "";
+
+    try {
+        const prediction = await postRequest("/predict", payload);
+
+        renderRiskCard(prediction);
+        showResults();
+
+        const [explainResult, recommendationsResult] = await Promise.allSettled([
+            postRequest("/explain", payload),
+            postRequest("/recommendations", payload)
+        ]);
+
+        const factors = explainResult.status === "fulfilled"
+            ? explainResult.value.top_factors || []
+            : [];
+
+        renderConfidenceExplanation(
+            normaliseRiskLevel(prediction.risk_level),
+            normaliseProbabilities(prediction.probabilities),
+            factors
+        );
+
+        renderShapExplanation(
+            normaliseRiskLevel(prediction.risk_level),
+            factors
+        );
+
+        renderFactorsChart(factors);
+
+        if (recommendationsResult.status === "fulfilled") {
+            renderRecommendations(recommendationsResult.value.action_plan || {});
+        } else {
+            renderRecommendations({});
+        }
+
+        await Promise.all([loadProgressHistory(true), loadAlerts()]);
+
+    } catch (error) {
+        console.error(error);
+        formError.textContent = error.message || "Could not connect to the EduGuide AI server.";
+    } finally {
+        analyzeButton.disabled = false;
+        analyzeButton.classList.remove("loading");
+    }
+});
+
+function normaliseRiskLevel(value) {
+    const risk = String(value || "medium").trim().toLowerCase();
+
+    return {
+        low: "Low",
+        medium: "Medium",
+        high: "High"
+    }[risk] || "Medium";
+}
+
+function normaliseProbabilities(probabilities) {
+    const source = probabilities || {};
+
+    function readRisk(level) {
+        const raw = source[level] ?? source[level.toLowerCase()] ?? 0;
+        const number = Number(raw);
+
+        if (!Number.isFinite(number)) return 0;
+
+        return number > 1 ? number / 100 : number;
+    }
+
+    return {
+        Low: readRisk("Low"),
+        Medium: readRisk("Medium"),
+        High: readRisk("High")
+    };
+}
+
+function renderRiskCard(prediction) {
+    const risk = normaliseRiskLevel(prediction.risk_level);
+    const probabilities = normaliseProbabilities(prediction.probabilities);
+
+    const riskBadge = document.getElementById("riskBadge");
+    riskBadge.textContent = risk + " Risk";
+    riskBadge.className = "risk-badge " + risk;
+
+    const now = new Date();
+    document.getElementById("lastUpdated").textContent =
+        "Last updated: " + now.toLocaleDateString() + ", " +
+        now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+    const probabilityContainer = document.getElementById("probRow");
+    probabilityContainer.innerHTML = "";
+
+    ["Low", "Medium", "High"].forEach(level => {
+        const percent = Number(((probabilities[level] || 0) * 100).toFixed(2));
+
+        probabilityContainer.innerHTML += `
+            <div class="prob-item">
+                <span class="prob-label">${level}</span>
+                <div class="prob-track">
+                    <div class="prob-fill ${level}" style="width:${percent}%"></div>
+                </div>
+                <span class="prob-value">${percent}%</span>
+            </div>
+        `;
+    });
+
+    renderRiskGauge(risk, probabilities);
+    renderNextCheckin(risk);
+}
+
+function renderRiskGauge(risk, probabilities) {
+    const colors = { Low: "#16a34a", Medium: "#d97706", High: "#dc2626" };
+    const confidence = Number(((probabilities[risk] || 0) * 100).toFixed(2));
+
+    document.getElementById("gaugeScore").textContent = confidence + "%";
+    document.getElementById("gaugeScore").style.color = colors[risk];
+
+    if (gaugeChartInstance) gaugeChartInstance.destroy();
+
+    gaugeChartInstance = new Chart(document.getElementById("riskGauge"), {
+        type: "doughnut",
+        data: {
+            datasets: [{
+                data: [confidence, 100 - confidence],
+                backgroundColor: [colors[risk], "#eef0f6"],
+                borderWidth: 0,
+                circumference: 180,
+                rotation: 270,
+                cutout: "78%"
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { animateRotate: true, duration: 900 },
+            plugins: { legend: { display: false }, tooltip: { enabled: false } }
+        }
+    });
+}
+
+function renderNextCheckin(risk) {
+    const days = { Low: 30, Medium: 14, High: 7 }[risk];
+    const date = new Date();
+    date.setDate(date.getDate() + days);
+
+    document.getElementById("nextCheckin").textContent =
+        "📅 Suggested next check-in: " +
+        date.toLocaleDateString(undefined, {
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        });
+}
+
+function prettyFeatureName(feature) {
+    return String(feature || "Academic factor")
+        .replace(/_/g, " ")
+        .replace(/\b\w/g, character => character.toUpperCase());
+}
+
+function renderConfidenceExplanation(risk, probabilities, factors) {
+    const confidence = Number(((probabilities[risk] || 0) * 100).toFixed(2));
+    const ordered = Object.values(probabilities).sort((a, b) => b - a);
+    const difference = Math.round((ordered[0] - ordered[1]) * 100);
+
+    let certaintyText;
+
+    if (confidence >= 85) {
+        certaintyText = `The model strongly matched your submitted information with the ${risk} Risk category. Most of the academic signals pointed in the same direction.`;
+    } else if (confidence >= 60) {
+        certaintyText = `The model selected ${risk} Risk with moderate confidence. Some factors supported this result more strongly than others.`;
+    } else {
+        certaintyText = `The model selected ${risk} Risk, but the result is close to another category. This means your academic indicators are mixed and may change with future check-ins.`;
+    }
+
+    const factorNames = factors
+        .slice(0, 3)
+        .map(item => prettyFeatureName(item.feature))
+        .join(", ");
+
+    document.getElementById("confidenceExplanation").innerHTML = `
+        <h3>Why is the model confidence ${confidence}%?</h3>
+        <p>${certaintyText} The gap between the top two categories is ${difference}%. ${
+            factorNames ? `The strongest factors considered were ${factorNames}.` : ""
+        }</p>
+    `;
+}
+
+function renderShapExplanation(risk, factors) {
+    const container = document.getElementById("shapExplanation");
+
+    if (!factors.length) {
+        container.innerHTML = `
+            <h3>SHAP explanation unavailable</h3>
+            <p>The prediction is available, but EduGuide could not load its factor explanation at this time.</p>
+        `;
+        return;
+    }
+
+    const lowRisk = risk === "Low";
+
+    const title = lowRisk
+        ? "Why did I get a Low Risk result?"
+        : "What is contributing to this result?";
+
+    const introduction = lowRisk
+        ? "These factors most strongly supported your lower-risk result."
+        : "These factors had the strongest influence on your current risk result.";
+
+    const list = factors.slice(0, 3).map(item => {
+        const name = prettyFeatureName(item.feature);
+        const impact = Number(item.impact) || 0;
+
+        let statement;
+
+        if (lowRisk && impact >= 0) {
+            statement = `${name} supports a lower-risk result.`;
+        } else if (lowRisk) {
+            statement = `${name} is an area to keep monitoring.`;
+        } else if (impact >= 0) {
+            statement = `${name} is contributing to your current risk result.`;
+        } else {
+            statement = `${name} is helping reduce your risk.`;
+        }
+
+        return `<li>${statement}</li>`;
+    }).join("");
+
+    container.innerHTML = `
+        <h3>${title}</h3>
+        <p>${introduction}</p>
+        <ul>${list}</ul>
+    `;
+}
+
+function renderFactorsChart(factors) {
+    const labels = factors.map(item => prettyFeatureName(item.feature));
+    const values = factors.map(item => Number(item.impact) || 0);
+
+    const maxImpact = Math.max(...values.map(value => Math.abs(value)), .001);
+
+    const colors = values.map(value => {
+        const intensity = Math.abs(value) / maxImpact;
+
+        if (intensity > .66) return "#dc2626";
+        if (intensity > .33) return "#d97706";
+        return "#4f46e5";
+    });
+
+    if (factorsChartInstance) factorsChartInstance.destroy();
+
+    factorsChartInstance = new Chart(document.getElementById("factorsChart"), {
+        type: "bar",
+        data: {
+            labels,
+            datasets: [{
+                data: values,
+                backgroundColor: colors,
+                borderRadius: 6,
+                maxBarThickness: 24
+            }]
+        },
+        options: {
+            indexAxis: "y",
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { grid: { display: false } },
+                y: { grid: { display: false } }
+            }
+        }
+    });
+}
+
+function renderRecommendations(plan) {
+    fillRecommendationList(
+        "immediateActions",
+        plan.immediate_actions || [],
+        "status-red",
+        "!"
+    );
+
+    fillRecommendationList(
+        "shortTermGoals",
+        plan.short_term_goals || [],
+        "status-yellow",
+        "!"
+    );
+
+    fillRecommendationList(
+        "resourcesList",
+        plan.resources || [],
+        "status-green",
+        "✓"
+    );
+}
+
+function fillRecommendationList(id, items, statusClass, icon) {
+    const list = document.getElementById(id);
+    list.innerHTML = "";
+
+    const values = items.length ? items : ["No recommendation is available yet."];
+
+    values.forEach(text => {
+        const item = document.createElement("li");
+        item.innerHTML = `<span class="status-icon ${statusClass}">${icon}</span><span></span>`;
+        item.querySelector("span:last-child").textContent = text;
+        list.appendChild(item);
+    });
+}
+
+async function loadProgressHistory(allowCelebration) {
+    try {
+        const response = await fetch(API_BASE_URL + "/student/progress/" + currentUser.user_id);
+
+        if (!response.ok) return;
+
+        const data = await response.json();
+        const history = data.history || [];
+        const noHistory = document.getElementById("noHistoryMsg");
+        const chartWrap = document.getElementById("progressChartWrap");
+
+        renderStreakBadge(history);
+
+        if (history.length < 2) {
+            noHistory.style.display = "block";
+            chartWrap.style.display = "none";
+            document.getElementById("trendInsight").textContent =
+                "You need at least two assessments to see a trend. Each check-in compares your newest risk category with earlier results.";
+            return;
+        }
+
+        noHistory.style.display = "none";
+        chartWrap.style.display = "block";
+
+        renderTrendInsight(history);
+
+        if (allowCelebration) {
+            const scoreMap = { Low: 1, Medium: 2, High: 3 };
+            const prev = scoreMap[normaliseRiskLevel(history[history.length - 2].risk_level)];
+            const latest = scoreMap[normaliseRiskLevel(history[history.length - 1].risk_level)];
+            if (latest < prev) fireConfetti();
+        }
+
+        const labels = history.map(item => item.date || item.timestamp || "");
+        const scoreMap = { Low: 1, Medium: 2, High: 3 };
+
+        const values = history.map(item => {
+            return scoreMap[normaliseRiskLevel(item.risk_level)] || 0;
+        });
+
+        if (progressChartInstance) progressChartInstance.destroy();
+
+        progressChartInstance = new Chart(document.getElementById("progressChart"), {
+            type: "line",
+            data: {
+                labels,
+                datasets: [{
+                    data: values,
+                    borderColor: "#4f46e5",
+                    backgroundColor: "rgba(79,70,229,.08)",
+                    fill: true,
+                    tension: .35,
+                    pointRadius: 4,
+                    pointHoverRadius: 7,
+                    pointHoverBackgroundColor: "#4f46e5",
+                    pointHoverBorderColor: "#fff",
+                    pointHoverBorderWidth: 2,
+                    pointBackgroundColor: "#4f46e5"
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: "nearest", intersect: false },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        enabled: true,
+                        backgroundColor: "#172033",
+                        padding: 10,
+                        titleFont: { size: 11, weight: "700" },
+                        bodyFont: { size: 11.5 },
+                        displayColors: false,
+                        callbacks: {
+                            title: (items) => items[0].label,
+                            label: (item) => {
+                                const level = { 1: "Low Risk", 2: "Medium Risk", 3: "High Risk" }[item.raw] || "";
+                                return "Risk level: " + level;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        min: .5,
+                        max: 3.5,
+                        ticks: {
+                            stepSize: 1,
+                            callback: value => ({ 1: "Low", 2: "Medium", 3: "High" }[value] || "")
+                        },
+                        grid: { color: "#eef0f6" }
+                    },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+    } catch (error) {
+        console.error("Progress history unavailable:", error);
+    }
+}
+
+function renderTrendInsight(history) {
+    const scoreMap = { Low: 1, Medium: 2, High: 3 };
+
+    const first = normaliseRiskLevel(history[0].risk_level);
+    const latest = normaliseRiskLevel(history[history.length - 1].risk_level);
+    const insight = document.getElementById("trendInsight");
+
+    if (scoreMap[first] === scoreMap[latest]) {
+        insight.textContent =
+            `Your risk level has remained stable at ${latest} Risk. A horizontal line means the risk category stayed the same across your check-ins.`;
+    } else if (scoreMap[latest] < scoreMap[first]) {
+        insight.textContent =
+            `Good progress — your risk level improved from ${first} Risk to ${latest} Risk.`;
+    } else {
+        insight.textContent =
+            `Your risk level changed from ${first} Risk to ${latest} Risk. Review your action plan and complete another check-in after working on your goals.`;
+    }
+}
+
+function renderStreakBadge(history) {
+    const badge = document.getElementById("streakBadge");
+    const text = document.getElementById("streakText");
+
+    if (!history.length) {
+        badge.style.display = "none";
+        return;
+    }
+
+    badge.style.display = "inline-flex";
+    text.textContent = history.length === 1
+        ? "1 check-in completed — keep it going!"
+        : `${history.length} check-ins completed`;
+}
+
+function fireConfetti() {
+    const colors = ["#4f46e5", "#16a34a", "#d97706", "#38bdf8", "#f43f5e"];
+    const pieceCount = 60;
+
+    for (let i = 0; i < pieceCount; i++) {
+        const piece = document.createElement("div");
+        piece.className = "confetti-piece";
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDuration = (2 + Math.random() * 1.5) + "s";
+        piece.style.opacity = String(0.7 + Math.random() * 0.3);
+        document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 4000);
+    }
+}
+
+function sendSuggestedChat(text) {
+    chatInput.value = text;
+    sendChatMessage();
+}
+
+let remarksData = [];
+
+async function loadRemarks() {
+    const list = document.getElementById("remarksList");
+    try {
+        const response = await fetch(API_BASE_URL + "/student/remarks/" + currentUser.user_id);
+        if (!response.ok) throw new Error("Request failed");
+
+        const data = await response.json();
+        remarksData = data.remarks || (Array.isArray(data) ? data : []);
+
+        const unreadCount = remarksData.filter(r => !r.read).length;
+        const badgeEl = document.getElementById("remarksBadge");
+        badgeEl.style.display = unreadCount ? "flex" : "none";
+        badgeEl.textContent = unreadCount;
+
+        if (!remarksData.length) {
+            list.innerHTML = `<div class="remarks-empty">No remarks yet. Your teacher will show up here if they leave you a note.</div>`;
+            return;
+        }
+
+        list.innerHTML = remarksData.map(r => `
+            <div class="remark-item ${r.read ? "" : "unread"}">
+                <strong>Your teacher sent you a remark</strong>
+                ${r.message}
+                <span class="remark-time">${r.created_at || r.date || ""}</span>
+            </div>
+        `).join("");
+
+    } catch (error) {
+        console.error("Remarks unavailable:", error);
+        list.innerHTML = `<div class="remarks-empty">Couldn't load remarks right now.</div>`;
+    }
+}
+
+function toggleRemarksPanel() {
+    const panel = document.getElementById("remarksPanel");
+    const opening = !panel.classList.contains("open");
+    panel.classList.toggle("open");
+
+    if (opening) {
+        const unread = remarksData.filter(r => !r.read);
+        unread.forEach(r => markRemarkRead(r.id));
+    }
+}
+
+async function markRemarkRead(remarkId) {
+    try {
+        await fetch(API_BASE_URL + "/student/remarks/" + remarkId + "/read", { method: "POST" });
+        const remark = remarksData.find(r => r.id === remarkId);
+        if (remark) remark.read = true;
+
+        const badgeEl = document.getElementById("remarksBadge");
+        const unreadCount = remarksData.filter(r => !r.read).length;
+        badgeEl.style.display = unreadCount ? "flex" : "none";
+        badgeEl.textContent = unreadCount;
+
+        document.querySelectorAll(".remark-item.unread").forEach(el => el.classList.remove("unread"));
+    } catch (error) {
+        console.error("Could not mark remark as read:", error);
+    }
+}
+
+let chatroomLocked = false;
+
+async function loadChatroom() {
+    const container = document.getElementById("chatroomMessages");
+    try {
+        const response = await fetch(API_BASE_URL + "/chatroom/messages");
+        if (!response.ok) throw new Error("Request failed");
+
+        const data = await response.json();
+        const messages = data.messages || (Array.isArray(data) ? data : []);
+        chatroomLocked = !!data.locked;
+
+        document.getElementById("chatroomLockedNote").style.display = chatroomLocked ? "flex" : "none";
+        document.getElementById("chatroomInput").disabled = chatroomLocked;
+
+        if (!messages.length) {
+            container.innerHTML = `<div class="chatroom-empty">No messages yet — say hello!</div>`;
+            return;
+        }
+
+        container.innerHTML = messages.map(m => {
+            const mine = String(m.user_id) === String(currentUser.user_id);
+            const roleClass = m.role === "teacher" ? "teacher" : "";
+            return `
+                <div class="chatroom-msg ${mine ? "mine" : ""} ${roleClass}">
+                    <div class="cm-head">
+                        <span class="cm-name">${m.name}${m.role === "teacher" ? ' <span class="cm-role">Teacher</span>' : ""}</span>
+                        <span class="cm-time">${m.timestamp || m.date || ""}</span>
+                    </div>
+                    <div>${m.message}</div>
+                </div>
+            `;
+        }).join("");
+
+        container.scrollTop = container.scrollHeight;
+
+    } catch (error) {
+        console.error("Chatroom unavailable:", error);
+        container.innerHTML = `<div class="chatroom-empty">Couldn't load the chatroom right now.</div>`;
+    }
+}
+
+async function sendChatroomMessage() {
+    const input = document.getElementById("chatroomInput");
+    const errorEl = document.getElementById("chatroomError");
+    const message = input.value.trim();
+
+    if (!message) return;
+    errorEl.textContent = "";
+
+    try {
+        const response = await fetch(API_BASE_URL + "/chatroom/messages", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                user_id: currentUser.user_id,
+                name: currentUser.name || "Student",
+                role: "student",
+                message: message
+            })
+        });
+
+        if (response.status === 403) {
+            errorEl.textContent = "The chatroom is currently locked by your teacher.";
+            return;
+        }
+        if (!response.ok) throw new Error("Could not send message.");
+
+        input.value = "";
+        await loadChatroom();
+
+    } catch (error) {
+        console.error(error);
+        errorEl.textContent = "Couldn't send your message. Please try again.";
+    }
+}
+
+async function loadAlerts() {
+    try {
+        const response = await fetch(API_BASE_URL + "/student/alerts/" + currentUser.user_id);
+
+        if (!response.ok) return;
+
+        const data = await response.json();
+
+        if (data.alert || data.risk_increased) {
+            document.getElementById("alertBannerText").textContent =
+                data.message || "Heads up — your risk level has increased since your previous check-in.";
+
+            document.getElementById("alertBanner").style.display = "flex";
+        }
+
+    } catch (error) {
+        console.error("Alerts unavailable:", error);
+    }
+}
+
+function downloadReport() {
+    window.print();
+}
+
+const chatWindow = document.getElementById("chatWindow");
+const chatMessages = document.getElementById("chatMessages");
+const chatInput = document.getElementById("chatInput");
+
+function toggleChat() {
+    chatWindow.classList.toggle("open");
+
+    if (chatWindow.classList.contains("open")) {
+        chatInput.focus();
+    }
+}
+
+function appendChatBubble(text, sender) {
+    const bubble = document.createElement("div");
+    bubble.className = "chat-bubble " + sender;
+    bubble.textContent = text;
+
+    chatMessages.appendChild(bubble);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    return bubble;
+}
+
+async function sendChatMessage() {
+    const question = chatInput.value.trim();
+
+    if (!question) return;
+
+    appendChatBubble(question, "user");
+    chatInput.value = "";
+
+    const typingBubble = appendChatBubble("Thinking…", "bot");
+    typingBubble.classList.add("typing");
+
+    try {
+        if (!lastAcademicData) {
+            throw new Error("Please run a current assessment first so I can explain your academic result.");
+        }
+
+        const response = await postRequest("/chat", {
+            ...lastAcademicData,
+            user_id: Number(currentUser.user_id),
+            question
+        });
+
+        typingBubble.classList.remove("typing");
+        typingBubble.textContent =
+            response.answer ||
+            response.response ||
+            "Please rephrase your question and try again.";
+
+    } catch (error) {
+        typingBubble.classList.remove("typing");
+        typingBubble.textContent =
+            error.message ||
+            "Could not reach the EduGuide AI assistant.";
+    }
+}
+
+clearButton.addEventListener("click", () => {
+    studentForm.reset();
+    participationInput.value = 50;
+    participationValue.textContent = "50%";
+    formError.textContent = "";
+
+    document.querySelectorAll(".input-error").forEach(element => {
+        element.classList.remove("input-error");
+    });
+});
+</script>
+
+</body>
+</html>

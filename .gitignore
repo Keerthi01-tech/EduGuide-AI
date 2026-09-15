@@ -1,0 +1,13 @@
+# Virtual environment
+.venv/
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# Database (contains real user data/passwords - never share this)
+database/eduguide.db
+
+# OS junk files
+.DS_Store
+Thumbs.db
