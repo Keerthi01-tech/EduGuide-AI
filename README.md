@@ -45,4 +45,4 @@ ML Project/
 
 ## Author
 
-[Keerthi Shri G] — [keerthishri3107@gmail.com]
+[Keerthi Shri G] — [keerthishri2004@gmail.com]
