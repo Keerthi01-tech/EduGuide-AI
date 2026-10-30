@@ -1,0 +1,71 @@
+﻿Training rows: 6800
+Testing rows: 1700
+
+----- LogisticRegression -----
+Accuracy: 0.9582
+              precision    recall  f1-score   support
+
+           0       0.89      0.94      0.91       176
+           1       0.91      0.89      0.90       207
+           2       0.98      0.97      0.97      1317
+
+    accuracy                           0.96      1700
+   macro avg       0.92      0.94      0.93      1700
+weighted avg       0.96      0.96      0.96      1700
+
+[[ 166    0   10]
+ [   0  185   22]
+ [  21   18 1278]]
+
+----- DecisionTree -----
+Accuracy: 0.9341
+              precision    recall  f1-score   support
+
+           0       0.84      0.83      0.83       176
+           1       0.86      0.88      0.87       207
+           2       0.96      0.96      0.96      1317
+
+    accuracy                           0.93      1700
+   macro avg       0.89      0.89      0.89      1700
+weighted avg       0.93      0.93      0.93      1700
+
+[[ 146    0   30]
+ [   0  182   25]
+ [  28   29 1260]]
+
+----- RandomForest -----
+Accuracy: 0.9465
+              precision    recall  f1-score   support
+
+           0       0.91      0.82      0.86       176
+           1       0.94      0.85      0.89       207
+           2       0.95      0.98      0.97      1317
+
+    accuracy                           0.95      1700
+   macro avg       0.93      0.88      0.90      1700
+weighted avg       0.95      0.95      0.95      1700
+
+[[ 144    0   32]
+ [   0  175   32]
+ [  15   12 1290]]
+
+----- XGBoost -----
+Accuracy: 0.9624
+              precision    recall  f1-score   support
+
+           0       0.92      0.88      0.90       176
+           1       0.94      0.92      0.93       207
+           2       0.97      0.98      0.98      1317
+
+    accuracy                           0.96      1700
+   macro avg       0.94      0.93      0.93      1700
+weighted avg       0.96      0.96      0.96      1700
+
+[[ 155    0   21]
+ [   0  190   17]
+ [  13   13 1291]]
+
+Best model: LogisticRegression with accuracy 0.9582
+Model saved to: C:\Projects\EduGuideAI\models\best_model.pkl
+Calibrated probability model saved to: C:\Projects\EduGuideAI\models\probability_model.pkl
+Scaler saved to: C:\Projects\EduGuideAI\models\scaler.pkl

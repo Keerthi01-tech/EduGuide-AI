@@ -8,6 +8,7 @@ import shap
 import numpy as np
 import ollama
 import json
+from datetime import datetime, timedelta
 from models_db import db, User, PredictionRecord, Warning, Remark, ChatMessage, ChatroomSettings
 
 app = Flask(__name__)
@@ -983,7 +984,136 @@ def set_chatroom_lock():
     settings.locked = bool(data.get("locked", False))
     db.session.commit()
  
-    return jsonify({"success": True, "locked": settings.locked})                                                                                                                     
+    return jsonify({"success": True, "locked": settings.locked})
+
+@app.route("/leaderboard/<int:user_id>", methods=["GET"])
+def leaderboard(user_id):
+    try:
+        students = User.query.filter_by(role="student").all()
+        rows = []
+        compared_ids = set()
+
+        for student in students:
+            records = (
+                PredictionRecord.query
+                .filter_by(user_id=student.id)
+                .order_by(PredictionRecord.created_at.desc())
+                .limit(2)
+                .all()
+            )
+
+            # Need two check-ins to compare "last" with "current"
+            if len(records) < 2:
+                continue
+
+            compared_ids.add(student.id)
+            latest, previous = records[0], records[1]
+
+            new_data = json.loads(latest.academic_data) if latest.academic_data else {}
+            old_data = json.loads(previous.academic_data) if previous.academic_data else {}
+
+            score_gain = max(0, new_data.get("avg_score", 0) - old_data.get("avg_score", 0))
+            attendance_gain = max(0, new_data.get("attendance", 0) - old_data.get("attendance", 0))
+            study_gain = max(0, new_data.get("hours_studied", 0) - old_data.get("hours_studied", 0))
+
+            # Points only for improvement, each part has a maximum
+            points = min(40, round(score_gain * 2))
+            points += min(30, round(attendance_gain))
+            points += min(15, round(study_gain * 5))
+
+            # Bonus when the risk level got better
+            latest_level = RISK_SEVERITY.get(latest.risk_level, 0)
+            previous_level = RISK_SEVERITY.get(previous.risk_level, 0)
+            if latest_level < previous_level:
+                points += 30
+
+            if points <= 0:
+                continue
+
+            parts = (student.name or "").split()
+            if len(parts) > 1:
+                display_name = f"{parts[0]} {parts[-1][0]}."
+                initials = (parts[0][0] + parts[-1][0]).upper()
+            elif parts:
+                display_name = parts[0]
+                initials = parts[0][0].upper()
+            else:
+                display_name = "Student"
+                initials = "S"
+
+            rows.append({
+                "user_id": student.id,
+                "name": display_name,
+                "initials": initials,
+                "points": points
+            })
+
+        rows.sort(key=lambda row: (-row["points"], row["name"]))
+
+        # Students with equal points share the same rank
+        for index, row in enumerate(rows):
+            if index > 0 and row["points"] == rows[index - 1]["points"]:
+                row["rank"] = rows[index - 1]["rank"]
+            else:
+                row["rank"] = index + 1
+
+        top = rows[:5]
+        top_list = [
+            {
+                "rank": row["rank"],
+                "name": row["name"],
+                "initials": row["initials"],
+                "points": row["points"],
+                "is_me": row["user_id"] == user_id
+            }
+            for row in top
+        ]
+
+        mine = next((row for row in rows if row["user_id"] == user_id), None)
+        my_in_top = any(row["user_id"] == user_id for row in top)
+
+        if mine:
+            status = "ranked"
+        elif user_id in compared_ids:
+            status = "no_improvement"
+        else:
+            status = "needs_second_checkin"
+
+        my_points = mine["points"] if mine else 0
+
+        points_to_top5 = None
+        if status != "needs_second_checkin" and not my_in_top:
+            fifth_points = rows[4]["points"] if len(rows) >= 5 else 0
+            points_to_top5 = max(1, fifth_points + 1 - my_points)
+
+        return jsonify({
+            "top": top_list,
+            "me": {
+                "status": status,
+                "rank": mine["rank"] if mine else None,
+                "points": my_points,
+                "points_to_top5": points_to_top5
+            },
+            "total_ranked": len(rows)
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+@app.route("/student/profile/<int:user_id>", methods=["GET"])
+def student_profile(user_id):
+    try:
+        user = User.query.get(user_id)
+        if not user or user.role != "student":
+            return jsonify({"error": "Student not found"}), 404
+
+        return jsonify({
+            "name": user.name,
+            "student_id": user.student_id or ""
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400                                                                                                                         
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

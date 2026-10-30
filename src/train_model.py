@@ -49,7 +49,7 @@ X_test_scaled = scaler.transform(X_test)
 models = {
     "LogisticRegression": LogisticRegression(
         max_iter=5000,
-        C=0.001,
+        C=1.0,
         random_state=42
     ),
     "DecisionTree": DecisionTreeClassifier(
@@ -96,7 +96,7 @@ print(
 probability_model = CalibratedClassifierCV(
     estimator=LogisticRegression(
         max_iter=5000,
-        C=0.001,
+        C=1.0,
         random_state=42
     ),
     method="sigmoid",

@@ -344,6 +344,64 @@ input:focus,select:focus,textarea:focus {
 .chat-input-row input { flex:1; min-width:0; height:38px; border-radius:999px; padding:0 14px; }
 .chat-send { width:38px; height:38px; border:0; border-radius:50%; background:var(--primary); color:#fff; }
 
+.lb-chips { display:flex; flex-wrap:wrap; gap:8px; margin:16px 0 4px; }
+.lb-chip {
+    padding:7px 12px; border-radius:999px; background:var(--primary-light);
+    color:var(--primary-dark); font-size:11px; font-weight:700;
+}
+.lb-chip.bonus { background:var(--orange-light); color:#c2410c; }
+
+.lb-podium {
+    display:flex; justify-content:center; align-items:flex-end; gap:12px;
+    margin:26px 0 16px; min-height:200px;
+}
+.lb-slot { flex:1; max-width:170px; text-align:center; }
+.lb-slot.second { order:1; }
+.lb-slot.first { order:2; }
+.lb-slot.third { order:3; }
+.lb-crown { height:26px; font-size:22px; }
+.lb-avatar {
+    width:54px; height:54px; margin:0 auto 6px; display:grid; place-items:center;
+    border-radius:50%; border:3px solid #fff; color:#fff; font-size:16px; font-weight:800;
+    box-shadow:0 8px 20px rgba(30,41,59,.18);
+}
+.lb-slot.first .lb-avatar { width:66px; height:66px; font-size:19px; background:linear-gradient(135deg,#f59e0b,#fbbf24); }
+.lb-slot.second .lb-avatar { background:linear-gradient(135deg,#6b7280,#9ca3af); }
+.lb-slot.third .lb-avatar { background:linear-gradient(135deg,#c2410c,#fb923c); }
+.lb-slot.me .lb-avatar { box-shadow:0 0 0 3px var(--primary); }
+.lb-slot-name { font-size:12px; font-weight:800; }
+.lb-slot-points { margin-bottom:8px; color:var(--muted); font-size:11px; font-weight:700; }
+.lb-block {
+    display:grid; place-items:center; border-radius:12px 12px 0 0;
+    color:#fff; font-size:22px; font-weight:800;
+}
+.lb-slot.first .lb-block { height:110px; background:linear-gradient(180deg,#f59e0b,#d97706); }
+.lb-slot.second .lb-block { height:80px; background:linear-gradient(180deg,#9ca3af,#6b7280); }
+.lb-slot.third .lb-block { height:60px; background:linear-gradient(180deg,#fb923c,#c2410c); }
+
+.lb-list { list-style:none; display:flex; flex-direction:column; gap:8px; }
+.lb-row {
+    display:grid; grid-template-columns:42px 1fr auto; align-items:center; gap:12px;
+    padding:11px 14px; border:1px solid var(--border); border-radius:12px;
+    background:#fff; font-size:12.5px;
+}
+.lb-row.me { background:var(--primary-light); border-color:#c7d2fe; }
+.lb-rank {
+    width:30px; height:30px; display:grid; place-items:center; border-radius:50%;
+    background:#eef0f6; font-size:12px; font-weight:800;
+}
+.lb-name { font-weight:700; }
+.lb-points { font-weight:800; color:var(--primary); }
+
+.lb-me-bar {
+    display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:16px;
+    padding:14px 16px; border-radius:12px; color:#fff; font-size:12.5px; font-weight:700;
+    background:linear-gradient(135deg,var(--primary),#6366f1);
+}
+.lb-me-bar strong { font-size:16px; white-space:nowrap; }
+.lb-empty { padding:22px 0; text-align:center; color:var(--muted); font-size:12.5px; list-style:none; }
+input[readonly] { background:#f3f4f8; color:var(--muted); cursor:not-allowed; }
+
 @media print {
     .navbar, #formSection, .info-column, #chatToggle, #chatWindow, .button-area { display:none!important; }
     #resultsSection { display:block!important; }
@@ -660,6 +718,22 @@ input:focus,select:focus,textarea:focus {
                     </div>
                 </div>
 
+                <div class="card" id="leaderboardCard">
+                    <h2 class="section-heading">🏆 Leaderboard</h2>
+                    <p class="section-subheading">Earn points by improving since your last check-in. Improve fast and be the next on the leaderboard!</p>
+
+                    <div class="lb-chips">
+                        <span class="lb-chip">⭐ +2 for every mark gained in average score (max 40)</span>
+                        <span class="lb-chip">📅 +1 for every 1% gained in attendance (max 30)</span>
+                        <span class="lb-chip">📚 +5 for every extra study hour a day (max 15)</span>
+                        <span class="lb-chip bonus">🚀 +30 bonus when your risk level improves</span>
+                    </div>
+
+                    <div class="lb-podium" id="lbPodium"></div>
+                    <ul class="lb-list" id="lbList"></ul>
+                    <div class="lb-me-bar" id="lbMeBar"></div>
+                </div>
+
                 <div class="button-area" style="margin-top:20px">
                     <button type="button" class="secondary-btn" onclick="downloadReport()">Download / Save Report as PDF</button>
                     <button type="button" class="secondary-btn" onclick="showForm()">← Update My Details</button>
@@ -800,8 +874,9 @@ window.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("navUserName").textContent = name;
     document.getElementById("navAvatar").textContent = name.charAt(0).toUpperCase();
     document.getElementById("pageHeading").textContent = "Your Academic Check-In, " + name.split(" ")[0];
+    loadProfile();
 
-    await Promise.all([loadProgressHistory(false), loadAlerts(), loadRemarks(), loadChatroom()]);
+    await Promise.all([loadProgressHistory(false), loadAlerts(), loadRemarks(), loadChatroom(), loadLeaderboard()]);
 });
 
 participationInput.addEventListener("input", () => {
@@ -976,7 +1051,7 @@ studentForm.addEventListener("submit", async event => {
             renderRecommendations({});
         }
 
-        await Promise.all([loadProgressHistory(true), loadAlerts()]);
+        await Promise.all([loadProgressHistory(true), loadAlerts(), loadLeaderboard()]);
 
     } catch (error) {
         console.error(error);
@@ -1566,6 +1641,143 @@ async function loadAlerts() {
 
     } catch (error) {
         console.error("Alerts unavailable:", error);
+    }
+}
+async function loadLeaderboard() {
+    const podium = document.getElementById("lbPodium");
+    const list = document.getElementById("lbList");
+    const meBar = document.getElementById("lbMeBar");
+
+    function makeEmpty(text) {
+        const item = document.createElement("li");
+        item.className = "lb-empty";
+        item.textContent = text;
+        return item;
+    }
+
+    try {
+        const response = await fetch(API_BASE_URL + "/leaderboard/" + currentUser.user_id);
+        if (!response.ok) throw new Error("Request failed");
+
+        const data = await response.json();
+        const top = data.top || [];
+        const me = data.me || {};
+        const inTop = top.some(entry => entry.is_me);
+
+        podium.innerHTML = "";
+        list.innerHTML = "";
+        meBar.innerHTML = "";
+
+        if (!top.length) {
+            podium.style.display = "none";
+            list.appendChild(makeEmpty("No improvements yet. Beat your last check-in to take the first spot!"));
+        } else {
+            podium.style.display = "flex";
+
+            const classes = ["first", "second", "third"];
+
+            top.slice(0, 3).forEach((entry, index) => {
+                const slot = document.createElement("div");
+                slot.className = "lb-slot " + classes[index] + (entry.is_me ? " me" : "");
+
+                const crown = document.createElement("div");
+                crown.className = "lb-crown";
+                crown.textContent = index === 0 ? "👑" : "";
+
+                const avatar = document.createElement("div");
+                avatar.className = "lb-avatar";
+                avatar.textContent = entry.initials || "?";
+
+                const name = document.createElement("div");
+                name.className = "lb-slot-name";
+                name.textContent = entry.is_me ? entry.name + " (you)" : entry.name;
+
+                const points = document.createElement("div");
+                points.className = "lb-slot-points";
+                points.textContent = entry.points + " pts";
+
+                const block = document.createElement("div");
+                block.className = "lb-block";
+                block.textContent = entry.rank;
+
+                slot.appendChild(crown);
+                slot.appendChild(avatar);
+                slot.appendChild(name);
+                slot.appendChild(points);
+                slot.appendChild(block);
+                podium.appendChild(slot);
+            });
+
+            top.slice(3).forEach(entry => {
+                const row = document.createElement("li");
+                row.className = "lb-row" + (entry.is_me ? " me" : "");
+
+                const rank = document.createElement("span");
+                rank.className = "lb-rank";
+                rank.textContent = entry.rank;
+
+                const name = document.createElement("span");
+                name.className = "lb-name";
+                name.textContent = entry.is_me ? entry.name + " (you)" : entry.name;
+
+                const points = document.createElement("span");
+                points.className = "lb-points";
+                points.textContent = entry.points + " pts";
+
+                row.appendChild(rank);
+                row.appendChild(name);
+                row.appendChild(points);
+                list.appendChild(row);
+            });
+        }
+
+        const message = document.createElement("span");
+        const result = document.createElement("strong");
+
+        if (me.status === "ranked" && inTop) {
+            message.textContent = "You are on the board! Keep improving to climb higher.";
+            result.textContent = "#" + me.rank + " · " + me.points + " pts";
+        } else if (me.status === "ranked") {
+            message.textContent = "Only " + me.points_to_top5 + " more points to reach the top 5!";
+            result.textContent = "#" + me.rank + " · " + me.points + " pts";
+        } else if (me.status === "no_improvement") {
+            message.textContent = "No improvement since your last check-in yet. Improve your numbers to earn points!";
+            result.textContent = "0 pts";
+        } else {
+            message.textContent = "Complete a second check-in to start earning points.";
+            result.textContent = "–";
+        }
+
+        meBar.appendChild(message);
+        meBar.appendChild(result);
+
+    } catch (error) {
+        console.error("Leaderboard unavailable:", error);
+        podium.style.display = "none";
+        list.innerHTML = "";
+        list.appendChild(makeEmpty("Couldn't load the leaderboard right now."));
+        meBar.innerHTML = "";
+    }
+}
+
+async function loadProfile() {
+    try {
+        const response = await fetch(API_BASE_URL + "/student/profile/" + currentUser.user_id);
+        if (!response.ok) throw new Error("Request failed");
+
+        const data = await response.json();
+
+        const nameBox = document.getElementById("studentName");
+        const idBox = document.getElementById("studentId");
+
+        nameBox.value = nameBox.defaultValue = data.name || "";
+        idBox.value = idBox.defaultValue = data.student_id || "";
+
+        if (data.name) nameBox.readOnly = true;
+        if (data.student_id) idBox.readOnly = true;
+
+    } catch (error) {
+        console.error("Profile unavailable:", error);
     }
 }
 

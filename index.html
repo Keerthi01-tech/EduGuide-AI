@@ -2526,6 +2526,113 @@ section {
     }
 }
 
+/* =========================================================
+   TERMS / PRIVACY POPUP
+========================================================= */
+.legal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(15, 23, 42, 0.55);
+}
+.legal-overlay.open { display: flex; }
+.legal-box {
+    width: 100%;
+    max-width: 720px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 30px 80px rgba(15, 23, 42, 0.30);
+}
+.legal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 22px;
+    border-bottom: 1px solid var(--border);
+}
+.legal-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.legal-tab {
+    border: 1px solid var(--border);
+    background: #ffffff;
+    color: var(--text-medium);
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+.legal-tab.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+}
+.legal-close {
+    border: none;
+    background: transparent;
+    color: var(--text-medium);
+    font-size: 20px;
+    cursor: pointer;
+}
+.legal-body {
+    padding: 22px 26px;
+    overflow-y: auto;
+    font-size: 13px;
+    line-height: 1.75;
+    color: var(--text-medium);
+}
+.legal-body h2 {
+    font-size: 21px;
+    letter-spacing: -0.5px;
+    color: var(--text-dark);
+}
+.legal-body h3 {
+    margin: 20px 0 6px;
+    font-size: 13.5px;
+    color: var(--text-dark);
+}
+.legal-body ul { margin: 6px 0 0 20px; }
+.legal-updated {
+    margin: 4px 0 14px;
+    font-size: 11px;
+    color: var(--text-light);
+}
+.legal-foot {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 22px;
+    border-top: 1px solid var(--border);
+}
+.legal-foot button {
+    padding: 11px 20px;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+.legal-btn-close {
+    border: 1px solid var(--border);
+    background: #ffffff;
+    color: var(--text-medium);
+}
+.legal-btn-agree {
+    border: none;
+    background: var(--primary);
+    color: #ffffff;
+}
+.legal-btn-agree:hover { background: var(--primary-dark); }
+
 </style>
 </head>
 
@@ -4903,12 +5010,12 @@ section {
                             name="agreeTerms"
                             style="margin-top:3px;"
                         >
-
+                        
                         <label for="agreeTerms">
                             I agree to the
-                            <a href="#" onclick="return false;">Terms of Service</a>
+                            <a href="#" onclick="openLegal('terms'); return false;">Terms of Service</a>
                             and
-                            <a href="#" onclick="return false;">Privacy Policy</a>.
+                            <a href="#" onclick="openLegal('privacy'); return false;">Privacy Policy</a>.
                         </label>
 
                     </div>
@@ -5014,6 +5121,131 @@ section {
 <!-- =========================================================
      JAVASCRIPT
 ========================================================= -->
+
+<!-- =========================================================
+     TERMS / PRIVACY POPUP
+========================================================= -->
+
+<div class="legal-overlay" id="legalOverlay" onclick="if (event.target === this) closeLegal();">
+
+    <div class="legal-box">
+
+        <div class="legal-head">
+
+            <div class="legal-tabs">
+                <button type="button" class="legal-tab active" id="tabTerms" onclick="showLegalTab('terms')">Terms of Service</button>
+                <button type="button" class="legal-tab" id="tabPrivacy" onclick="showLegalTab('privacy')">Privacy Policy</button>
+            </div>
+
+            <button type="button" class="legal-close" onclick="closeLegal()" aria-label="Close">✕</button>
+
+        </div>
+
+        <div class="legal-body" id="legalBody">
+
+            <!-- ================= TERMS OF SERVICE ================= -->
+            <div id="legalTerms">
+
+                <h2>Terms of Service</h2>
+                <div class="legal-updated">Last updated: [30/10/2026]</div>
+
+                <p>Welcome to EduGuide AI. By creating an account or using this platform, you agree to these terms. Please read them carefully.</p>
+
+                <h3>1. About EduGuide AI</h3>
+                <p>EduGuide AI is an academic guidance platform. It predicts a student's academic risk level (Low, Medium or High), explains the main factors behind the result, suggests practical actions, and tracks progress over time. It was developed as a project at [Sathyabama Institue Of Science And Technology] and is provided for learning and early guidance.</p>
+
+                <h3>2. Who can use it</h3>
+                <p>Students and teachers can create their own accounts. Administrator accounts are created only by the platform administrator and can never be created through sign-up. You must give correct details when you sign up.</p>
+
+                <h3>3. Your account</h3>
+                <p>Keep your password private. You are responsible for everything done through your account. If you think someone else is using it, please tell an administrator.</p>
+
+                <h3>4. Information you submit</h3>
+                <p>Enter honest and accurate details when you complete a check-in. The predictions, advice and leaderboard points depend on what you enter. Wrong information gives misleading results and is unfair to other students.</p>
+
+                <h3>5. Predictions are guidance, not decisions</h3>
+                <p>Risk levels, explanations and advice are produced by a computer program and can be wrong. They are not a final academic decision, a grade, or a judgement about you as a person. Results can change as your attendance, scores and habits change. Decisions about students are made by teachers and the institution, not by EduGuide AI.</p>
+
+                <h3>6. The chatbot</h3>
+                <p>The EduGuide Assistant is an AI chatbot. Its replies may contain mistakes and are not a replacement for your teachers or a counsellor. Please do not share passwords or very private personal information in the chat.</p>
+
+                <h3>7. Class chatroom and teacher remarks</h3>
+                <p>Be respectful. Do not post abusive, harassing, misleading or harmful messages, and do not try to break or misuse the platform. Chatroom messages can be seen by the class. Teachers can lock the chatroom at any time.</p>
+
+                <h3>8. Leaderboard</h3>
+                <p>The leaderboard ranks students by how much they improved since their previous check-in. It shows only first name, last initial and points. Points are given for improvement only. Entries or accounts may be corrected or removed if the platform is misused.</p>
+
+                <h3>9. Actions by administrators</h3>
+                <p>Administrators can issue warnings and can delete accounts that break these terms or misuse the platform.</p>
+
+                <h3>10. Availability and responsibility</h3>
+                <p>EduGuide AI is a student project and is provided "as is". It may be unavailable, changed or reset at any time, and we do not guarantee that predictions are accurate. To the extent allowed by law, the project team and the college Sathyabama Institue Of Science And Technology are not responsible for decisions made using the predictions or advice.</p>
+
+                <h3>11. Changes to these terms</h3>
+                <p>We may update these terms. The date at the top shows when they were last changed. Continuing to use EduGuide AI means you accept the updated terms.</p>
+
+                <h3>12. Contact</h3>
+                <p>Questions about these terms: [contact email: keerthishri3107@gmail.com].</p>
+
+            </div>
+
+            <!-- ================= PRIVACY POLICY ================= -->
+            <div id="legalPrivacy" style="display:none;">
+
+                <h2>Privacy Policy</h2>
+                <div class="legal-updated">Last updated: [30/10/2026]</div>
+
+                <p>This policy explains what information EduGuide AI collects, why, and who can see it.</p>
+
+                <h3>1. What we collect</h3>
+                <ul>
+                    <li><strong>Account details:</strong> your name, email address, role, and (for students) student ID and course. Your password is stored in a scrambled form, so nobody, including administrators, can read it.</li>
+                    <li><strong>Check-in information:</strong> the academic and personal details you enter, such as attendance, scores, study time, sleep, motivation, age and gender, together with the risk result, the probabilities and the date.</li>
+                    <li><strong>Messages:</strong> chatroom messages you post and remarks sent to you by teachers. Questions you ask the chatbot are used to produce an answer and are not saved by EduGuide AI.</li>
+                    <li><strong>Activity:</strong> the last time you were active on the site, and any warnings an administrator issues.</li>
+                </ul>
+
+                <h3>2. Why we use it</h3>
+                <p>We use this information to predict your academic risk, explain the result, suggest actions, show your progress and alerts, calculate leaderboard points, let teachers support students, and let administrators manage the platform. A fairness report compares risk results across gender groups to check the system is not biased.</p>
+
+                <h3>3. AI and the chatbot</h3>
+                <p>Predictions come from a machine-learning model, and the explanations show which factors had the most influence. In the current version, the chatbot runs on the same computer as EduGuide AI, so your questions are not sent to an outside AI company.</p>
+
+                <h3>4. Who can see what</h3>
+                <ul>
+                    <li><strong>You</strong> can see your own results, history and remarks.</li>
+                    <li><strong>Teachers</strong> can see student lists, risk levels, academic details, AI summaries, alerts and fairness figures.</li>
+                    <li><strong>Administrators</strong> can see account details, activity, warnings and system status.</li>
+                    <li><strong>Classmates</strong> can see your chatroom messages and, on the leaderboard, your first name, last initial and points. They never see your risk level, scores or email.</li>
+                </ul>
+
+                <h3>5. Sharing</h3>
+                <p>We do not sell your information and we do not show advertisements. The pages load fonts and chart tools from Google Fonts and cdnjs, so your browser contacts those services to display the page.</p>
+
+                <h3>6. Storage and security</h3>
+                <p>Your information is kept in the platform's database. Passwords are stored in scrambled form. Your browser also keeps a small login record (your name, role and ID) so you stay signed in, and it is removed when you log out. No system is completely secure, so please keep your password private.</p>
+
+                <h3>7. Your choices</h3>
+                <p>You can ask an administrator to correct your details or delete your account. Deleting an account removes the account and its saved predictions.</p>
+
+                <h3>8. Changes to this policy</h3>
+                <p>We may update this policy. The date at the top shows the latest version.</p>
+
+                <h3>9. Contact</h3>
+                <p>Questions about privacy: [contact email: keerthishri3107@gmail.com].</p>
+
+            </div>
+
+        </div>
+
+        <div class="legal-foot">
+            <button type="button" class="legal-btn-close" onclick="closeLegal()">Close</button>
+            <button type="button" class="legal-btn-agree" onclick="acceptLegal()">I agree</button>
+        </div>
+
+    </div>
+
+</div>
 
 <script>
 
@@ -6106,6 +6338,71 @@ agreeTerms.addEventListener(
     }
 );
 
+/* =========================================================
+   TERMS / PRIVACY POPUP
+========================================================= */
+
+function showLegalTab(which) {
+
+    const showTerms = which === "terms";
+
+    document.getElementById("legalTerms").style.display =
+        showTerms ? "block" : "none";
+
+    document.getElementById("legalPrivacy").style.display =
+        showTerms ? "none" : "block";
+
+    document.getElementById("tabTerms").classList.toggle("active", showTerms);
+    document.getElementById("tabPrivacy").classList.toggle("active", !showTerms);
+
+    document.getElementById("legalBody").scrollTop = 0;
+
+}
+
+
+function openLegal(which) {
+
+    showLegalTab(which);
+
+    document.getElementById("legalOverlay").classList.add("open");
+
+    document.body.style.overflow = "hidden";
+
+}
+
+
+function closeLegal() {
+
+    document.getElementById("legalOverlay").classList.remove("open");
+
+    document.body.style.overflow = "";
+
+}
+
+
+function acceptLegal() {
+
+    agreeTerms.checked = true;
+
+    agreeTermsError.textContent = "";
+
+    closeLegal();
+
+}
+
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (event.key === "Escape") {
+
+            closeLegal();
+
+        }
+
+    }
+);
 
 /* =========================================================
    NAVIGATION LINKS - CLOSE MOBILE MENU
