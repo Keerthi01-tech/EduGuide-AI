@@ -75,12 +75,13 @@ Teachers see the whole class at a glance with plain-language summaries. Administ
 ## How it works
 
 <p align="center">
-  <img src="docs/images/workflow.png" alt="EduGuide AI workflow: Predict, Explain, Guide, Monitor" width="100%">
+  <img src="docs/images/architecture.png" alt="EduGuide AI system architecture" width="100%">
 </p>
 
 <p align="center">
-  <img src="docs/images/architecture.png" alt="EduGuide AI system architecture" width="100%">
+  <img src="docs/images/workflow.png" alt="EduGuide AI workflow: Predict, Explain, Guide, Monitor" width="100%">
 </p>
+
 
 1. The student fills in the check-in form. The page converts the answers into the 20 numbers the model was trained on.
 2. The Flask backend validates the input and scales it with the saved `StandardScaler`.
