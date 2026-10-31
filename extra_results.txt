@@ -1,0 +1,77 @@
+﻿=== PART 1: TEST SET (1,700 students) ===
+class 0 = high risk, 1 = low risk, 2 = medium risk
+
+LogisticRegression
+  accuracy        : 0.9582
+  high precision  : 0.8877
+  high recall     : 0.9432
+  high F1         : 0.9146
+  macro F1        : 0.93
+  ROC-AUC (macro) : 0.9954
+  ROC-AUC (high)  : 0.9974
+
+DecisionTree
+  accuracy        : 0.9341
+  high precision  : 0.8391
+  high recall     : 0.8295
+  high F1         : 0.8343
+  macro F1        : 0.8875
+  ROC-AUC (macro) : 0.914
+  ROC-AUC (high)  : 0.9056
+
+RandomForest
+  accuracy        : 0.9465
+  high precision  : 0.9057
+  high recall     : 0.8182
+  high F1         : 0.8597
+  macro F1        : 0.9047
+  ROC-AUC (macro) : 0.9925
+  ROC-AUC (high)  : 0.9939
+
+XGBoost
+  accuracy        : 0.9624
+  high precision  : 0.9226
+  high recall     : 0.8807
+  high F1         : 0.9012
+  macro F1        : 0.9346
+  ROC-AUC (macro) : 0.9964
+  ROC-AUC (high)  : 0.9969
+
+=== PART 2: 5-FOLD CROSS-VALIDATION (all 8,500 rows) ===
+
+LogisticRegression
+  accuracy    : mean 0.9682  std 0.0011
+  high_recall : mean 0.9261  std 0.0062
+  auc_ovr     : mean 0.9967  std 0.0004
+
+DecisionTree
+  accuracy    : mean 0.9341  std 0.0070
+  high_recall : mean 0.8533  std 0.0254
+  auc_ovr     : mean 0.9132  std 0.0086
+
+RandomForest
+  accuracy    : mean 0.9501  std 0.0046
+  high_recall : mean 0.8476  std 0.0272
+  auc_ovr     : mean 0.9930  std 0.0005
+
+XGBoost
+  accuracy    : mean 0.9695  std 0.0031
+  high_recall : mean 0.9101  std 0.0130
+  auc_ovr     : mean 0.9973  std 0.0005
+
+=== PART 3: LOGISTIC REGRESSION BY GENDER (test set) ===
+gender encoding: 0 = female, 1 = male
+
+female: students 769, truly high-risk 80
+  high-risk caught : 75 of 80 (recall 0.9375)
+  wrongly flagged high: 10 of 689 (rate 0.0145)
+  accuracy         : 0.9597
+
+male: students 931, truly high-risk 96
+  high-risk caught : 91 of 96 (recall 0.9479)
+  wrongly flagged high: 11 of 835 (rate 0.0132)
+  accuracy         : 0.9570
+
+=== PART 4: BRIER SCORE, test set (lower is better) ===
+plain Logistic Regression     : 0.058
+calibrated Logistic Regression: 0.1254

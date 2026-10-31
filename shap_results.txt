@@ -1,0 +1,25 @@
+﻿Shape check - overall_importance should be 1D with length = 20
+Actual shape: (20,)
+
+Feature importance ranking (text, no guessing needed):
+         feature  importance
+    absence_days    5.131521
+             GPA    3.130532
+      exam_score    1.284213
+      attendance    1.134154
+ previous_scores    0.904443
+       avg_score    0.598928
+         C_score    0.386235
+    Python_score    0.347261
+   hours_studied    0.331733
+      Java_score    0.326441
+          Absent    0.309533
+      study_time    0.271920
+ internet_access    0.261439
+motivation_level    0.137552
+           Grade    0.110663
+          Course    0.074795
+             age    0.062352
+       test_prep    0.048256
+          gender    0.046634
+     sleep_hours    0.037809
