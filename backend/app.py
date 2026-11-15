@@ -8,6 +8,7 @@ import shap
 import numpy as np
 import ollama
 import json
+import os
 from datetime import datetime, timedelta
 from models_db import db, User, PredictionRecord, Warning, Remark, ChatMessage, ChatroomSettings
 
@@ -17,8 +18,15 @@ app.json.sort_keys = False
 
 # Tell Flask where the database file lives
 BASE_DIR = Path(__file__).resolve().parent.parent
-app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{BASE_DIR / 'database' / 'eduguide.db'}"
+if os.environ.get("VERCEL"):
+    db_path = "/tmp/eduguide.db"
+else:
+    os.makedirs(BASE_DIR / "database", exist_ok=True)
+    db_path = BASE_DIR / "database" / "eduguide.db"
+
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
 
 from models_db import db, User, PredictionRecord
 db.init_app(app)
