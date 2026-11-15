@@ -32,7 +32,11 @@ app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
-from models_db import db, User, PredictionRecord
+try:
+    from backend.models_db import db, User, PredictionRecord, Warning, Remark, ChatMessage, ChatroomSettings
+except ImportError:
+    from models_db import db, User, PredictionRecord, Warning, Remark, ChatMessage, ChatroomSettings
+
 db.init_app(app)
 
 with app.app_context():
