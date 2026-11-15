@@ -7,12 +7,12 @@ dependencies = [
     "flask-cors",
     "flask-sqlalchemy",
     "werkzeug",
-    "pandas",
-    "numpy",
-    "scikit-learn",
-    "shap",
     "joblib",
-    "requests"
+    "pandas",
+    "shap",
+    "numpy",
+    "ollama",
+    "scikit-learn"
 ]
 
 [tool.vercel]

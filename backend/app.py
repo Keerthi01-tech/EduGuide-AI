@@ -10,7 +10,11 @@ import ollama
 import json
 import os
 from datetime import datetime, timedelta
-from models_db import db, User, PredictionRecord, Warning, Remark, ChatMessage, ChatroomSettings
+try:
+    from backend.models_db import db, User, PredictionRecord, Warning, Remark, ChatMessage, ChatroomSettings
+except ImportError:
+    from models_db import db, User, PredictionRecord, Warning, Remark, ChatMessage, ChatroomSettings
+
 
 app = Flask(__name__)
 CORS(app)
