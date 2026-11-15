@@ -1,2 +1,19 @@
+[project]
+name = "eduguide-ai"
+version = "0.1.0"
+requires-python = ">=3.9"
+dependencies = [
+    "flask",
+    "flask-cors",
+    "flask-sqlalchemy",
+    "werkzeug",
+    "pandas",
+    "numpy",
+    "scikit-learn",
+    "shap",
+    "joblib",
+    "requests"
+]
+
 [tool.vercel]
 entrypoint = "backend.app:app"
