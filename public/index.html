@@ -5255,7 +5255,7 @@ section {
    server ever runs somewhere other than your own computer.
 ========================================================= */
 
-const API_BASE_URL = "http://127.0.0.1:5000";
+const API_BASE_URL = (location.hostname === "localhost" || location.hostname === "127.0.0.1") ? "http://127.0.0.1:5000" : "";
 
 
 /* =========================================================
