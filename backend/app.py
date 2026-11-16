@@ -20,15 +20,26 @@ app = Flask(__name__)
 CORS(app)
 app.json.sort_keys = False
 
-# Tell Flask where the database file lives
+# Tell Flask where the database lives
 BASE_DIR = Path(__file__).resolve().parent.parent
-if os.environ.get("VERCEL"):
-    db_path = "/tmp/eduguide.db"
-else:
-    os.makedirs(BASE_DIR / "database", exist_ok=True)
-    db_path = BASE_DIR / "database" / "eduguide.db"
 
-app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
+# Online (Vercel): use the hosted database whose address is stored as a secret setting.
+# On your laptop: use the local SQLite file, as before.
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if DATABASE_URL:
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_pre_ping": True}
+else:
+    if os.environ.get("VERCEL"):
+        db_path = "/tmp/eduguide.db"
+    else:
+        os.makedirs(BASE_DIR / "database", exist_ok=True)
+        db_path = BASE_DIR / "database" / "eduguide.db"
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
+
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
