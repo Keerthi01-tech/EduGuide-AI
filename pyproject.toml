@@ -13,7 +13,8 @@ dependencies = [
     "numpy",
     "ollama",
     "scikit-learn",
-    "psycopg2-binary"
+    "psycopg2-binary",
+    "psycopg[binary]"
 ]
 
 [tool.vercel]
